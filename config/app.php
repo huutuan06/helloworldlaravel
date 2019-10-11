@@ -161,7 +161,12 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class, // Install JWT Token to support generate server token, use this token from client (APP, WEB END USER)
+        UxWeb\SweetAlert\SweetAlertServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -225,7 +230,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,       // Install JWT Token to support generate server token, use this token from client (APP, WEB END USER)
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class, // Install JWT Token to support generate server token, use this token from client (APP, WEB END USER)
+        'Alert' => UxWeb\SweetAlert\SweetAlert::class,           // Support show Alert warning message form
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];
