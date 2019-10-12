@@ -5,13 +5,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Template Custom</title>
+    <title>Dashboard</title>
     <link rel="icon" href="{{ URL::asset('images/favicon.ico') }}" type="image/ico" />
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/bootstrap2-toggle.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/notifications.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/sweetalert.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('css/animate.min.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
           integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
