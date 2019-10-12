@@ -70,8 +70,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
 
     /**
-     * Create UserController by command php artisan make:controller Dashboard\UserController --resource
+     * Similarity with CRUD for User, Doctor, Disease, Pharmacy,...
      */
-    Route::resource('/admin', 'Dashboard\UserController');
+    Route::resource('/user', 'Dashboard\UserController');
 });
 

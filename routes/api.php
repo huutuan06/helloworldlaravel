@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+/**
+ * There are two cases:
+ * Case 1: Show API from mobile request without authenticate with Token
+ *
+ * Assume we need SignUp/SigIn account from mobile. => LoginController,
+ * RegisterController, LogOutController => AuthenticateController and put it inside folder API
+ * Here is syntax: php artisan make:controller \API\AuthenticateController
+ */
+Route::post('v1/user/mobile/create', 'Api\UserController@create')->name('api_create_user');
+
+/**
+ * Case 2: Need Token in Header (After Application had logined successfully)
+ */
+Route::group(['middleware' => ['jwt.auth']], function() {
+
 });
