@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
  * RegisterController, LogOutController => AuthenticateController and put it inside folder API
  * Here is syntax: php artisan make:controller \API\AuthenticateController
  */
-Route::post('v1/user/mobile/create', 'Api\UserController@create')->name('api_create_user');
+Route::post('v1/mobile/user/create', 'API\AuthenticateController@create')->name('api_create_user');
 
 /**
  * Case 2: Need Token in Header (After Application had logined successfully)
