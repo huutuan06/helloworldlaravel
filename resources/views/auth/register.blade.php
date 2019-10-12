@@ -51,6 +51,14 @@
                         @endif
                     </div>
                     <div>
+                        <input name="password_confirmation" type="password" class="form-control" placeholder="Password Confirmation" required=""/>
+                        @if ($errors->has('password_confirmation'))
+                            <span class="help-block error">
+                                <strong>{{ $errors->first('password_confirmation') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div>
                         <button class="btn btn-default submit" type="submit">Submit</button>
                     </div>
 
