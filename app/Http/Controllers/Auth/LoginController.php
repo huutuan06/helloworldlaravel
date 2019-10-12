@@ -33,7 +33,6 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        \Log::info(Config::get('error.user_not_verify'));
         $this->validator($request->all())->validate();
         if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
