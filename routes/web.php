@@ -68,5 +68,10 @@ Route::group(['middleware' => 'auth'], function () {
      * - Check by command: php artisan route:list
      */
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
+
+    /**
+     * Create UserController by command php artisan make:controller Dashboard\UserController --resource
+     */
+    Route::resource('/admin', 'Dashboard\UserController');
 });
 
