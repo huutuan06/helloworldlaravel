@@ -162,8 +162,12 @@
               <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+              <a data-toggle="tooltip" data-placement="top" title="Logout" onclick="event.preventDefault();
+                                                     document.getElementById('logout').submit();" href="{{ route('logout') }}">>
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                <form id="logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  {{ csrf_field() }}
+                </form>
               </a>
             </div>
             <!-- /menu footer buttons -->

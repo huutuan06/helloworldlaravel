@@ -61,5 +61,12 @@ Route::group(['middleware' => 'auth'], function () {
      * Notes:
      * To know exactly what method (create, index, update, store where are???). Let visit DashboardController.php in app folder.
      */
+
+    /**
+     * Custom specify route with specific URL.
+     * - Make LogoutController inside folder Dashboard. php artisan make:controller Dashboard\LogoutController
+     * - Check by command: php artisan route:list
+     */
+    Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
 });
 
