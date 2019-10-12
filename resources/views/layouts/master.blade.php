@@ -2,32 +2,24 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" href="images/favicon.ico" type="image/ico" />
-
-    <title>Gentelella Alela! | </title>
-
-    <!-- Bootstrap -->
+    <title>Template Custom</title>
+    <link rel="icon" href="{{ URL::asset('images/favicon.ico') }}" type="image/ico" />
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- Font Awesome -->
+    <link href="{{ URL::asset('css/bootstrap2-toggle.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/font-awesome.min.css') }}" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="{{ URL::asset('css/nprogress.css') }}" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="{{ URL::asset('css/green.css') }}" rel="stylesheet">
-	
-    <!-- bootstrap-progressbar -->
-    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-
-    <!-- Custom Theme Style -->
-    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link href="{{ URL::asset('css/notifications.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('css/sweetalert.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <!-- Custom style of the Theme -->
+    <link href="{{ URL::asset('css/custom.min.css') }}" rel="stylesheet">
+    <!-- Custom your style -->
+    <link href="{{ URL::asset('css/style.min.css') }}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
   </head>
 
   <body class="nav-md">
@@ -44,7 +36,7 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="{{ URL::asset('images/img.jpg') }}" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
@@ -980,46 +972,15 @@
       </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="../vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="../vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="../vendors/nprogress/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
-    <!-- gauge.js -->
-    <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- iCheck -->
-    <script src="../vendors/iCheck/icheck.min.js"></script>
-    <!-- Skycons -->
-    <script src="../vendors/skycons/skycons.js"></script>
-    <!-- Flot -->
-    <script src="../vendors/Flot/jquery.flot.js"></script>
-    <script src="../vendors/Flot/jquery.flot.pie.js"></script>
-    <script src="../vendors/Flot/jquery.flot.time.js"></script>
-    <script src="../vendors/Flot/jquery.flot.stack.js"></script>
-    <script src="../vendors/Flot/jquery.flot.resize.js"></script>
-    <!-- Flot plugins -->
-    <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-    <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-    <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
-    <!-- DateJS -->
-    <script src="../vendors/DateJS/build/date.js"></script>
-    <!-- JQVMap -->
-    <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
-    <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-    <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="{{ URL::asset('js/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('js/jquery.validate.js')}}"></script>
+    <script src="{{ URL::asset('js/jquery.validate.min.js')}}"></script>
+    <script src="{{ URL::asset('js/jquery.dataTables.min.js') }}"></script>
 
-    <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
-	
+    <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ URL::asset('js/bootstrap2-toggle.js') }}"></script>
+    <script src="{{ URL::asset('js/bootstrap-progressbar.min.js') }}"></script>
+    <script src="{{ URL::asset('js/bootstrap-toggle.js') }}"></script>
+    <script src="{{ URL::asset('js/custom.min.js') }}"></script>
   </body>
 </html>
