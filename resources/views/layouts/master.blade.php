@@ -197,7 +197,14 @@
                       </a>
                     </li>
                     <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a data-toggle="tooltip" data-placement="top" title="Logout" onclick="event.preventDefault();
+                                                     document.getElementById('logout').submit();" href="{{ route('logout') }}">
+                      <form id="logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                      </form>
+                      Logout
+                    </a>
+                    </li>
                   </ul>
                 </li>
 
@@ -606,7 +613,14 @@
                       <li><i class="fa fa-bar-chart"></i><a href="#">Auto Renewal</a> </li>
                       <li><i class="fa fa-line-chart"></i><a href="#">Achievements</a>
                       </li>
-                      <li><i class="fa fa-area-chart"></i><a href="#">Logout</a>
+                      <li><i class="fa fa-area-chart"></i>
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" onclick="event.preventDefault();
+                                                     document.getElementById('logout').submit();" href="{{ route('logout') }}">>
+                          <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                          <form id="logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                          </form>
+                        </a>
                       </li>
                     </ul>
 
