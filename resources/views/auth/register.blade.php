@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Register</title>
     <link rel="icon" href="{{ URL::asset('images/favicon.ico') }}" type="image/ico"/>
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/font-awesome.min.css') }}" rel="stylesheet">
@@ -22,17 +23,32 @@
     <div class="login_wrapper">
         <div id="register" class="animate form login_form">
             <section class="login_content">
-                <form method="post" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}">
                     {{ csrf_field() }}
                     <h1>Create Account</h1>
                     <div>
-                        <input name="username" type="text" class="form-control" placeholder="Username" required=""/>
+                        <input name="name" type="text" class="form-control" placeholder="Name" required=""/>
+                        @if ($errors->has('name'))
+                            <span class="help-block error">
+                                <strong>{{ $errors->first('name') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div>
                         <input name="email" type="email" class="form-control" placeholder="Email" required=""/>
+                        @if ($errors->has('email'))
+                            <span class="help-block error">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div>
                         <input name="password" type="password" class="form-control" placeholder="Password" required=""/>
+                        @if ($errors->has('password'))
+                            <span class="help-block error">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div>
                         <button class="btn btn-default submit" type="submit">Submit</button>
