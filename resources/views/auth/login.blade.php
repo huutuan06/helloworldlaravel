@@ -23,14 +23,14 @@
     <div class="login_wrapper">
         <div class="animate form login_form">
             <section class="login_content">
-                <form>
+                <form method="post" action="{{ route('login') }}">
                     {{ csrf_field() }}
                     <h1>Login Form</h1>
                     <div>
-                        <input type="text" class="form-control" placeholder="Username" required=""/>
+                        <input name="email" type="text" class="form-control" placeholder="Email" required=""/>
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Password" required=""/>
+                        <input name="password" type="password" class="form-control" placeholder="Password" required=""/>
                     </div>
                     <div>
                         <button class="btn btn-default submit" type="submit">Log in</button>
