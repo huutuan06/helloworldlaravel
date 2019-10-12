@@ -22,6 +22,9 @@
 <div>
     <div class="login_wrapper">
         <div class="animate form login_form">
+            @if (session('status'))
+                <p class="alert alert-success">{{ session('status') }}</p>
+            @endif
             <section class="login_content">
                 <form method="post" action="{{ route('login') }}">
                     {{ csrf_field() }}
@@ -44,7 +47,7 @@
                     </div>
                     <div>
                         <button class="btn btn-default submit" type="submit">Log in</button>
-                        <a class="reset_pass" href="#">Lost your password?</a>
+                        <a class="reset_pass" href="{{ route('password.request') }}">Lost your password?</a>
                     </div>
 
                     <div class="clearfix"></div>
