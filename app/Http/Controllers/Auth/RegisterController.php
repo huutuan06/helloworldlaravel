@@ -36,6 +36,11 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    /**
+     * Show validate by Laravel Framework
+     * @param array $data
+     * @return mixed
+     */
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -45,6 +50,11 @@ class RegisterController extends Controller
         ]);
     }
 
+    /**
+     * Update object User to Laravel Framework
+     * @param array $data
+     * @return mixed
+     */
     protected function create(array $data)
     {
         return $this->mUserModel->create([
@@ -54,10 +64,14 @@ class RegisterController extends Controller
         ]);
     }
 
+    /**
+     * Override method register from trait RegistersUsers
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-
         event(new Registered($user = $this->create($request->all())));
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());

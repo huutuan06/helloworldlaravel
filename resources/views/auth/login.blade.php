@@ -28,9 +28,19 @@
                     <h1>Login Form</h1>
                     <div>
                         <input name="email" type="text" class="form-control" placeholder="Email" required=""/>
+                        @if ($errors->has('email'))
+                            <span class="help-block error">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div>
                         <input name="password" type="password" class="form-control" placeholder="Password" required=""/>
+                        @if ($errors->has('password'))
+                            <span class="help-block error">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div>
                         <button class="btn btn-default submit" type="submit">Log in</button>

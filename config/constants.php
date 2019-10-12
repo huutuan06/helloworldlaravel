@@ -6,8 +6,8 @@
  * Time: 4:49 PM
  */
 return [
-    'email_configuration' => [
-        'subject' => 'Welcome to Selling Book',
+    'error' => [
+        'user_not_verify' => 'Bạn chưa kích hoạt tài khoản qua email.',
     ]
 ];
 
