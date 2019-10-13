@@ -73,5 +73,10 @@ Route::group(['middleware' => 'auth'], function () {
      * Similarity with CRUD for User, Doctor, Disease, Pharmacy,...
      */
     Route::resource('/user', 'Dashboard\UserController');
+
+    /**
+     * Using Ajax to navigate page
+     */
+    Route::get('admin/ajax/dashboard', 'Dashboard\NavigationController@dashboard')->name('ajax.dashboard');
 });
 

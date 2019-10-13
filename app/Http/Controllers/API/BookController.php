@@ -1,24 +1,44 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class DashboardController extends Controller
+class BookController extends Controller
 {
     /**
-     * Display a listing of your object.
-     * For example: You want to get list of books. This controller should be called BookController.php
-     * And then in method @index. You will load all books here.
-     * You should do some steps below:
-     * - Prepare view(blade php) from view folder
-     * - Using method ->with() or ->compact() to pass your list, object to view
-     * - Return it.
+     * Display a listing of the resource.
+     *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        return view('index');
+    public function index()
+    {
+        /**
+         * For example:
+         */
+        $typebooks = array("satire","drama","horror");
+        $books = array("encyclopedia", "cookbooks", "series", "trilogies");
+
+        $result = array();
+        foreach($typebooks as $typebook) {
+            $result[] = array(
+                'typebook' => $typebook,
+                'books' => $books,
+            );
+        }
+
+        $this->response_array = ([
+            'http_response_code' => http_response_code(),
+            'error' => [
+                'code'        => 0,
+                'message'   => "Success"
+            ],
+            'data' => [
+                'books' => $result
+            ]
+        ]);
+        return json_encode($this->response_array);
     }
 
     /**

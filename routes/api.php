@@ -21,11 +21,23 @@ use Illuminate\Support\Facades\Route;
  * RegisterController, LogOutController => AuthenticateController and put it inside folder API
  * Here is syntax: php artisan make:controller \API\AuthenticateController
  */
-Route::post('v1/mobile/user/create', 'API\AuthenticateController@create')->name('api_create_user');
+Route::post('v1/mobile/user/register', 'API\AuthenticateController@register')->name('api_register_user');
+Route::post('v1/mobile/user/login', 'API\AuthenticateController@login')->name('api_login_user');
 
 /**
  * Case 2: Need Token in Header (After Application had logined successfully)
  */
 Route::group(['middleware' => ['jwt.auth']], function() {
+    /**
+     * Example to get data with access token
+     * php artian route:list => see structure of /vi/mobile/book
+     * Assume GET
+     * Request: Header: Authorization
+     *          Param: Bearer<Space><Token>
+     */
+    Route::resource('/v1/mobile/book', 'API\BookController');
 
+    Route::get('test', function(){
+        return response()->json(['foo'=>'bar']);
+    });
 });
