@@ -16,6 +16,9 @@ class BookController extends Controller
     {
         /**
          * For example:
+         * I just dummy two array and nested two array to show data.
+         * After you have Database and you can query from DB and execute response that data you want.
+         *
          */
         $typebooks = array("satire","drama","horror");
         $books = array("encyclopedia", "cookbooks", "series", "trilogies");
