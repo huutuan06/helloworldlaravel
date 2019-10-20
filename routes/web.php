@@ -42,6 +42,8 @@ Route::group(['middleware' => 'auth'], function () {
      * php artisan make:controller \Dashboard\User\UserController --resource
      */
     Route::resource('/admin', 'Dashboard\DashboardController');
+    Route::resource('/admin/book', 'Dashboard\BookController');
+    Route::resource('/admin/category', 'Dashboard\CategoryController');
     /**
      * Now, we will use run command php artisan route:list
      *
@@ -77,6 +79,10 @@ Route::group(['middleware' => 'auth'], function () {
     /**
      * Using Ajax to navigate page
      */
-    Route::get('admin/ajax/dashboard', 'Dashboard\NavigationController@dashboard')->name('ajax.dashboard');
+    Route::get('admin/ajax/book', 'Navigation\NavigationController@book')->name('ajax.book');
+
+    Route::get('admin/ajax/category', 'Navigation\NavigationController@category')->name('ajax.category');
+
+    Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
 });
 
