@@ -342,7 +342,7 @@
                             </li>
                             <li><i class="fa fa-area-chart"></i>
                                 <a data-toggle="tooltip" data-placement="top" title="Logout" onclick="event.preventDefault();
-                                                 document.getElementById('logout').submit();" href="{{ route('logout') }}">>
+                                                     document.getElementById('logout').submit();" href="{{ route('logout') }}">>
                                     <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                                     <form id="logout" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         {{ csrf_field() }}

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVerificationsTable extends Migration
+class CreateCategorysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateVerificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('verifications', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id', 11);
-            $table->integer('user_id')->nullable();
-            $table->string('token', 255)->nullable();
-            $table->rememberToken();
+            $table->string('name', 255);
+            /*$table->string('token', 255)->nullable();*/
             $table->timestamps();
         });
     }
