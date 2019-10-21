@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Model\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
+    protected $modelCategory;
+
+    public function __construct(Category $category )
+    {
+        $this->modelCategory = $category;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         /**
@@ -20,14 +29,14 @@ class BookController extends Controller
          * After you have Database and you can query from DB and execute response that data you want.
          *
          */
-        $typebooks = array("satire","drama","horror");
+        $categpries = $this->modelCategory->getAll();
         $books = array("encyclopedia", "cookbooks", "series", "trilogies");
 
         $result = array();
-        foreach($typebooks as $typebook) {
+        foreach($categpries as $item) {
             $result[] = array(
-                'typebook' => $typebook,
-                'books' => $books,
+                'id' => $item->id,
+                'name' => $item->name
             );
         }
 
