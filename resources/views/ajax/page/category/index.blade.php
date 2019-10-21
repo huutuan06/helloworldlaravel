@@ -8,50 +8,12 @@
 ?>
 <div id="page_content_ajax" class="right_col" role="main">
     <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>Users
-                    <small>Some examples to get you started</small>
-                </h3>
-            </div>
-
-            <div class="title_right">
-                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="clearfix"></div>
-
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Default Example
-                            <small>Users</small>
-                        </h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                   aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Settings 1</a>
-                                    </li>
-                                    <li><a href="#">Settings 2</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a class="close-link"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
+                        <button id="newCategory" class="btn btn-default" type="button">New Category</button>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -62,9 +24,9 @@
                         <table id="datatablesCategory" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Manipulation</th>
+                                    <th style="width: 20.00%">ID</th>
+                                    <th style="width: 60.00%">Name</th>
+                                    <th style="width: 20.00%; text-align: center">Manipulation</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,6 +43,8 @@
         </div>
     </div>
 </div>
+@include('modal.category.create')
+@include('modal.category.create')
 <script>
     $(document).ready(function () {
         $('#datatablesCategory').dataTable({
@@ -112,4 +76,78 @@
             ]
         });
     });
+
+    $('#newCategory').click(function () {
+        $('#createCategoryModal').modal('show');
+        $('#roleFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], textarea').val('');
+    });
+
+    $(document).ready(function () {
+        $('#categoryFormCreate').on('submit', function (event) {
+            if (!$(this).valid()) return false;
+            event.preventDefault();
+            $('#createCategoryModal').modal('hide');
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/admin/category',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'POST',
+                dataType: 'json',
+                data: formData,
+                processData: false,
+                contentType: false
+            })
+                .done(function (data) {
+                    if(data['message']['status'] === 'invalid') {
+                        swal("", data['message']['description'], "error");
+                    }
+                    if(data['message']['status'] === 'existed') {
+                        swal("", data['message']['description'], "error");
+                    }
+                    if(data['message']['status'] === 'success') {
+                        swal("", data['message']['description'], "success");
+                        var table = $('#datatablesCategory').DataTable();
+                        $.fn.dataTable.ext.errMode = 'none';
+                        table.row.add(
+                            [
+                                data['category']['name'],
+                                function (id) {
+                                    return '<div class="text-center">'
+                                        + '<a onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
+                                        + '<span>  </span>' + '<a href="/admin/millionaire/delete/' + id + '" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                        + '</div>';
+                                }
+                            ]
+                        ).draw();
+                    } else if(data.status === 'error') {
+                        swal("", data['message']['description'], "error");
+                    }
+                })
+                .fail(function (error) {
+                    console.log(error);
+                });
+        });
+    });
+
+    function editCategory(id) {
+        $.ajax({
+            url: '/admin/category/'+id,
+            dataType: 'json',
+            type: "GET",
+            beforeSend: function() {
+                $('#modal-loading').modal('show');
+            }
+        })
+            .done(function(data) {
+                $('#modal-loading').modal('hide');
+                $('#createCategoryModal').modal('show');
+            })
+            .fail(function (error) {
+                console.log(error);
+            });
+    }
+
+
 </script>

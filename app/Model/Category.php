@@ -22,13 +22,17 @@ class Category extends Model
     protected $casts = [
     ];
 
-    public function insert($data)
+    public function add($data)
     {
         return DB::table('categories')->insert($data);
     }
 
     public function get() {
         return DB::table('categories')->get();
+    }
+
+    public function getByName($name) {
+        return DB::table('categories')->where('name', $name)->first();
     }
 
 }

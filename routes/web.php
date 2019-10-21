@@ -41,8 +41,10 @@ Route::group(['middleware' => 'auth'], function () {
      * or if you want to create UserController inside folder Dashboard. We have command like below
      * php artisan make:controller \Dashboard\User\UserController --resource
      */
-    Route::resource('/admin', 'Dashboard\DashboardController');
+    Route::get('/admin', 'Dashboard\DashboardController@index')->name('admin.index');
+
     Route::resource('/admin/book', 'Dashboard\BookController');
+
     Route::resource('/admin/category', 'Dashboard\CategoryController');
     /**
      * Now, we will use run command php artisan route:list
