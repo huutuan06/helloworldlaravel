@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Model\Category;
-use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+    use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -54,7 +54,7 @@ class CategoryController extends Controller
             'name' => 'required'
         ];
         $customMessages = [
-            'required' => 'The :attribute field is required.'
+            'required' => 'The attribute field is required.'
         ];
 
         $validator = Validator::make($credentials, $rules, $customMessages);
@@ -75,7 +75,7 @@ class CategoryController extends Controller
                 ]);
             } else {
                 if ($this->mModelCat->add(array([
-                        'id' => 0,
+//                        'id' => 0,
                         'name' => $request->name,
                         'created_at' => $this->freshTimestamp(),
                         'updated_at' => $this->freshTimestamp()

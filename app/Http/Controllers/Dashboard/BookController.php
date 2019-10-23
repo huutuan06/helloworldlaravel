@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Model\Category;
+
+use App\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+
+
 
 class BookController extends Controller
 {
 
     protected $mModelCat;
 
-    public function __construct(Category $cat) {
+    public function __construct(Book $cat) {
         $this->middleware('auth');
         $this->mModelCat = $cat;
     }
@@ -19,11 +24,25 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $books = $this->mModelCat->get();
+        $collections = collect();
+        foreach ($books as $book) {
+            $arr = array(
+                'id'=>$book->id,
+                'title'=>$book->title,
+                'image'=>$book->image,
+                'description'=>$book->description,
+                'publisher_id'=>$book->publisher_id,
+                'total_pages'=>$book->total_pages,
+                'price'=>$book->price,
+            );
+            $collections->push($arr);
+        }
+        return Datatables::collection($collections)->make();
     }
 
     /**
@@ -44,7 +63,57 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $credentials = $request->all();
+        $rules = [
+            'title' => 'required',
+            'image' => 'required',
+            'description' => 'required',
+            'publisher_id' => 'required',
+            'total_pages' => 'required',
+            'price' => 'required',
+        ];
+        $customMessages = [
+            'required' => 'The attribute field is required.'
+        ];
+
+        $validator = Validator::make($credentials, $rules, $customMessages);
+        if ($validator->fails()) {
+            $this->response_array =([
+                'message' => [
+                    'status' => 'invalid',
+                    'description' => $validator->errors()->first()
+                ]
+            ]);
+        } else {
+            if ($this->mModelCat->getByName($request->title) >0) {
+                $this->response_array = ([
+                    'message' => [
+                        'status' => 'invalid',
+                        'description' => 'The book already exists in the system'
+                    ]
+                ]);
+            } else {
+                if ($this->mModelCat->add(array([
+                    'title' => $request->title,
+                    'image' => $request->image,
+                    'description' => $request->description,
+                    'publisher_id' => 0,
+                    'total_pages' => $request->total_pages,
+                    'price' => $request->price,
+                    'created_at' => $this->freshTimestamp(),
+                    'updated_at' => $this->freshTimestamp(),
+                ])) >0) {
+                    $this->response_array = ([
+                        'message' => [
+                            'status' =>'success',
+                            'description' => 'Add a new book successfully'
+                        ],
+                        'book' => $this->mModelCat->getByName($request->title)
+                    ]);
+                }
+            }
+        }
+        echo json_encode($this->response_array);
     }
 
     /**
