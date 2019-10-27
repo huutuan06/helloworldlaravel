@@ -35,4 +35,12 @@ class Category extends Model
         return DB::table('categories')->where('name', $name)->first();
     }
 
+    public function getById($id) {
+        return DB::table('categories')->where('id', $id)->first();
+    }
+
+    public function deleteById($id) {
+        return DB::table('categories')->where('id', $id)->delete();
+    }
+
 }

@@ -46,6 +46,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/admin/book', 'Dashboard\BookController');
 
     Route::resource('/admin/category', 'Dashboard\CategoryController');
+
+    Route::resource('/admin/customer', 'Dashboard\UserController');
+
     /**
      * Now, we will use run command php artisan route:list
      *
@@ -84,6 +87,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/ajax/book', 'Navigation\NavigationController@book')->name('ajax.book');
 
     Route::get('admin/ajax/category', 'Navigation\NavigationController@category')->name('ajax.category');
+
+    Route::get('admin/ajax/customer', 'Navigation\NavigationController@customer')->name('ajax.customer');
 
     Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
 });

@@ -44,6 +44,7 @@ class AuthenticateController extends Controller
         $validator = Validator::make($credentials, $rules);
 
         // Class 1: Try catch with field is required or lengh or using regex, show error below
+
         if ($validator->fails()) {
             if ($validator->errors()->get('name') != null) {
                 $this->response_array = ([

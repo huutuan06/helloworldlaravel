@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 
-use App\Book;
+use App\Model\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -14,11 +14,11 @@ use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 class BookController extends Controller
 {
 
-    protected $mModelCat;
+    protected $mModelBook;
 
-    public function __construct(Book $cat) {
+    public function __construct(Book $book) {
         $this->middleware('auth');
-        $this->mModelCat = $cat;
+        $this->mModelBook = $book;
     }
 
     /**
@@ -28,7 +28,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = $this->mModelCat->get();
+        $books = $this->mModelBook->get();
         $collections = collect();
         foreach ($books as $book) {
             $arr = array(
@@ -85,7 +85,7 @@ class BookController extends Controller
                 ]
             ]);
         } else {
-            if ($this->mModelCat->getByName($request->title) >0) {
+            if ($this->mModelBook->getByName($request->title) >0) {
                 $this->response_array = ([
                     'message' => [
                         'status' => 'invalid',
@@ -93,7 +93,7 @@ class BookController extends Controller
                     ]
                 ]);
             } else {
-                if ($this->mModelCat->add(array([
+                if ($this->mModelBook->add(array([
                     'title' => $request->title,
                     'image' => $request->image,
                     'description' => $request->description,
@@ -108,7 +108,7 @@ class BookController extends Controller
                             'status' =>'success',
                             'description' => 'Add a new book successfully'
                         ],
-                        'book' => $this->mModelCat->getByName($request->title)
+                        'book' => $this->mModelBook->getByName($request->title)
                     ]);
                 }
             }

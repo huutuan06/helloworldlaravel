@@ -39,4 +39,13 @@ class NavigationController extends Controller
         ]);
         echo json_encode($response_array);
     }
+
+    public function customer() {
+        $returnHTML = view('ajax.page.customer.index')->render();
+        $response_array = ([
+            'success' => true,
+            'html' => $returnHTML
+        ]);
+        echo json_encode($response_array);
+    }
 }

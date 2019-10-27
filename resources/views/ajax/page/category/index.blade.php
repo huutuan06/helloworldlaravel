@@ -23,18 +23,19 @@
                         </p>
                         <table id="datatablesCategory" class="table table-striped table-bordered">
                             <thead>
-                                <tr>
-                                    <th style="width: 20.00%">ID</th>
-                                    <th style="width: 60.00%">Name</th>
-                                    <th style="width: 20.00%; text-align: center">Manipulation</th>
-                                </tr>
+                            <tr>
+                                <th style="width: 20.00%">ID</th>
+                                <th style="width: 60.00%">Name</th>
+                                <th style="width: 60.00%">Description</th>
+                                <th style="width: 20.00%; text-align: center">Manipulation</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -44,18 +45,19 @@
     </div>
 </div>
 @include('modal.category.create')
-@include('modal.category.create')
+@include('modal.category.edit')
+
 <script>
     $(document).ready(function () {
         $('#datatablesCategory').dataTable({
             "pageLength": 15,
-            "lengthMenu": [[15,30,45,-1], [15,30,45,'All']],
-            'paging'      : true,
+            "lengthMenu": [[15, 30, 45, -1], [15, 30, 45, 'All']],
+            'paging': true,
             'lengthChange': true,
-            'searching'   : true,
-            'ordering'    : true,
-            'info'        : true,
-            'autoWidth'   : false,
+            'searching': true,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false,
             "processing": true,
             "serverSide": true,
 
@@ -65,14 +67,17 @@
             },
 
             "columns": [
-                { "data": "id" },
-                { "data": "name" },
-                { "data": "manipulation", "render": function (id) {
-                    return '<div class="text-center">'
-                        + '<a onclick= "editCategory('+id+')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                        + '<span>  </span>' + '<a href="/admin/millionaire/delete/'+id+'" onclick="deleteCategory('+id+')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
-                        + '</div>';
-                }}
+                {"data": "id"},
+                {"data": "name"},
+                {"data": "description"},
+                {
+                    "data": "manipulation", "render": function (id) {
+                        return '<div class="text-center">'
+                            + '<a onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
+                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                            + '</div>';
+                    }
+                }
             ]
         });
     });
@@ -84,8 +89,19 @@
 
     $(document).ready(function () {
         $('#categoryFormCreate').on('submit', function (event) {
+            $("#categoryFormCreate").validate({
+                rules: {
+                    name: "required",
+                    description: "required"
+                },
+                messages: {
+                    name: "Vui lòng nhập name",
+                    description: "Vui lòng nhập description"
+                }
+            });
             if (!$(this).valid()) return false;
             event.preventDefault();
+
             $('#createCategoryModal').modal('hide');
             var formData = new FormData(this);
             $.ajax({
@@ -100,28 +116,29 @@
                 contentType: false
             })
                 .done(function (data) {
-                    if(data['message']['status'] === 'invalid') {
+                    if (data['message']['status'] === 'invalid') {
                         swal("", data['message']['description'], "error");
                     }
-                    if(data['message']['status'] === 'existed') {
+                    if (data['message']['status'] === 'existed') {
                         swal("", data['message']['description'], "error");
                     }
-                    if(data['message']['status'] === 'success') {
+                    if (data['message']['status'] === 'success') {
                         swal("", data['message']['description'], "success");
                         var table = $('#datatablesCategory').DataTable();
                         $.fn.dataTable.ext.errMode = 'none';
                         table.row.add(
                             [
                                 data['category']['name'],
+                                data['category']['description'],
                                 function (id) {
                                     return '<div class="text-center">'
                                         + '<a onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                                        + '<span>  </span>' + '<a href="/admin/millionaire/delete/' + id + '" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                                         + '</div>';
                                 }
                             ]
                         ).draw();
-                    } else if(data.status === 'error') {
+                    } else if (data.status === 'error') {
                         swal("", data['message']['description'], "error");
                     }
                 })
@@ -133,16 +150,57 @@
 
     function editCategory(id) {
         $.ajax({
-            url: '/admin/category/'+id,
+            url: '/admin/category/' + id,
             dataType: 'json',
             type: "GET",
-            beforeSend: function() {
+            beforeSend: function () {
                 $('#modal-loading').modal('show');
             }
         })
-            .done(function(data) {
+            .done(function (data) {
+                $('#editName').val(data['category']['name']);
+                $('#editDescription').val(data['category']['description']);
+                $('#id').val(data['category']['id']);
+                console.log(data['category']['id']);
                 $('#modal-loading').modal('hide');
-                $('#createCategoryModal').modal('show');
+                $('#editCategoryModal').modal('show');
+            })
+            .fail(function (error) {
+                console.log(error);
+            });
+    }
+
+    function deleteCategory(id) {
+        console.log(id);
+        $.ajax({
+            url: '/admin/category/' + id,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            type: "DELETE",
+            beforeSend: function () {
+                $('#modal-loading').modal('show');
+            }
+        })
+            .done(function (data) {
+                console.log(data);
+                $('#modal-loading').modal('hide');
+
+                if (data['message']['status'] === 'success') {
+                    swal("", data['message']['description'], "success");
+                    var table = $('#datatablesCategory').DataTable();
+                    $.fn.dataTable.ext.errMode = 'none';
+                    var rows = table.rows().data();
+                    for (var i = 0; i < rows.length; i++) {
+                        if (rows[i].id === data['id']) {
+                            table.row(this).remove().draw();
+                        }
+                    }
+                }
+                if (data['message']['status'] === 'error') {
+                    swal("", data['message']['description'], "error");
+                }
             })
             .fail(function (error) {
                 console.log(error);

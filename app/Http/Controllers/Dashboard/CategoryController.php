@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Model\Category;
-    use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -15,7 +15,8 @@ class CategoryController extends Controller
     protected $mModelCat;
     use HasTimestamps;
 
-    public function __construct(Category $cat) {
+    public function __construct(Category $cat)
+    {
         $this->middleware('auth');
         $this->mModelCat = $cat;
     }
@@ -33,6 +34,7 @@ class CategoryController extends Controller
             $arr = array(
                 'id' => $category->id,
                 'name' => $category->name,
+                'description' => $category->description,
                 'manipulation' => $category->id
             );
             $collections->push($arr);
@@ -49,73 +51,92 @@ class CategoryController extends Controller
     // Save Category
     public function store(Request $request)
     {
-        $credentials = $request->only('name');
+        \Log::info($request);
+        $credentials = $request->only('name','description');
         $rules = [
-            'name' => 'required'
+            'name' => 'required',
+            'description' => 'required'
         ];
         $customMessages = [
-            'required' => 'The attribute field is required.'
+            'required' => 'Please fill in form'
         ];
 
         $validator = Validator::make($credentials, $rules, $customMessages);
         if ($validator->fails()) {
-            $this->response_array = ([
-                'message'       => [
-                    'status'        => "invalid",
-                    'description'   => $validator->errors()->first()
+            return json_encode(([
+                'message' => [
+                    'status' => "invalid",
+                    'description' => $validator->errors()->first()
                 ]
-            ]);
+            ]));
         } else {
             if ($this->mModelCat->getByName($request->name) > 0) {
-                $this->response_array = ([
+                return json_encode(([
                     'message' => [
                         'status' => "invalid",
                         'description' => "The category already exists in the system!"
                     ]
-                ]);
+                ]));
             } else {
                 if ($this->mModelCat->add(array([
 //                        'id' => 0,
                         'name' => $request->name,
+                        'description' => $request->description,
                         'created_at' => $this->freshTimestamp(),
                         'updated_at' => $this->freshTimestamp()
                     ])) > 0) {
                     // Success
-                    $this->response_array = ([
+                    return json_encode(([
                         'message' => [
                             'status' => "success",
                             'description' => "Create a new category successfully"
                         ],
                         'category' => $this->mModelCat->getByName($request->name)
-                    ]);
+                    ]));
                 } else {
-                    $this->response_array = ([
+                    return json_encode(([
                         'message' => [
                             'status' => "error",
                             'description' => "Create a new category failure"
                         ]
-                    ]);
+                    ]));
                 }
             }
         }
-        echo json_encode($this->response_array);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $cat = $this->mModelCat->getById($id);
+        \Log::info($cat->name);
+        if ($cat == null) {
+            return json_encode(([
+                'message' => [
+                    'status' => "error",
+                    'description' => "The customer didn't exist in our system!"
+                ]
+            ]));
+        } else {
+            return json_encode(([
+                'message' => [
+                    'status' => "success",
+                    'description' => ""
+                ],
+                'category' => $cat
+            ]));
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -126,8 +147,8 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -138,11 +159,28 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $cat = $this->mModelCat->deleteById($id);
+        \Log::info($id);
+        if ( $this->mModelCat->getById($id) != null) {
+            return json_encode(([
+                'message' => [
+                    'status' => "error",
+                    'description' => "Delete the category failure",
+                ]
+            ]));
+        } else {
+            return json_encode(([
+                'message' => [
+                    'status' => "success",
+                    'description' => "Delete the category success "
+                ],
+                'id' => $id
+            ]));
+        }
     }
 }
