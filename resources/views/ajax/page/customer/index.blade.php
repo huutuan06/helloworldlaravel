@@ -94,6 +94,9 @@
     function editCustomer(id) {
         $.ajax({
             url: '/admin/customer/' + id,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             dataType: 'json',
             type: "GET",
             beforeSend: function () {

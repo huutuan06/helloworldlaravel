@@ -153,7 +153,52 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        \Log::info($request);
+        $credentials = $request->only('name','description');
+        $rules = [
+            'name' => 'required',
+            'description' => 'required'
+        ];
+        $customMessages = [
+            'required' => 'Please fill in form'
+        ];
+
+        $validator = Validator::make($credentials, $rules, $customMessages);
+        if ($validator->fails()) {
+            return json_encode(([
+                'message' => [
+                    'status' => "invalid",
+                    'description' => $validator->errors()->first()
+                ]
+            ]));
+        } else {
+            if ($this->mModelCat->getByName($request->name) > 0) {
+                return json_encode(([
+                    'message' => [
+                        'status' => "invalid",
+                        'description' => "The category already exists in the system!"
+                    ]
+                ]));
+            } else {
+                if ($this->mModelCat->updateById($id, $request))
+                    return json_encode(([
+                        'message' => [
+                            'status' => "success",
+                            'description' => ""
+                        ],
+                        'category' => $this->mModelCat->getById($id)
+                    ]));
+                else {
+                    return json_encode(([
+                        'message' => [
+                            'status' => "error",
+                            'description' => "Update the category failure"
+                        ]
+                    ]));
+                }
+            }
+        }
+
     }
 
     /**
