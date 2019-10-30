@@ -45,7 +45,7 @@ class Category extends Model
 
     public function updateById($id, $data)
     {
-        DB::table('categories')->where('id', $id)->update($data);
+        return DB::table('categories')->where('id', $id)->update(['name'=>$data['name'], 'description'=>$data['description']]);
     }
 
 }

@@ -51,7 +51,6 @@ class CategoryController extends Controller
     // Save Category
     public function store(Request $request)
     {
-        \Log::info($request);
         $credentials = $request->only('name','description');
         $rules = [
             'name' => 'required',
@@ -70,7 +69,7 @@ class CategoryController extends Controller
                 ]
             ]));
         } else {
-            if ($this->mModelCat->getByName($request->name) > 0) {
+            if ($this->mModelCat->getByName($request->name)) {
                 return json_encode(([
                     'message' => [
                         'status' => "invalid",
@@ -79,7 +78,6 @@ class CategoryController extends Controller
                 ]));
             } else {
                 if ($this->mModelCat->add(array([
-//                        'id' => 0,
                         'name' => $request->name,
                         'description' => $request->description,
                         'created_at' => $this->freshTimestamp(),
@@ -114,7 +112,6 @@ class CategoryController extends Controller
     public function show($id)
     {
         $cat = $this->mModelCat->getById($id);
-        \Log::info($cat->name);
         if ($cat == null) {
             return json_encode(([
                 'message' => [
@@ -153,7 +150,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        \Log::info($request);
         $credentials = $request->only('name','description');
         $rules = [
             'name' => 'required',
@@ -172,29 +168,40 @@ class CategoryController extends Controller
                 ]
             ]));
         } else {
-            if ($this->mModelCat->getByName($request->name) > 0) {
+            if ($this->mModelCat->getById($request->id)->name == $request->name) {
+                $this->mModelCat->updateById($id, $request);
                 return json_encode(([
                     'message' => [
-                        'status' => "invalid",
-                        'description' => "The category already exists in the system!"
-                    ]
+                        'status' => "success",
+                        'description' => "Update the category success!"
+                    ],
+                    'category' => $this->mModelCat->getById($id)
                 ]));
             } else {
-                if ($this->mModelCat->updateById($id, $request))
+                if ($this->mModelCat->getByName($request->name)) {
                     return json_encode(([
                         'message' => [
-                            'status' => "success",
-                            'description' => ""
-                        ],
-                        'category' => $this->mModelCat->getById($id)
-                    ]));
-                else {
-                    return json_encode(([
-                        'message' => [
-                            'status' => "error",
-                            'description' => "Update the category failure"
+                            'status' => "invalid",
+                            'description' => "The category already exists in the system!"
                         ]
                     ]));
+                } else {
+                    if ($this->mModelCat->updateById($id, $request) > 0) {
+                        return json_encode(([
+                            'message' => [
+                                'status' => "success",
+                                'description' => "Update the category success!"
+                            ],
+                            'category' => $this->mModelCat->getById($id)
+                        ]));
+                    } else {
+                        return json_encode(([
+                            'message' => [
+                                'status' => "error",
+                                'description' => "Update the category failure!"
+                            ]
+                        ]));
+                    }
                 }
             }
         }
@@ -210,19 +217,18 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $cat = $this->mModelCat->deleteById($id);
-        \Log::info($id);
         if ( $this->mModelCat->getById($id) != null) {
             return json_encode(([
                 'message' => [
                     'status' => "error",
-                    'description' => "Delete the category failure",
+                    'description' => "Delete the category failure!",
                 ]
             ]));
         } else {
             return json_encode(([
                 'message' => [
                     'status' => "success",
-                    'description' => "Delete the category success "
+                    'description' => "Delete the category success! "
                 ],
                 'id' => $id
             ]));

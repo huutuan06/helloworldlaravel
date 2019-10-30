@@ -109,7 +109,6 @@
                 $('#editName').val(data['category']['name']);
                 $('#editDescription').val(data['category']['description']);
                 $('#editId').val(data['category']['id']);
-                console.log(data['category']['id']);
                 $('#modal-loading').modal('hide');
                 $('#editCategoryModal').modal('show');
             })
@@ -128,8 +127,8 @@
                     description: "required"
                 },
                 messages: {
-                    name: "Vui lòng nhập name",
-                    description: "Vui lòng nhập description"
+                    name: "Please fill name",
+                    description: "Please fill description"
                 }
             });
             if (!$(this).valid()) return false;
@@ -181,79 +180,76 @@
         });
 
         /**
-         * After edit, we need get all informations from Form.
+         * After edit, we need get all information from Form.
          * When you click Submit and Ajax will do this manipulation.
          */
         $('#categoryFormEdit').on('submit', function (event) {
-            console.log("We try to get id from form: "+$('#editId').val());
-        //     $("#categoryFormEdit").validate({
-        //         rules: {
-        //             name: "required",
-        //             description: "required"
-        //         },
-        //         messages: {
-        //             name: "Please fill name",
-        //             description: "Please fill description"
-        //         }
-        //     });
-        //     if (!$(this).valid()) return false;
-        //     event.preventDefault();
-        //
-        //     $('#editCategoryModal').modal('hide');
-        //     var formData = new FormData(this);
-        //
-        //     $.ajax({
-        //         url: '/admin/category/' + $('#editId').val(),
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         method: 'PUT',
-        //         dataType: 'json',
-        //         data: formData,
-        //         processData: false,
-        //         contentType: false
-        //     })
-        //         .done(function (data) {
-        //             if (data['message']['status'] === 'invalid') {
-        //                 swal("", data['message']['description'], "error");
-        //             }
-        //             if (data['message']['status'] === 'existed') {
-        //                 swal("", data['message']['description'], "error");
-        //             }
-        //             if (data['message']['status'] === 'success') {
-        //                 swal("", data['message']['description'], "success");
-        //                 var table = $('#datatablesCategory').DataTable();
-        //                 $.fn.dataTable.ext.errMode = 'none';
-        //                 var rows = table.rows().data();
-        //                 for (var i = 0; i < rows.length; i++) {
-        //                     if (rows[i].id === data['id']) {
-        //                         table.row(this).replaceWith(
-        //                             [
-        //                                 data['category']['name'],
-        //                                 data['category']['description'],
-        //                                 function (id) {
-        //                                     return '<div class="text-center">'
-        //                                         + '<a onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-        //                                         + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
-        //                                         + '</div>';
-        //                                 }
-        //                             ]
-        //                         )
-        //                     }
-        //                 }
-        //             } else if (data.status === 'error') {
-        //                 swal("", data['message']['description'], "error");
-        //             }
-        //         })
-        //         .fail(function (error) {
-        //             console.log(error);
-        //         });
-        // });
+            $("#categoryFormEdit").validate({
+                rules: {
+                    name: "required",
+                    description: "required"
+                },
+                messages: {
+                    name: "Please fill name",
+                    description: "Please fill description"
+                }
+            });
+            if (!$(this).valid()) return false;
+            event.preventDefault();
+
+            $('#editCategoryModal').modal('hide');
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/admin/category/' + $('#editId').val(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'POST',
+                dataType: 'json',
+                data: formData,
+                processData: false,
+                contentType: false
+            })
+                .done(function (data) {
+                    if (data['message']['status'] === 'invalid') {
+                        swal("", data['message']['description'], "error");
+                    }
+                    if (data['message']['status'] === 'existed') {
+                        swal("", data['message']['description'], "error");
+                    }
+                    if (data['message']['status'] === 'success') {
+                        swal("", data['message']['description'], "success");
+                        var table = $('#datatablesCategory').DataTable();
+                        $.fn.dataTable.ext.errMode = 'none';
+                        var rows = table.rows().data();
+                        for (var i = 0; i < rows.length; i++) {
+                            if (rows[i].id == data['category']['id']) {
+                                table.row(this).data(
+                                    [
+                                        data['category']['name'],
+                                        data['category']['description'],
+                                        function (id) {
+                                            return '<div class="text-center">'
+                                                + '<a onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
+                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                                + '</div>';
+                                        }
+                                    ]
+                                ).draw();
+                            }
+                        }
+                    } else if (data.status === 'error') {
+                        swal("", data['message']['description'], "error");
+                    }
+                })
+                .fail(function (error) {
+                    console.log(error);
+                });
+        });
     });
 
 
     function deleteCategory(id) {
-        console.log(id);
         $.ajax({
             url: '/admin/category/' + id,
             headers: {
@@ -266,7 +262,6 @@
             }
         })
             .done(function (data) {
-                console.log(data);
                 $('#modal-loading').modal('hide');
 
                 if (data['message']['status'] === 'success') {

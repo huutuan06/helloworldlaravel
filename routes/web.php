@@ -47,6 +47,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/admin/category', 'Dashboard\CategoryController');
 
+    Route::post('/admin/category/{category}', 'Dashboard\CategoryController@update')->name('category.update');
+
     Route::resource('/admin/customer', 'Dashboard\UserController');
 
     /**
