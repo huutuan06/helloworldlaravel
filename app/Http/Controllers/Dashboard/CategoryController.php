@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-
     protected $mModelCat;
     use HasTimestamps;
 
@@ -51,7 +50,7 @@ class CategoryController extends Controller
     // Save Category
     public function store(Request $request)
     {
-        $credentials = $request->only('name','description');
+        $credentials = $request->only('name', 'description');
         $rules = [
             'name' => 'required',
             'description' => 'required'
@@ -87,7 +86,7 @@ class CategoryController extends Controller
                     return json_encode(([
                         'message' => [
                             'status' => "success",
-                            'description' => "Create a new category successfully"
+                            'description' => "Create a new category successfully!"
                         ],
                         'category' => $this->mModelCat->getByName($request->name)
                     ]));
@@ -95,7 +94,7 @@ class CategoryController extends Controller
                     return json_encode(([
                         'message' => [
                             'status' => "error",
-                            'description' => "Create a new category failure"
+                            'description' => "Create a new category failure!"
                         ]
                     ]));
                 }
@@ -150,7 +149,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $credentials = $request->only('name','description');
+        $credentials = $request->only('name', 'description');
         $rules = [
             'name' => 'required',
             'description' => 'required'
@@ -205,7 +204,6 @@ class CategoryController extends Controller
                 }
             }
         }
-
     }
 
     /**
@@ -217,7 +215,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $cat = $this->mModelCat->deleteById($id);
-        if ( $this->mModelCat->getById($id) != null) {
+        if ($this->mModelCat->getById($id) != null) {
             return json_encode(([
                 'message' => [
                     'status' => "error",

@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-
 use App\Model\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
-
 
 
 class BookController extends Controller
 {
-
     protected $mModelBook;
+    use HasTimestamps;
 
     public function __construct(Book $book) {
         $this->middleware('auth');
@@ -36,9 +35,9 @@ class BookController extends Controller
                 'title'=>$book->title,
                 'image'=>$book->image,
                 'description'=>$book->description,
-                'publisher_id'=>$book->publisher_id,
                 'total_pages'=>$book->total_pages,
                 'price'=>$book->price,
+                'manipulation' => $book->id
             );
             $collections->push($arr);
         }
@@ -63,12 +62,11 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $credentials = $request->all();
+        $credentials = $request->only('title','image','description','total_pages','price');
         $rules = [
             'title' => 'required',
             'image' => 'required',
             'description' => 'required',
-            'publisher_id' => 'required',
             'total_pages' => 'required',
             'price' => 'required',
         ];
@@ -85,7 +83,7 @@ class BookController extends Controller
                 ]
             ]);
         } else {
-            if ($this->mModelBook->getByName($request->title) >0) {
+            if ($this->mModelBook->getByTitle($request->title)) {
                 $this->response_array = ([
                     'message' => [
                         'status' => 'invalid',
@@ -97,7 +95,6 @@ class BookController extends Controller
                     'title' => $request->title,
                     'image' => $request->image,
                     'description' => $request->description,
-                    'publisher_id' => 0,
                     'total_pages' => $request->total_pages,
                     'price' => $request->price,
                     'created_at' => $this->freshTimestamp(),
@@ -108,7 +105,7 @@ class BookController extends Controller
                             'status' =>'success',
                             'description' => 'Add a new book successfully'
                         ],
-                        'book' => $this->mModelBook->getByName($request->title)
+                        'book' => $this->mModelBook->getByTitle($request->title)
                     ]);
                 }
             }
@@ -124,7 +121,23 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $book = $this->mModelBook->getById($id);
+        if ($book == null) {
+            return json_encode([
+                'message'=> [
+                    'status' => 'error',
+                    'description' => "The book doesn't exist in the system!"
+                ]
+            ]);
+        } else {
+            return json_encode([
+                'message' => [
+                    'status' => 'success',
+                    'description' => ''
+                ],
+                'book' => $book
+            ]);
+        }
     }
 
     /**
@@ -147,7 +160,64 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $credentials = $request->only('title','image','description','total_pages','price');
+        $rules = [
+            'title' => 'required',
+            'image' => 'required',
+            'description' => 'required',
+            'total_pages' => 'required',
+            'price' => 'required'
+        ];
+        $customMessages = [
+            'required' => 'Please fill in form!'
+        ];
+
+        $validator = Validator::make($credentials, $rules, $customMessages);
+        if ($validator->fails()) {
+            return json_encode(([
+                'message' => [
+                    'status' => "invalid",
+                    'description' => $validator->errors()->first()
+                ]
+            ]));
+        } else {
+            if ($this->mModelBook->getById($request->id)->title == $request->title) {
+                $this->mModelBook->updateById($id, $request);
+                return json_encode(([
+                    'message' => [
+                        'status' => "success",
+                        'description' => "Update the category success!"
+                    ],
+                    'book' => $this->mModelBook->getById($id)
+                ]));
+            } else {
+                if ($this->mModelBook->getByTitle($request->title)) {
+                    return json_encode(([
+                        'message' => [
+                            'status' => "invalid",
+                            'description' => "The category already exists in the system!"
+                        ]
+                    ]));
+                } else {
+                    if ($this->mModelBook->updateById($id, $request) > 0) {
+                        return json_encode(([
+                            'message' => [
+                                'status' => "success",
+                                'description' => "Update the category success!"
+                            ],
+                            'book' => $this->mModelBook->getById($id)
+                        ]));
+                    } else {
+                        return json_encode(([
+                            'message' => [
+                                'status' => "error",
+                                'description' => "Update the category failure!"
+                            ]
+                        ]));
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -158,6 +228,22 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->mModelBook->deleteById($id);
+        if ($this->mModelBook->getById($id) != null) {
+            return json_encode([
+               'message' => [
+                   'status' => 'error',
+                   'description' => 'Delete the book failure!'
+               ]
+            ]);
+        } else {
+            return json_encode([
+                'message' => [
+                    'status' => 'success',
+                    'description' => 'Delete the book successfully!'
+                ],
+                'id' => $id
+            ]);
+        }
     }
 }

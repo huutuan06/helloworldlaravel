@@ -24,9 +24,9 @@
                         <table id="datatablesCategory" class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th style="width: 20.00%">ID</th>
-                                <th style="width: 60.00%">Name</th>
-                                <th style="width: 60.00%">Description</th>
+                                <th style="width: 5.00%">ID</th>
+                                <th style="width: 25.00%">Name</th>
+                                <th style="width: 50.00%">Description</th>
                                 <th style="width: 20.00%; text-align: center">Manipulation</th>
                             </tr>
                             </thead>
@@ -73,7 +73,7 @@
                 {
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
-                            + '<a onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
+                            + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
                             + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                             + '</div>';
                     }
@@ -84,7 +84,7 @@
 
     $('#newCategory').click(function () {
         $('#createCategoryModal').modal('show');
-        $('#roleFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], textarea').val('');
+        $('#categoryFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], textarea').val('');
     });
 
     /**
@@ -93,32 +93,6 @@
      * YEs
      * @param id
      */
-    function editCategory(id) {
-        $.ajax({
-            url: '/admin/category/' + id,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            dataType: 'json',
-            type: "GET",
-            beforeSend: function () {
-                $('#modal-loading').modal('show');
-            }
-        })
-            .done(function (data) {
-                $('#editName').val(data['category']['name']);
-                $('#editDescription').val(data['category']['description']);
-                $('#editId').val(data['category']['id']);
-                $('#modal-loading').modal('hide');
-                $('#editCategoryModal').modal('show');
-            })
-            .fail(function (error) {
-                console.log(error);
-            });
-
-    }
-
-
     $(document).ready(function () {
         $('#categoryFormCreate').on('submit', function (event) {
             $("#categoryFormCreate").validate({
@@ -164,7 +138,7 @@
                                 data['category']['description'],
                                 function (id) {
                                     return '<div class="text-center">'
-                                        + '<a onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
+                                        + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
                                         + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                                         + '</div>';
                                 }
@@ -230,7 +204,7 @@
                                         data['category']['description'],
                                         function (id) {
                                             return '<div class="text-center">'
-                                                + '<a onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
+                                                + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
                                                 + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                                                 + '</div>';
                                         }
@@ -248,6 +222,29 @@
         });
     });
 
+    function editCategory(id) {
+        $.ajax({
+            url: '/admin/category/' + id,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            type: "GET",
+            beforeSend: function () {
+                $('#modal-loading').modal('show');
+            }
+        })
+            .done(function (data) {
+                $('#editName').val(data['category']['name']);
+                $('#editDescription').val(data['category']['description']);
+                $('#editId').val(data['category']['id']);
+                $('#modal-loading').modal('hide');
+                $('#editCategoryModal').modal('show');
+            })
+            .fail(function (error) {
+                console.log(error);
+            });
+    }
 
     function deleteCategory(id) {
         $.ajax({
@@ -283,6 +280,4 @@
                 console.log(error);
             });
     }
-
-
 </script>
