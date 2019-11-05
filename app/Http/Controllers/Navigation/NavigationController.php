@@ -40,8 +40,8 @@ class NavigationController extends Controller
         echo json_encode($response_array);
     }
 
-    public function customer() {
-        $returnHTML = view('ajax.page.customer.index')->render();
+    public function user() {
+        $returnHTML = view('ajax.page.user.index')->render();
         $response_array = ([
             'success' => true,
             'html' => $returnHTML

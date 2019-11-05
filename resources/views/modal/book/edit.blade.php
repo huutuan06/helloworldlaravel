@@ -26,8 +26,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Link Image:</label>
-                        <textarea name="image" class="form-control" id="editImage"/>
+                        <label for="recipient-name" class="col-form-label">Image:</label>
+                        <br>
+                        <img src="" id="showImage" height="200px">
+                        <input name="image" type="file" class="form-control" id="editImage">
                     </div>
                 </div>
                 <div class="modal-body">
@@ -39,7 +41,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Total Pages:</label>
-                        <input name="total_pages" type="text" class="form-control" id="editTotalPages"/>
+                        <input name="total_pages" type="number" class="form-control" id="editTotalPages"/>
                     </div>
                 </div>
                 <div class="modal-body">

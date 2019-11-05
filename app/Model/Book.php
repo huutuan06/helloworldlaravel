@@ -41,6 +41,6 @@ class Book extends Model
 
     public function updateById($id, $data)
     {
-        return DB::table('books')->where('id', $id)->update(['title' => $data['title'], 'image' => $data['image'], 'description' => $data['description'], 'total_pages' => $data['total_pages'], 'price' => $data['price']]);
+        return DB::table('books')->where('id', $id)->update(['title' => $data['title'], 'image' => $data->image, 'description' => $data['description'], 'total_pages' => $data['total_pages'], 'price' => $data['price']]);
     }
 }

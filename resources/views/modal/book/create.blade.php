@@ -16,8 +16,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Link Image:</label>
-                        <textarea name="image" class="form-control" id="bookImage"/>
+                        <label for="recipient-name" class="col-form-label">Image:</label>
+                        <input name="image" type="file" class="form-control" id="bookImage">
+{{--                        <textarea name="image" class="form-control" id="bookImage"/>--}}
                     </div>
                 </div>
                 <div class="modal-body">

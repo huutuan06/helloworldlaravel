@@ -7,7 +7,7 @@
  */
 ?>
 <!-- Refer here https://getbootstrap.com/docs/4.0/components/modal/ -->
-<div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -16,40 +16,40 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="customerFormEdit">
+            <form id="userFormEdit">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Customer Name:</label>
-                        <input name="name" type="text" class="form-control" id="editCustomerName">
+                        <label for="recipient-name" class="col-form-label">User Name:</label>
+                        <input name="name" type="text" class="form-control" id="editUserName">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Customer Email:</label>
-                        <input name="name" type="text" class="form-control" id="editCustomerEmail">
+                        <label for="recipient-name" class="col-form-label">User Email:</label>
+                        <input name="name" type="text" class="form-control" id="editUserEmail">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Customer Address:</label>
-                        <input name="name" type="text" class="form-control" id="editCustomerAddress">
+                        <label for="recipient-name" class="col-form-label">User Address:</label>
+                        <input name="name" type="text" class="form-control" id="editUserAddress">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Customer's Date of Birth:</label>
-                        <input type="datetime-local" name="editCustomerBirth">
+                        <label for="recipient-name" class="col-form-label">User's Date of Birth:</label>
+                        <input type="datetime-local" name="editUserBirth">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Customer Avatar:</label>
-                        <img src="\images\img.jpg" width="24px" height="24px" name="editCustomerAvatar">
+                        <label for="recipient-name" class="col-form-label">User Avatar:</label>
+                        <img src="\images\img.jpg" width="24px" height="24px" name="editUserAvatar">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">Customer Gender:</label>
+                        <label for="recipient-name" class="col-form-label">User Gender:</label>
                         <br>
                         <input type="radio" name="gender" value="male"> Male<br>
                         <input type="radio" name="gender" value="female"> Female<br>

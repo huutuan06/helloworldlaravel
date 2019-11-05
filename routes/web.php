@@ -35,49 +35,23 @@ Route::group(['prefix' => '', 'note' => 'LOG'], function () {
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
-    /**
-     * Running Command php artisan make:controller \Dashboard\DashboardController --resource
-     * Example other Controller: php artisan make:controller \Dashboard\ProfileController
-     * or if you want to create UserController inside folder Dashboard. We have command like below
-     * php artisan make:controller \Dashboard\User\UserController --resource
-     */
-    Route::get('/admin', 'Dashboard\DashboardController@index')->name('admin.index');
 
-    Route::resource('/admin/book', 'Dashboard\BookController');
+    Route::group(['prefix' => '', 'note' => 'Routes for Book'], function () {
+
+        Route::resource('/admin/book', 'Dashboard\BookController');
+
+        Route::post('/admin/book/{book}', 'Dashboard\BookController@update')->name('book.update');
+
+        Route::get('/admin/book/scrawl/top_selling', 'Dashboard\BookController@topselling')->name('book.topselling');
+    });
+
 
     Route::resource('/admin/category', 'Dashboard\CategoryController');
 
-    Route::post('/admin/book/{book}', 'Dashboard\BookController@update')->name('book.update');
-
     Route::post('/admin/category/{category}', 'Dashboard\CategoryController@update')->name('category.update');
 
-    Route::resource('/admin/customer', 'Dashboard\UserController');
+    Route::resource('/admin/user', 'Dashboard\UserController');
 
-    /**
-     * Now, we will use run command php artisan route:list
-     *
-     * /admin => GET => admin.index => Point function index() in DashboardController. If you use this URL and you will
-     * get page HTML or view from resource. You can completely attach data inside view and load it to end-user
-     *
-     * /admin => POST => admin.store => Get Request from Form when you want use a form  to submit your data and save data to
-     * local storage. For example, Login Form or Register Form.
-     *
-     * /admin => admin.create() => admin.create => point method create() and allow you load page View and enter data on it.
-     *
-     * /admin{admin} => GET/DELETE => Using param from URL admin (you pass ID or anything) to do your manipulation such as Delete, Search, ...
-     *
-     * Summarize: We have CRUD => create, update and delete.
-     * Let's do an example to know how it works.
-     *
-     * Notes:
-     * To know exactly what method (create, index, update, store where are???). Let visit DashboardController.php in app folder.
-     */
-
-    /**
-     * Custom specify route with specific URL.
-     * - Make LogoutController inside folder Dashboard. php artisan make:controller Dashboard\LogoutController
-     * - Check by command: php artisan route:list
-     */
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
 
     /**
@@ -88,11 +62,13 @@ Route::group(['middleware' => 'auth'], function () {
     /**
      * Using Ajax to navigate page
      */
+    Route::get('/admin', 'Dashboard\DashboardController@index')->name('admin.index');
+
     Route::get('admin/ajax/book', 'Navigation\NavigationController@book')->name('ajax.book');
 
     Route::get('admin/ajax/category', 'Navigation\NavigationController@category')->name('ajax.category');
 
-    Route::get('admin/ajax/customer', 'Navigation\NavigationController@customer')->name('ajax.customer');
+    Route::get('admin/ajax/user', 'Navigation\NavigationController@user')->name('ajax.user');
 
     Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
 });

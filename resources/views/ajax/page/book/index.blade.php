@@ -25,10 +25,10 @@
                         <thead>
                         <tr>
                             <th style="width: 5.00%">Id</th>
-                            <th style="width: 15.00%">Title</th>
-                            <th style="width: 30.00%">Image</th>
-                            <th style="width: 30.00%">Description</th>
-                            <th style="width: 5.00%">Total Pages</th>
+                            <th style="width: 20.00%">Title</th>
+                            <th style="width: 20.00%">Image</th>
+                            <th style="width: 32.00%">Description</th>
+                            <th style="width: 8.00%">Total Pages</th>
                             <th style="width: 5.00%">Price</th>
                             <th style="width: 10.00%; text-align: center">Manipulation</th>
                         </tr>
@@ -78,11 +78,18 @@
             "columns": [
                 {"data": "id"},
                 {"data": "title"},
-                {"data": "image"},
+                {
+                    "data": "image", "render": function (image) {
+                        return '<div class="text-center">'
+                            + '<img src="' + image + '" alt="" height="200px">'
+                            + '</div>';
+                    }
+                },
                 {"data": "description"},
                 {"data": "total_pages"},
                 {"data": "price"},
-                {"data": "manipulation", "render": function (id) {
+                {
+                    "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
                             + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
                             + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
@@ -102,12 +109,18 @@
         $('#bookFormCreate').on('submit', function (event) {
             $("#bookFormCreate").validate({
                 rules: {
-                    name: "required",
-                    description: "required"
+                    title: "required",
+                    image: "required",
+                    description: "required",
+                    total_pages: "required",
+                    price: "required"
                 },
                 messages: {
-                    name: "Please fill name",
-                    description: "Please fill description"
+                    title: "Please fill title",
+                    image: "Please choose image",
+                    description: "Please fill description",
+                    total_pages: "Please fill total pages",
+                    price: "Please fill price"
                 }
             });
             if (!$(this).valid()) return false;
@@ -243,7 +256,7 @@
             .done(function (data) {
                 $('#editId').val(data['book']['id']);
                 $('#editTitle').val(data['book']['title']);
-                $('#editImage').val(data['book']['image']);
+                $('#showImage').attr('src', data['book']['image']);
                 $('#editDescription').val(data['book']['description']);
                 $('#editTotalPages').val(data['book']['total_pages']);
                 $('#editPrice').val(data['book']['price']);
@@ -274,14 +287,14 @@
                     var table = $('#datatableBook').DataTable();
                     $.fn.dataTable.ext.errMode = 'none';
                     var rows = table.rows().data();
-                    for (var i=0; i < rows.length; i++) {
+                    for (var i = 0; i < rows.length; i++) {
                         if (rows[i].id === data['id']) {
                             table.row(this).remove().draw();
                         }
                     }
                 }
                 if (data['message']['status'] === 'error') {
-                    swal("",data['message']['description'], "error");
+                    swal("", data['message']['description'], "error");
                 }
             })
             .fail(function (error) {
