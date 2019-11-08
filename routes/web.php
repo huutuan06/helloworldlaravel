@@ -58,6 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
      * Similarity with CRUD for User, Doctor, Disease, Pharmacy,...
      */
     Route::resource('/user', 'Dashboard\UserController');
+    Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
+
 
     /**
      * Using Ajax to navigate page

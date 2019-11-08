@@ -73,7 +73,7 @@ class UserController extends Controller
             $this->uploadImage($image, $folder, 'public', $name);
             $request->avatar = $filePath;
         } else {
-            $request->avatar = '/images/favicon.ico';
+            $request->avatar = '/images/users/'.'profile.png';
         }
         $rules = [
             'name' => 'required',
@@ -118,7 +118,7 @@ class UserController extends Controller
                     $this->response_array = ([
                         'message' => [
                             'status' => 'success',
-                            'description' => 'Add a new user successfully'
+                            'description' => 'Add a new user successfully!'
                         ],
                         'user' => $this->mModelUser->getByEmail($request->email)
                     ]);
@@ -141,7 +141,7 @@ class UserController extends Controller
             return json_encode(([
                 'message' => [
                     'status' => "error",
-                    'description' => "The customer didn't exist in our system!"
+                    'description' => "The user didn't exist in our system!"
                 ]
             ]));
         } else {
@@ -150,7 +150,7 @@ class UserController extends Controller
                     'status' => "success",
                     'description' => ""
                 ],
-                'customer' => $user
+                'user' => $user
             ]));
         }
     }
@@ -175,7 +175,90 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $credentials = $request->only('name', 'email','password','address','date_of_birth','avatar', 'gender');
+        $rules = [
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'address' => 'required',
+            'date_of_birth' => 'required',
+            'gender' => 'required'
+        ];
+        $customMessages = [
+            'required' => 'Please fill in form'
+        ];
+
+        $validator = Validator::make($credentials, $rules, $customMessages);
+        if ($validator->fails()) {
+            return json_encode(([
+                'message' => [
+                    'status' => "invalid",
+                    'description' => $validator->errors()->first()
+                ]
+            ]));
+        } else {
+            if ($this->mModelUser->getById($request->id)->email == $request->email) {
+                if ($request->avatar === null) {
+                    $request->avatar = $this->mModelUser->getById($request->id)->avatar;
+                } else {
+                    $this->deleteImage('public', $this->mModelUser->getById($request->id)->avatar);
+                    $avatar = $request->file('avatar');
+                    $name = str_slug($request->input('name')) . '_' . time();
+                    $folder = '/images/users/';
+                    $filePath = $folder . $name . '.' . $avatar->getClientOriginalExtension();
+                    $this->uploadImage($avatar, $folder, 'public', $name);
+                    $request->avatar = $filePath;
+                }
+                $this->mModelUser->updateById($id, $request);
+                return json_encode(([
+                    'message' => [
+                        'status' => "success",
+                        'description' => "Update the user success!"
+                    ],
+                    'category' => $this->mModelUser->getById($id)
+                ]));
+            } else {
+                if ($this->mModelUser->getByEmail($request->email)) {
+                    return json_encode(([
+                        'message' => [
+                            'status' => "invalid",
+                            'description' => "The email already exists in the system!"
+                        ]
+                    ]));
+                } else {
+                    $oldAvatar = $this->mModelUser->getById($request->id)->avatar;
+                    if ($request->avatar === null) {
+                        $request->avatar = $this->mModelUser->getById($request->id)->avatar;
+                    } else {
+                        $avatar = $request->file('avatar');
+                        $name = str_slug($request->input('name')) . '_' . time();
+                        $folder = '/images/users/';
+                        $filePath = $folder . $name . '.' . $avatar->getClientOriginalExtension();
+                        $this->uploadImage($avatar, $folder, 'public', $name);
+                        $request->avatar = $filePath;
+                    }
+                    if ($this->mModelUser->updateById($id, $request) > 0) {
+                        if ($request->avatar != null) {
+                            $this->deleteImage('public', $oldAvatar);
+                        }
+                        return json_encode(([
+                            'message' => [
+                                'status' => "success",
+                                'description' => "Update the user success!"
+                            ],
+                            'category' => $this->mModelUser->getById($id)
+                        ]));
+                    } else {
+                        return json_encode(([
+                            'message' => [
+                                'status' => "error",
+                                'description' => "Update the user failure!"
+                            ]
+                        ]));
+                    }
+                }
+            }
+        }
     }
 
     /**

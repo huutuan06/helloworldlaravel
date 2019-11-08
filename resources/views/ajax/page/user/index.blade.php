@@ -70,6 +70,11 @@
                 {"data": "name"},
                 {"data": "email"},
                 {
+                    "data": "avatar", "render": function (avatar) {
+                        return '<img src="' + avatar + '" width="56px;" height="56px;" alt="avatar"/>';
+                    }
+                },
+                {
                     "data": "gender", "render": function (gender) {
                         if (gender == 1)
                             return '<img src="/images/icon_gender_female.png"  width="24px" height="24px">';
@@ -77,18 +82,14 @@
                             return '<img src="/images/icon_gender_male.png"  width="24px" height="24px">';
                     }
                 },
-                {
-                    "data": "avatar", "render": function (avatar) {
-                        return '<img src="' + avatar + '" width="56px;" height="56px;" alt="avatar"/>';
-                    }
-                },
+
                 {"data": "date_of_birth"},
                 {"data": "address"},
                 {
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
-                            + '<a onclick= "editUser(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                            + '<span>  </span>' + '<a href="/admin/millionaire/delete/' + id + '" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                            + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
+                            + '<span>  </span>' + '<a href="/admin/millionaire/delete/' + id + '" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                             + '</div>';
                     }
                 }
@@ -175,83 +176,81 @@
                 });
         });
 
-        /**
-         * After edit, we need get all information from Form.
-         * When you click Submit and Ajax will do this manipulation.
-         */
-        // $('#categoryFormEdit').on('submit', function (event) {
-        //     $("#categoryFormEdit").validate({
-        //         rules: {
-        //             name: "required",
-        //             email: "required",
-        //             password: "required",
-        //             confirm_password: "required",
-        //             date_of_birth: "required",
-        //             gender: "required",
-        //             address: "required",
-        //         },
-        //         messages: {
-        //             name: "Please fill name",
-        //             email: "Please fill email",
-        //             password: "Please fill password",
-        //             confirm_password: "Confirm password is empty!",
-        //             date_of_birth: "Please choose the birthday",
-        //             gender: "Please choose gender",
-        //             address: "Please fill address"
-        //         }
-        //     });
-        //     if (!$(this).valid()) return false;
-        //     event.preventDefault();
-        //
-        //     $('#editCategoryModal').modal('hide');
-        //     var formData = new FormData(this);
-        //     $.ajax({
-        //         url: '/admin/category/' + $('#editId').val(),
-        //         headers: {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
-        //         method: 'POST',
-        //         dataType: 'json',
-        //         data: formData,
-        //         processData: false,
-        //         contentType: false
-        //     })
-        //         .done(function (data) {
-        //             if (data['message']['status'] === 'invalid') {
-        //                 swal("", data['message']['description'], "error");
-        //             }
-        //             if (data['message']['status'] === 'existed') {
-        //                 swal("", data['message']['description'], "error");
-        //             }
-        //             if (data['message']['status'] === 'success') {
-        //                 swal("", data['message']['description'], "success");
-        //                 var table = $('#datatablesCategory').DataTable();
-        //                 $.fn.dataTable.ext.errMode = 'none';
-        //                 var rows = table.rows().data();
-        //                 for (var i = 0; i < rows.length; i++) {
-        //                     if (rows[i].id == data['category']['id']) {
-        //                         table.row(this).data(
-        //                             [
-        //                                 data['category']['name'],
-        //                                 data['category']['description'],
-        //                                 function (id) {
-        //                                     return '<div class="text-center">'
-        //                                         + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-        //                                         + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
-        //                                         + '</div>';
-        //                                 }
-        //                             ]
-        //                         ).draw();
-        //                     }
-        //                 }
-        //             } else if (data.status === 'error') {
-        //                 swal("", data['message']['description'], "error");
-        //             }
-        //         })
-        //         .fail(function (error) {
-        //             console.log(error);
-        //         });
-        // });
+        $('#userFormEdit').on('submit', function (event) {
+            $("#userFormEdit").validate({
+                rules: {
+                    name: "required",
+                    email: "required",
+                    password: "required",
+                    date_of_birth: "required",
+                    gender: "required",
+                    address: "required",
+                },
+                messages: {
+                    name: "Please fill name",
+                    email: "Please fill email",
+                    password: "Please fill password",
+                    date_of_birth: "Please choose the birthday",
+                    gender: "Please choose gender",
+                    address: "Please fill address"
+                }
+            });
+            if (!$(this).valid()) return false;
+            event.preventDefault();
+
+            $('#editUserModal').modal('hide');
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/admin/user/' + $('#editUserId').val(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'POST',
+                dataType: 'json',
+                data: formData,
+                processData: false,
+                contentType: false
+            })
+                .done(function (data) {
+                    if (data['message']['status'] === 'invalid') {
+                        swal("", data['message']['description'], "error");
+                    }
+                    if (data['message']['status'] === 'existed') {
+                        swal("", data['message']['description'], "error");
+                    }
+                    if (data['message']['status'] === 'success') {
+                        swal("", data['message']['description'], "success");
+                        var table = $('#datatablesUser').DataTable();
+                        $.fn.dataTable.ext.errMode = 'none';
+                        var rows = table.rows().data();
+                        for (var i = 0; i < rows.length; i++) {
+                            if (rows[i].id == data['user']['id']) {
+                                table.row(this).data(
+                                    [
+                                        data['user']['name'],
+                                        data['user']['email'],
+                                        data['user']['avatar'],
+                                        data['user']['gender'],
+                                        data['user']['date_of_birth'],
+                                        data['user']['address'],
+                                        function (id) {
+                                            return '<div class="text-center">'
+                                                + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
+                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                                + '</div>';
+                                        }
+                                    ]
+                                ).draw();
+                            }
+                        }
+                    } else if (data.status === 'error') {
+                        swal("", data['message']['description'], "error");
+                    }
+                })
+                .fail(function (error) {
+                    console.log(error);
+                });
+        });
     });
 
     function editUser(id) {
@@ -267,12 +266,20 @@
             }
         })
             .done(function (data) {
+                $('#editUserId').val(data['user']['id']);
                 $('#editUserName').val(data['user']['name']);
                 $('#editUserEmail').val(data['user']['email']);
+                $('#editUserPassword').val(data['user']['password']);
                 $('#editUserAddress').val(data['user']['address']);
 
-                // $('#editCustomerBirth').val(data['customer']['date_of_birth']);
-                // $('#editCustomerAvatar').attr('src',data['customer']['avatar']);
+                $('#editUserBirthDay').val(data['user']['date_of_birth']);
+                $('#showAvatar').attr('src',data['user']['avatar']);
+                if (data['user']['gender'] === 0) {
+                    $('#editUserGender').find(':radio[name="gender"][value="0"]').prop('checked', true);
+                } else {
+                    $('#editUserGender').find(':radio[name="gender"][value="1"]').prop('checked', true);
+
+                }
 
                 $('#modal-loading').modal('hide');
                 $('#editUserModal').modal('show');

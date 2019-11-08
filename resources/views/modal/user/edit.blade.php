@@ -19,45 +19,52 @@
             <form id="userFormEdit">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">User Name:</label>
+                        <label for="recipient-name" class="col-form-label">Name:</label>
                         <input name="name" type="text" class="form-control" id="editUserName">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">User Email:</label>
-                        <input name="name" type="text" class="form-control" id="editUserEmail">
+                        <label for="recipient-name" class="col-form-label">Email:</label>
+                        <input name="email" type="text" class="form-control" id="editUserEmail">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">User Address:</label>
-                        <input name="name" type="text" class="form-control" id="editUserAddress">
+                        <label for="recipient-name" class="col-form-label">Password:</label>
+                        <input name="password" type="password" class="form-control" id="editUserPassword">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">User's Date of Birth:</label>
-                        <input type="datetime-local" name="editUserBirth">
+                        <label for="recipient-name" class="col-form-label">Address:</label>
+                        <input name="address" type="text" class="form-control" id="editUserAddress">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">User Avatar:</label>
-                        <img src="\images\img.jpg" width="24px" height="24px" name="editUserAvatar">
+                        <label for="recipient-name" class="col-form-label">Date of Birth:</label>
+                        <input name="date_of_birth" type="date" id="editUserBirthDay">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="recipient-name" class="col-form-label">User Gender:</label>
+                        <label for="recipient-name" class="col-form-label">Avatar:</label>
+                        <img src="" id="showAvatar" height="100px">
+                        <input name="avatar" type="file" class="form-control" id="editUserAvatar">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" id="editUserGender">
+                        <label for="recipient-name" class="col-form-label">Gender:</label>
                         <br>
-                        <input type="radio" name="gender" value="male"> Male<br>
-                        <input type="radio" name="gender" value="female"> Female<br>
+                        <input type="radio" name="gender" value="0"> Male<br>
+                        <input type="radio" name="gender" value="1"> Female<br>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Send message</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>

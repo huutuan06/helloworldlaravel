@@ -76,8 +76,9 @@ class BookController extends Controller
             });
             //title
             $title = $node->filter('a.a-link-normal > div.p13n-sc-line-clamp-1')->each(function ($node2) {
-                \Log::info($node2->text());
-                return $node2->text();
+//                \Log::info(substr( $node2->text(),12,-9));
+                $getTitle = substr( $node2->text(),13,-9);
+                return $getTitle;
             });
 
             // If- Else. Author
@@ -139,11 +140,11 @@ class BookController extends Controller
             // Get image file
             $image = $request->file('image');
             // Make a image name based on user name and current timestamp
-            $name = str_slug($request->input('title')).'_'.time();
+            $name = str_slug($request->input('title')) . '_' . time();
             // Define folder path
             $folder = '/images/books/';
             // Make a file path where image will be stored [ folder path + file name + file extension]
-            $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
             // Upload image
             $this->uploadImage($image, $folder, 'public', $name);
             // Set user profile image path in database to filePath
@@ -238,7 +239,6 @@ class BookController extends Controller
         $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price');
         $rules = [
             'title' => 'required',
-            'image' => 'required',
             'description' => 'required',
             'total_pages' => 'required',
             'price' => 'required'
@@ -246,7 +246,6 @@ class BookController extends Controller
         $customMessages = [
             'required' => 'Please fill in form!'
         ];
-
         $validator = Validator::make($credentials, $rules, $customMessages);
         if ($validator->fails()) {
             return json_encode(([
@@ -257,20 +256,23 @@ class BookController extends Controller
             ]));
         } else {
             if ($this->mModelBook->getById($request->id)->title == $request->title) {
-
-                $this->deleteImage('public', $this->mModelBook->getById($request->id)->image);
-                $image = $request->file('image');
-                $name = str_slug($request->input('title')).'_'.time();
-                $folder = '/images/books/';
-                $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
-                $this->uploadImage($image, $folder, 'public', $name);
-                $request->image = $filePath;
+                if ($request->image === null) {
+                    $request->image = $this->mModelBook->getById($request->id)->image;
+                } else {
+                    $this->deleteImage('public', $this->mModelBook->getById($request->id)->image);
+                    $image = $request->file('image');
+                    $name = str_slug($request->input('title')) . '_' . time();
+                    $folder = '/images/books/';
+                    $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+                    $this->uploadImage($image, $folder, 'public', $name);
+                    $request->image = $filePath;
+                }
                 $this->mModelBook->updateById($id, $request);
 
                 return json_encode(([
                     'message' => [
                         'status' => "success",
-                        'description' => "Update the category success!"
+                        'description' => "Update the book success!"
                     ],
                     'book' => $this->mModelBook->getById($id)
                 ]));
@@ -279,25 +281,29 @@ class BookController extends Controller
                     return json_encode(([
                         'message' => [
                             'status' => "invalid",
-                            'description' => "The category already exists in the system!"
+                            'description' => "The book already exists in the system!"
                         ]
                     ]));
                 } else {
                     $oldImage = $this->mModelBook->getById($request->id)->image;
-
-                    $image = $request->file('image');
-                    $name = str_slug($request->input('title')).'_'.time();
-                    $folder = '/images/books/';
-                    $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
-                    $this->uploadImage($image, $folder, 'public', $name);
-                    $request->image = $filePath;
-
+                    if ($request->image === null) {
+                        $request->image = $this->mModelBook->getById($request->id)->image;
+                    } else {
+                        $image = $request->file('image');
+                        $name = str_slug($request->input('title')) . '_' . time();
+                        $folder = '/images/books/';
+                        $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+                        $this->uploadImage($image, $folder, 'public', $name);
+                        $request->image = $filePath;
+                    }
                     if ($this->mModelBook->updateById($id, $request) > 0) {
-                        $this->deleteImage('public', $oldImage);
+                        if ($request->image != null) {
+                            $this->deleteImage('public', $oldImage);
+                        }
                         return json_encode(([
                             'message' => [
                                 'status' => "success",
-                                'description' => "Update the category success!"
+                                'description' => "Update the book success!"
                             ],
                             'book' => $this->mModelBook->getById($id)
                         ]));
@@ -305,7 +311,7 @@ class BookController extends Controller
                         return json_encode(([
                             'message' => [
                                 'status' => "error",
-                                'description' => "Update the category failure!"
+                                'description' => "Update the book failure!"
                             ]
                         ]));
                     }

@@ -20,19 +20,19 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Name:</label>
-                        <input name="name" type="text" class="form-control" id="editUserName">
+                        <input name="name" type="text" class="form-control" id="userName">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Email:</label>
-                        <input name="email" type="text" class="form-control" id="editUserEmail">
+                        <input name="email" type="text" class="form-control" id="userEmail">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Password:</label>
-                        <input name="password" type="password" class="form-control" id="editUserPassword">
+                        <input name="password" type="password" class="form-control" id="userPassword">
                     </div>
                 </div>
 {{--                <div class="modal-body">--}}
@@ -46,7 +46,7 @@
                         <label for="recipient-name" class="col-form-label">Avatar:</label>
                         <br>
                         <img src="" id="showImage" height="200px">
-                        <input name="avatar" type="file" class="form-control" id="editUserAvatar">
+                        <input name="avatar" type="file" class="form-control" id="userAvatar">
                     </div>
                 </div>
                 <div class="modal-body">
@@ -61,13 +61,13 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Address:</label>
-                        <input name="address" type="text" class="form-control" id="editUserAddress">
+                        <input name="address" type="text" class="form-control" id="userAddress">
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Date of Birth:</label>
-                        <input name="date_of_birth" type="date" id="editUserBirth">
+                        <input name="date_of_birth" type="date" id="userBirthDay">
                     </div>
                 </div>
 

@@ -62,6 +62,16 @@ class User extends Authenticatable implements JWTSubject
         return DB::table('users')->where('id', '=', $id)->first();
     }
 
+    public function getByName($name) {
+        return DB::table('users')->where('name', '=', $name)->first();
+    }
+
+    public function updateById($id, $data)
+    {
+        return DB::table('users')->where('id', $id)->update(['name' => $data['name'], 'password' => $data['password'],
+            'date_of_birth' => $data['date_of_birth'], 'gender' => $data['gender'], 'avatar' => $data->avatar, 'address'=> $data['address']]);
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
