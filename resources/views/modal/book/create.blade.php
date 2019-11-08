@@ -17,7 +17,9 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Image:</label>
-                        <input name="image" type="file" class="form-control" id="bookImage">
+                        <br>
+                        <img src="" id="showGetImage" height="200px">
+                        <input name="image" type="file" class="form-control" onchange="readImageCreate(this);" id="bookImage">
 {{--                        <textarea name="image" class="form-control" id="bookImage"/>--}}
                     </div>
                 </div>

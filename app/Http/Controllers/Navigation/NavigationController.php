@@ -48,4 +48,12 @@ class NavigationController extends Controller
         ]);
         echo json_encode($response_array);
     }
+    public function cms() {
+        $returnHTML = view('ajax.page.cms.index')->render();
+        $response_array = ([
+            'success' => true,
+            'html' => $returnHTML
+        ]);
+        echo json_encode($response_array);
+    }
 }

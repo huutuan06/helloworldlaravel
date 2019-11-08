@@ -91,6 +91,7 @@
                 {
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
+                            + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br>'
                             + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
                             + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                             + '</div>';
@@ -102,8 +103,9 @@
 
     $('#newBook').click(function () {
         $('#createBookModal').modal('show');
-        $('#bookFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], textarea').val('');
-    })
+        $('#bookFormCreate').find('img').attr('src', '');
+        $('#bookFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], textarea').val('');
+    });
 
     $(document).ready(function () {
         $('#bookFormCreate').on('submit', function (event) {
@@ -159,6 +161,7 @@
                                 data['book']['price'],
                                 function (id) {
                                     return '<div class="text-center">'
+                                        + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br>'
                                         + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
                                         + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                                         + '</div>';
@@ -223,6 +226,7 @@
                                         data['book']['price'],
                                         function (id) {
                                             return '<div class="text-center">'
+                                                + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br> '
                                                 + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
                                                 + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                                                 + '</div>';
@@ -256,7 +260,7 @@
             .done(function (data) {
                 $('#editId').val(data['book']['id']);
                 $('#editTitle').val(data['book']['title']);
-                $('#showImage').attr('src', data['book']['image']);
+                $('#showEditImage').attr('src', data['book']['image']);
                 $('#editDescription').val(data['book']['description']);
                 $('#editTotalPages').val(data['book']['total_pages']);
                 $('#editPrice').val(data['book']['price']);
@@ -302,6 +306,46 @@
             })
     }
 
+    function readImageCreate(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#showGetImage')
+                    .attr('src', e.target.result)
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function readImageEdit(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#showEditImage')
+                    .attr('src', e.target.result)
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function navReview(id) {
+        $.ajax({
+            url: 'admin/ajax/cms',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            type: 'GET',
+            beforeSend: function () {
+                $('#modal-loading').modal('show');
+            }
+        })
+            .done(function (data) {
+                console.log(data['html']);
+                $('#modal-loading').modal('hide');
+                $('#page_content_ajax').replaceWith(data['html']);
+            });
+    }
 </script>
 
 

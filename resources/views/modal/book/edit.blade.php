@@ -28,8 +28,8 @@
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Image:</label>
                         <br>
-                        <img src="" id="showImage" height="200px">
-                        <input name="image" type="file" class="form-control" id="editImage">
+                        <img src="" id="showEditImage" height="200px">
+                        <input name="image" type="file" class="form-control" onchange="readImageEdit(this);" id="editImage">
                     </div>
                 </div>
                 <div class="modal-body">

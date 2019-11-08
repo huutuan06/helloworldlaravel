@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('admin/ajax/user', 'Navigation\NavigationController@user')->name('ajax.user');
 
+    Route::get('admin/ajax/cms', 'Navigation\NavigationController@cms')->name('ajax.cms');
+
     Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
 });
 
