@@ -99,6 +99,7 @@
 
     $('#newUser').click(function () {
         $('#createUserModal').modal('show');
+        $('#userFormCreate').find('img').attr('src', '');
         $('#userFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], textarea').val('');
     });
 
@@ -273,7 +274,7 @@
                 $('#editUserAddress').val(data['user']['address']);
 
                 $('#editUserBirthDay').val(data['user']['date_of_birth']);
-                $('#showAvatar').attr('src',data['user']['avatar']);
+                $('#showEditAvatar').attr('src',data['user']['avatar']);
                 if (data['user']['gender'] === 0) {
                     $('#editUserGender').find(':radio[name="gender"][value="0"]').prop('checked', true);
                 } else {
@@ -287,6 +288,28 @@
             .fail(function (error) {
                 console.log(error);
             });
+    }
+
+    function readAvatarCreate(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#showGetAvatar')
+                    .attr('src', e.target.result)
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function readAvatarEdit(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#showEditAvatar')
+                    .attr('src', e.target.result)
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 
 </script>

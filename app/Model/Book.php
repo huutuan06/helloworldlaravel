@@ -43,4 +43,8 @@ class Book extends Model
     {
         return DB::table('books')->where('id', $id)->update(['title' => $data['title'], 'image' => $data->image, 'description' => $data['description'], 'total_pages' => $data['total_pages'], 'price' => $data['price']]);
     }
+
+    public function deleteAllData() {
+        return DB::table('books')->delete();
+    }
 }

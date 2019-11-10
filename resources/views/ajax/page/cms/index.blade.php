@@ -8,7 +8,7 @@
                     <form action="" method="post">
                         <div class="form-group">
                             <label for="input">Your Input</label>
-                            <textarea class="form-control" name="content" id="input" rows="30"></textarea>
+                            <textarea class="form-control" name="content" id="input" rows="28"></textarea>
                         </div>
                         {{ csrf_field() }}
                         <button type="submit">Submit</button>
@@ -52,4 +52,4 @@
         }
     };
     tinymce.init(editor_config);
-</script>s
+</script>

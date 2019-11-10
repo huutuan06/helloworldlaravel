@@ -57,6 +57,7 @@ class BookController extends Controller
 
     public function topselling()
     {
+        $this->mModelBook->deleteAllData();
         $goutteClient = new \Goutte\Client();
         $guzzleClient = new Client([
             'timeout' => 60,
@@ -77,7 +78,7 @@ class BookController extends Controller
             //title
             $title = $node->filter('a.a-link-normal > div.p13n-sc-line-clamp-1')->each(function ($node2) {
 //                \Log::info(substr( $node2->text(),12,-9));
-                $getTitle = substr( $node2->text(),13,-9);
+                $getTitle = substr($node2->text(), 13, -9);
                 return $getTitle;
             });
 

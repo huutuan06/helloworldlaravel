@@ -50,8 +50,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Avatar:</label>
-                        <img src="" id="showAvatar" height="100px">
-                        <input name="avatar" type="file" class="form-control" id="editUserAvatar">
+                        <img src="" id="showEditAvatar" width="100px" height="100px">
+                        <input name="avatar" type="file" class="form-control" onchange="readAvatarEdit(this);" id="editUserAvatar">
                     </div>
                 </div>
                 <div class="modal-body">

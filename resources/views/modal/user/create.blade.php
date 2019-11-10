@@ -45,8 +45,8 @@
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Avatar:</label>
                         <br>
-                        <img src="" id="showImage" height="200px">
-                        <input name="avatar" type="file" class="form-control" id="userAvatar">
+                        <img src="" id="showGetAvatar" width="100px" height="100px">
+                        <input name="avatar" type="file" class="form-control" onchange="readAvatarCreate(this);" id="userAvatar">
                     </div>
                 </div>
                 <div class="modal-body">
@@ -74,7 +74,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Send message</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
             </form>
         </div>
