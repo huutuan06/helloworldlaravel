@@ -77,9 +77,13 @@
                 {
                     "data": "gender", "render": function (gender) {
                         if (gender == 1)
-                            return '<img src="/images/icon_gender_female.png"  width="24px" height="24px">';
-                        else
-                            return '<img src="/images/icon_gender_male.png"  width="24px" height="24px">';
+                            return '<div class="text-center">'
+                                + '<img src="/images/icon_gender_female.png"  width="24px" height="24px">'
+                                +'</div>';
+                    else
+                        return '<div class="text-center">'
+                            + '<img src="/images/icon_gender_male.png"  width="24px" height="24px">'
+                            +'</div>';
                     }
                 },
 
@@ -89,7 +93,7 @@
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
                             + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                            + '<span>  </span>' + '<a href="/admin/millionaire/delete/' + id + '" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                            + '<span>  </span>' + '<a href="javascript:void(0)' + id + '" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
                             + '</div>';
                     }
                 }
@@ -100,7 +104,9 @@
     $('#newUser').click(function () {
         $('#createUserModal').modal('show');
         $('#userFormCreate').find('img').attr('src', '');
-        $('#userFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], textarea').val('');
+        $('#userFormCreate').find(':radio[name="gender"][value="0"]').prop('checked', false);
+        $('#userFormCreate').find(':radio[name="gender"][value="1"]').prop('checked', false);
+        $('#userFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], input[type=date], input[type=radio] textarea').val('');
     });
 
     $(document).ready(function () {
@@ -213,6 +219,7 @@
                 contentType: false
             })
                 .done(function (data) {
+                    console.log(data['message']['status']);
                     if (data['message']['status'] === 'invalid') {
                         swal("", data['message']['description'], "error");
                     }
@@ -274,20 +281,53 @@
                 $('#editUserAddress').val(data['user']['address']);
 
                 $('#editUserBirthDay').val(data['user']['date_of_birth']);
-                $('#showEditAvatar').attr('src',data['user']['avatar']);
+                $('#showEditAvatar').attr('src', data['user']['avatar']);
                 if (data['user']['gender'] === 0) {
                     $('#editUserGender').find(':radio[name="gender"][value="0"]').prop('checked', true);
                 } else {
                     $('#editUserGender').find(':radio[name="gender"][value="1"]').prop('checked', true);
 
                 }
-
                 $('#modal-loading').modal('hide');
                 $('#editUserModal').modal('show');
             })
             .fail(function (error) {
                 console.log(error);
             });
+    }
+
+    function deleteUser(id) {
+        $.ajax({
+            url: '/admin/user/' + id,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            type: "DELETE",
+            beforeSend: function () {
+                $('#modal-loading').modal('show');
+            }
+        })
+            .done(function (data) {
+                $('#modal-loading').modal('hide');
+                if (data['message']['status'] === 'success') {
+                    swal("", data['message']['description'], "success");
+                    var table = $('#datatablesUser').DataTable();
+                    $.fn.dataTable.ext.errMode = 'none';
+                    var rows = table.rows().data();
+                    for (var i = 0; i < rows.length; i++) {
+                        if (rows[i].id === data['id']) {
+                            table.row(this).remove().draw();
+                        }
+                    }
+                }
+                if (data['message']['status'] === 'error') {
+                    swal("", data['message']['description'], "error");
+                }
+            })
+            .fail(function (error) {
+                console.log(error);
+            })
     }
 
     function readAvatarCreate(input) {

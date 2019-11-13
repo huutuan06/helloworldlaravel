@@ -72,6 +72,11 @@ class User extends Authenticatable implements JWTSubject
             'date_of_birth' => $data['date_of_birth'], 'gender' => $data['gender'], 'avatar' => $data->avatar, 'address'=> $data['address']]);
     }
 
+    public function deleteById($id)
+    {
+        return DB::table('users')->where('id', $id)->delete();
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

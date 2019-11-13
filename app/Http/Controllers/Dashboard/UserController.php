@@ -215,7 +215,7 @@ class UserController extends Controller
                         'status' => "success",
                         'description' => "Update the user success!"
                     ],
-                    'category' => $this->mModelUser->getById($id)
+                    'user' => $this->mModelUser->getById($id)
                 ]));
             } else {
                 if ($this->mModelUser->getByEmail($request->email)) {
@@ -246,7 +246,7 @@ class UserController extends Controller
                                 'status' => "success",
                                 'description' => "Update the user success!"
                             ],
-                            'category' => $this->mModelUser->getById($id)
+                            'user' => $this->mModelUser->getById($id)
                         ]));
                     } else {
                         return json_encode(([
@@ -269,6 +269,28 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = $this->mModelUser->getById($id);
+        \Log::info($user->avatar);
+        $filename = $user->avatar;
+        $this->mModelUser->deleteById($id);
+        if ($this->mModelUser->getById($id) != null) {
+            return json_encode([
+                'message' => [
+                    'status' => 'error',
+                    'description' => 'Delete the user failure!'
+                ]
+            ]);
+        } else {
+            if ($filename != '/images/users/profile.png'){
+                $this->deleteImage('public', $filename);
+            }
+            return json_encode([
+                'message' => [
+                    'status' => 'success',
+                    'description' => 'Delete the user successfully!'
+                ],
+                'id' => $id
+            ]);
+        }
     }
 }

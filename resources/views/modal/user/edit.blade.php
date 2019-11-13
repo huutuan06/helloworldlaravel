@@ -21,6 +21,8 @@
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Name:</label>
                         <input name="name" type="text" class="form-control" id="editUserName">
+                        <input name="id" type="hidden" class="form-control" id="editUserId">
+
                     </div>
                 </div>
                 <div class="modal-body">

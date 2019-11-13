@@ -332,7 +332,6 @@ class BookController extends Controller
         $book = $this->mModelBook->getById($id);
         $filename = $book->image;
         $this->mModelBook->deleteById($id);
-
         if ($this->mModelBook->getById($id) != null) {
             return json_encode([
                 'message' => [
