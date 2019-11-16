@@ -65,6 +65,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $credentials = $request->only('name', 'email', 'password', 'avatar', 'date_of_birth', 'gender', 'address');
+
         if ($request->has('avatar')) {
             $image = $request->file('avatar');
             $name = str_slug($request->input('name')).'_'.time();
@@ -76,17 +77,20 @@ class UserController extends Controller
             $request->avatar = '/images/users/'.'profile.png';
         }
         $rules = [
-            'name' => 'required',
-            'email' => 'required',
+            'name' => 'required', 'string', 'max:255',
+            'email' => 'required','string', 'email', 'max:255', 'unique:users',
             'password' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required',
             'address' => 'required',
         ];
         $customMessages = [
-            'required' => 'The attribute field is required.'
+            'required' => 'The attribute field is required!',
+            'email' => "Email isn't right!",
+            'max:255' => 'Total characters are surpass 255!',
+            'unique:users' => 'The email already exists in the system!',
         ];
-
+        $request->password = bcrypt($request->password);
         $validator = Validator::make($credentials, $rules, $customMessages);
         if ($validator->fails()) {
             $this->response_array = ([
@@ -100,7 +104,7 @@ class UserController extends Controller
                 $this->response_array = ([
                     'message' => [
                         'status' => 'invalid',
-                        'description' => 'The email already exists in the system'
+                        'description' => 'The email already exists in the system!'
                     ]
                 ]);
             } else {
@@ -270,7 +274,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = $this->mModelUser->getById($id);
-        \Log::info($user->avatar);
         $filename = $user->avatar;
         $this->mModelUser->deleteById($id);
         if ($this->mModelUser->getById($id) != null) {
