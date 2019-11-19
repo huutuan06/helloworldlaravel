@@ -41,6 +41,7 @@ class BookController extends Controller
                 'description' => $book->description,
                 'total_pages' => $book->total_pages,
                 'price' => $book->price,
+                'amount' => $book->amount,
                 'manipulation' => $book->id
             );
             $collections->push($arr);
@@ -121,6 +122,7 @@ class BookController extends Controller
                 'description' => '',
                 'total_pages' => 1,
                 'price' => $price[0],
+                'amount' => '',
                 'created_at' => $this->freshTimestamp(),
                 'updated_at' => $this->freshTimestamp(),
             );
@@ -136,7 +138,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price');
+        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price', 'amount');
         if ($request->has('image')) {
             // Get image file
             $image = $request->file('image');
@@ -157,6 +159,7 @@ class BookController extends Controller
             'description' => 'required',
             'total_pages' => 'required',
             'price' => 'required',
+            'amount' => 'required',
         ];
         $customMessages = [
             'required' => 'The attribute field is required.'
@@ -185,6 +188,7 @@ class BookController extends Controller
                         'description' => $request->description,
                         'total_pages' => $request->total_pages,
                         'price' => $request->price,
+                        'amount' => $request->amount,
                         'created_at' => $this->freshTimestamp(),
                         'updated_at' => $this->freshTimestamp(),
                     ])) > 0) {
@@ -237,12 +241,13 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price');
+        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price','amount');
         $rules = [
             'title' => 'required',
             'description' => 'required',
             'total_pages' => 'required',
-            'price' => 'required'
+            'price' => 'required',
+            'amount' => 'required'
         ];
         $customMessages = [
             'required' => 'Please fill in form!'
@@ -256,40 +261,15 @@ class BookController extends Controller
                 ]
             ]));
         } else {
-            if ($this->mModelBook->getById($request->id)->title == $request->title) {
-                if ($request->image === null) {
-                    $request->image = $this->mModelBook->getById($request->id)->image;
-                } else {
-                    $this->deleteImage('public', $this->mModelBook->getById($request->id)->image);
-                    $image = $request->file('image');
-                    $name = str_slug($request->input('title')) . '_' . time();
-                    $folder = '/images/books/';
-                    $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
-                    $this->uploadImage($image, $folder, 'public', $name);
-                    $request->image = $filePath;
-                }
-                $this->mModelBook->updateById($id, $request);
 
-                return json_encode(([
-                    'message' => [
-                        'status' => "success",
-                        'description' => "Update the book success!"
-                    ],
-                    'book' => $this->mModelBook->getById($id)
-                ]));
-            } else {
-                if ($this->mModelBook->getByTitle($request->title)) {
-                    return json_encode(([
-                        'message' => [
-                            'status' => "invalid",
-                            'description' => "The book already exists in the system!"
-                        ]
-                    ]));
-                } else {
-                    $oldImage = $this->mModelBook->getById($request->id)->image;
+            if ($this->mModelBook->getByTitle($request->title)) {
+                \Log::info($request->title);
+                \Log::info($this->mModelBook->getByTitle($request->title)->title);
+                if ($this->mModelBook->getByTitle($request->title)->id == $id) {
                     if ($request->image === null) {
                         $request->image = $this->mModelBook->getById($request->id)->image;
                     } else {
+                        $this->deleteImage('public', $this->mModelBook->getById($request->id)->image);
                         $image = $request->file('image');
                         $name = str_slug($request->input('title')) . '_' . time();
                         $folder = '/images/books/';
@@ -297,28 +277,56 @@ class BookController extends Controller
                         $this->uploadImage($image, $folder, 'public', $name);
                         $request->image = $filePath;
                     }
-                    if ($this->mModelBook->updateById($id, $request) > 0) {
-                        if ($request->image != null) {
-                            $this->deleteImage('public', $oldImage);
-                        }
-                        return json_encode(([
-                            'message' => [
-                                'status' => "success",
-                                'description' => "Update the book success!"
-                            ],
-                            'book' => $this->mModelBook->getById($id)
-                        ]));
-                    } else {
-                        return json_encode(([
-                            'message' => [
-                                'status' => "error",
-                                'description' => "Update the book failure!"
-                            ]
-                        ]));
+                    $this->mModelBook->updateById($id, $request);
+                    return json_encode(([
+                        'message' => [
+                            'status' => "success",
+                            'description' => "Update the book success!"
+                        ],
+                        'book' => $this->mModelBook->getById($id)
+                    ]));
+                } else {
+                    return json_encode(([
+                        'message' => [
+                            'status' => "invalid",
+                            'description' => "The book already exists in the system!"
+                        ]
+                    ]));
+                }
+            } else {
+                $oldImage = $this->mModelBook->getById($request->id)->image;
+                if ($request->image === null) {
+                    $request->image = $this->mModelBook->getById($request->id)->image;
+                } else {
+                    $image = $request->file('image');
+                    $name = str_slug($request->input('title')) . '_' . time();
+                    $folder = '/images/books/';
+                    $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+                    $this->uploadImage($image, $folder, 'public', $name);
+                    $request->image = $filePath;
+                }
+                if ($this->mModelBook->updateById($id, $request) > 0) {
+                    if ($request->image != null) {
+                        $this->deleteImage('public', $oldImage);
                     }
+                    return json_encode(([
+                        'message' => [
+                            'status' => "success",
+                            'description' => "Update the book success!"
+                        ],
+                        'book' => $this->mModelBook->getById($id)
+                    ]));
+                } else {
+                    return json_encode(([
+                        'message' => [
+                            'status' => "error",
+                            'description' => "Update the book failure!"
+                        ]
+                    ]));
                 }
             }
         }
+
     }
 
     /**
@@ -327,7 +335,8 @@ class BookController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         $book = $this->mModelBook->getById($id);
         $filename = $book->image;

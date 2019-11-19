@@ -191,7 +191,7 @@ class UserController extends Controller
         $customMessages = [
             'required' => 'Please fill in form'
         ];
-
+        $request->password = bcrypt($request->password);
         $validator = Validator::make($credentials, $rules, $customMessages);
         if ($validator->fails()) {
             return json_encode(([

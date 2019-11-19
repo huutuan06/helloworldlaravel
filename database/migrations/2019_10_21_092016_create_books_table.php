@@ -20,6 +20,7 @@ class CreateBooksTable extends Migration
             $table->string('description');
             $table->integer('total_pages');
             $table->string('price');
+            $table->string('amount');
             $table->timestamps();
         });
     }

@@ -17,26 +17,23 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <p class="text-muted font-13 m-b-30">
-                        DataTables has most features enabled by default, so all you need to do to use it with your
-                        own tables is to call the construction function: <code>$().DataTable();</code>
-                    </p>
                     <table id="datatableBook" class="table table-striped table-bordered">
                         <thead>
                         <tr>
                             <th style="width: 5.00%">Id</th>
-                            <th style="width: 20.00%">Title</th>
-                            <th style="width: 20.00%">Image</th>
-                            <th style="width: 32.00%">Description</th>
-                            <th style="width: 8.00%">Total Pages</th>
+                            <th style="width: 25.00%">Title</th>
+                            <th style="width: 10.00%">Image</th>
+                            <th style="width: 35.00%">Description</th>
+                            <th style="width: 5.00%">Pages</th>
                             <th style="width: 5.00%">Price</th>
+                            <th style="width: 5.00%">Amount</th>
                             <th style="width: 10.00%; text-align: center">Manipulation</th>
                         </tr>
                         </thead>
 
-
                         <tbody>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -81,19 +78,20 @@
                 {
                     "data": "image", "render": function (image) {
                         return '<div class="text-center">'
-                            + '<img src="' + image + '" alt="" height="200px">'
+                            + '<img src="' + image + '" alt="" height="100px">'
                             + '</div>';
                     }
                 },
                 {"data": "description"},
                 {"data": "total_pages"},
                 {"data": "price"},
+                {"data": "amount"},
                 {
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
-                            + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br>'
-                            + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                            + '<a href="javascript:void(0)" onclick = "navReview(' + id + ')"><img src="/images/icon_cms.png"  width="18px" height="18px"></a> '
+                            + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                             + '</div>';
                     }
                 }
@@ -115,14 +113,15 @@
                     image: "required",
                     description: "required",
                     total_pages: "required",
-                    price: "required"
+                    price: "required",
+                    amount: "required"
                 },
                 messages: {
-                    title: "Please fill title",
-                    image: "Please choose image",
-                    description: "Please fill description",
-                    total_pages: "Please fill total pages",
-                    price: "Please fill price"
+                    title: "Please fill title!",
+                    image: "Please choose image!",
+                    description: "Please fill description!",
+                    total_pages: "Please fill total pages!",
+                    amount: "Please fill amount!"
                 }
             });
             if (!$(this).valid()) return false;
@@ -159,17 +158,18 @@
                                 data['book']['description'],
                                 data['book']['total_pages'],
                                 data['book']['price'],
+                                data['book']['amount'],
                                 function (id) {
                                     return '<div class="text-center">'
-                                        + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br>'
-                                        + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                        + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br><br>'
+                                        + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                         + '</div>';
                                 }
                             ]
                         ).draw();
                     } else if (data.status === 'error') {
-                        swal("", data['message']['description'], "error");
+                        swal("", data['message']['description'], "error");s
                     }
                 })
                 .fail(function (error) {
@@ -224,11 +224,12 @@
                                         data['book']['description'],
                                         data['book']['total_pages'],
                                         data['book']['price'],
+                                        data['book']['amount'],
                                         function (id) {
                                             return '<div class="text-center">'
-                                                + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br> '
-                                                + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                                + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br><br> '
+                                                + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                                 + '</div>';
                                         }
                                     ]
@@ -264,6 +265,7 @@
                 $('#editDescription').val(data['book']['description']);
                 $('#editTotalPages').val(data['book']['total_pages']);
                 $('#editPrice').val(data['book']['price']);
+                $('#editAmount').val(data['book']['amount']);
                 $('#modal-loading').modal('hide');
                 $('#editCategoryModal').modal('show');
             })

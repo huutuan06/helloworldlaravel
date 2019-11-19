@@ -9,10 +9,6 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <p class="text-muted font-13 m-b-30">
-                            DataTables has most features enabled by default, so all you need to do to use it with your
-                            own tables is to call the construction function: <code>$().DataTable();</code>
-                        </p>
                         <table id="datatablesUser" class="table table-striped table-bordered">
                             <thead>
                             <tr>
@@ -71,18 +67,18 @@
                 {"data": "email"},
                 {
                     "data": "avatar", "render": function (avatar) {
-                        return '<img src="' + avatar + '" width="56px;" height="56px;" alt="avatar"/>';
+                        return '<img src="' + avatar + '" width="36px;" height="36px;" alt="avatar"/>';
                     }
                 },
                 {
                     "data": "gender", "render": function (gender) {
                         if (gender == 1)
                             return '<div class="text-center">'
-                                + '<img src="/images/icon_gender_female.png"  width="24px" height="24px">'
+                                + '<img src="/images/icon_gender_female.png"  width="18px" height="18px">'
                                 +'</div>';
                     else
                         return '<div class="text-center">'
-                            + '<img src="/images/icon_gender_male.png"  width="24px" height="24px">'
+                            + '<img src="/images/icon_gender_male.png"  width="18px" height="18px">'
                             +'</div>';
                     }
                 },
@@ -92,8 +88,8 @@
                 {
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
-                            + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                            + '<span>  </span>' + '<a href="javascript:void(0)' + id + '" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                            + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                            + '<span>  </span>' + '<a href="javascript:void(0)' + id + '" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                             + '</div>';
                     }
                 }
@@ -168,8 +164,8 @@
                                 data['user']['address'],
                                 function (id) {
                                     return '<div class="text-center">'
-                                        + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                        + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                         + '</div>';
                                 }
                             ]
@@ -243,8 +239,8 @@
                                         data['user']['address'],
                                         function (id) {
                                             return '<div class="text-center">'
-                                                + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                                + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                                 + '</div>';
                                         }
                                     ]

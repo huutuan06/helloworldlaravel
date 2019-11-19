@@ -17,17 +17,14 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <p class="text-muted font-13 m-b-30">
-                            DataTables has most features enabled by default, so all you need to do to use it with your
-                            own tables is to call the construction function: <code>$().DataTable();</code>
-                        </p>
                         <table id="datatablesCategory" class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th style="width: 5.00%">ID</th>
                                 <th style="width: 25.00%">Name</th>
-                                <th style="width: 50.00%">Description</th>
-                                <th style="width: 20.00%; text-align: center">Manipulation</th>
+                                <th style="width: 53.00%">Description</th>
+                                <th style="width: 7.00%">List Books</th>
+                                <th style="width: 10.00%; text-align: center">Manipulation</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -70,11 +67,17 @@
                 {"data": "id"},
                 {"data": "name"},
                 {"data": "description"},
+                {"render": function (id) {
+                        return '<div class="text-center">'
+                            + '<a href="javascript:void(0)" onclick= "showBooks(' + id + ')"><img src="/images/icon_books.png"  width="18px" height="18px"></a>'
+                            + '</div>';
+                    }
+                },
                 {
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
-                            + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                            + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                             + '</div>';
                     }
                 }
@@ -138,8 +141,8 @@
                                 data['category']['description'],
                                 function (id) {
                                     return '<div class="text-center">'
-                                        + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                        + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                         + '</div>';
                                 }
                             ]
@@ -204,8 +207,8 @@
                                         data['category']['description'],
                                         function (id) {
                                             return '<div class="text-center">'
-                                                + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.svg"  width="24px" height="24px"></a>'
-                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.svg"  width="24px" height="24px"></a>'
+                                                + '<a href="javascript:void(0)" onclick= "editCategory(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCategory(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                                 + '</div>';
                                         }
                                     ]

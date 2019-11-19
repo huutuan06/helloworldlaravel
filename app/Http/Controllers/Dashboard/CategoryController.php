@@ -41,13 +41,11 @@ class CategoryController extends Controller
         return Datatables::collection($collections)->make();
     }
 
-    // View Category/Edit Category
     public function create()
     {
         //
     }
 
-    // Save Category
     public function store(Request $request)
     {
         $credentials = $request->only('name', 'description');
@@ -167,43 +165,44 @@ class CategoryController extends Controller
                 ]
             ]));
         } else {
-            if ($this->mModelCat->getById($request->id)->name == $request->name) {
-                $this->mModelCat->updateById($id, $request);
-                return json_encode(([
-                    'message' => [
-                        'status' => "success",
-                        'description' => "Update the category success!"
-                    ],
-                    'category' => $this->mModelCat->getById($id)
-                ]));
-            } else {
-                if ($this->mModelCat->getByName($request->name)) {
+            if ($this->mModelCat->getByName($request->name)) {
+                if ($this->mModelCat->getByName($request->name)->id == $id) {
+                    $this->mModelCat->updateById($id, $request);
+                    return json_encode(([
+                        'message' => [
+                            'status' => "success",
+                            'description' => "Update the category success!"
+                        ],
+                        'category' => $this->mModelCat->getById($id)
+                    ]));
+                } else {
                     return json_encode(([
                         'message' => [
                             'status' => "invalid",
                             'description' => "The category already exists in the system!"
                         ]
                     ]));
+                }
+            } else {
+                if ($this->mModelCat->updateById($id, $request) > 0) {
+                    return json_encode(([
+                        'message' => [
+                            'status' => "success",
+                            'description' => "Update the category success!"
+                        ],
+                        'category' => $this->mModelCat->getById($id)
+                    ]));
                 } else {
-                    if ($this->mModelCat->updateById($id, $request) > 0) {
-                        return json_encode(([
-                            'message' => [
-                                'status' => "success",
-                                'description' => "Update the category success!"
-                            ],
-                            'category' => $this->mModelCat->getById($id)
-                        ]));
-                    } else {
-                        return json_encode(([
-                            'message' => [
-                                'status' => "error",
-                                'description' => "Update the category failure!"
-                            ]
-                        ]));
-                    }
+                    return json_encode(([
+                        'message' => [
+                            'status' => "error",
+                            'description' => "Update the category failure!"
+                        ]
+                    ]));
                 }
             }
         }
+
     }
 
     /**

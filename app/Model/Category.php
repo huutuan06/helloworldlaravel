@@ -48,4 +48,17 @@ class Category extends Model
         return DB::table('categories')->where('id', $id)->update(['name'=>$data['name'], 'description'=>$data['description']]);
     }
 
+    public function books(){
+        return $this->belongsToMany('app\Model\Book');
+    }
+
+    public function addBookToCategory($category_id, $book_id) {
+        $category = Category::find($category_id);
+        $category->books()->attach($book_id);
+    }
+
+    public function detachBookFromCategory($category_id, $book_id) {
+        $category = Category::find($category_id);
+        $category->books()->detach($book_id);
+    }
 }

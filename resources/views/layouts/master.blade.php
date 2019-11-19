@@ -60,7 +60,7 @@
                             </li>
                             <li><a><i class="fa fa-home"></i> Category <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a id="nav_view_cat" href="javascript:void(0)">View Categorys</a></li>
+                                    <li><a id="nav_view_cat" href="javascript:void(0)">View Categories</a></li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-home"></i> Book <span class="fa fa-chevron-down"></span></a>
@@ -70,7 +70,7 @@
                             </li>
                             <li><a><i class="fa fa-home"></i> User <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a id="nav_view_user" href="javascript:void(0)">View users</a></li>
+                                    <li><a id="nav_view_user" href="javascript:void(0)">View Users</a></li>
                                 </ul>
                             </li>
                         </ul>

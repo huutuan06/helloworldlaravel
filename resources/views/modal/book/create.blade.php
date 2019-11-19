@@ -41,6 +41,12 @@
                         <input name="price" type="text" class="form-control" id="bookPrice"/>
                     </div>
                 </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Amount:</label>
+                        <input name="amount" type="text" class="form-control" id="bookAmount"/>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Create</button>
