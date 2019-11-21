@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::post('v1/mobile/user/register', 'API\AuthenticateController@register')->name('api_register_user');
 Route::post('v1/mobile/user/login', 'API\AuthenticateController@login')->name('api_login_user');
+Route::post('v1/mobile/user/loginSocialNetwork', 'API\AuthenticateController@loginSocialNetwork')->name('api_login_social_network_user');
 
 /**
  * Case 2: Need Token in Header (After Application had logined successfully)
