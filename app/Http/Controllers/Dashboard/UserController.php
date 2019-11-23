@@ -37,6 +37,7 @@ class UserController extends Controller
                 'email' => $user->email,
                 'date_of_birth' => date("d M Y", strtotime( $user->date_of_birth)),
                 'avatar' => $user->avatar,
+                'phone_number' => $user->phone_number,
                 'address' => $user->address,
                 'gender' => $user->gender,
                 'manipulation' => $user->id
@@ -64,7 +65,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $credentials = $request->only('name', 'email', 'password', 'avatar', 'date_of_birth', 'gender', 'address');
+        $credentials = $request->only('name', 'email', 'password', 'avatar','phone_number', 'date_of_birth', 'gender', 'address');
 
         if ($request->has('avatar')) {
             $image = $request->file('avatar');
@@ -80,6 +81,7 @@ class UserController extends Controller
             'name' => 'required', 'string', 'max:255',
             'email' => 'required','string', 'email', 'max:255', 'unique:users',
             'password' => 'required',
+            'phone_number' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required',
             'address' => 'required',
@@ -114,6 +116,7 @@ class UserController extends Controller
                         'password' => $request->password,
                         'date_of_birth' => $request->date_of_birth,
                         'gender' => $request->gender,
+                        'phone_number' => $request->phone_number,
                         'avatar' => $request->avatar,
                         'address' => $request->address,
                         'created_at' => $this->freshTimestamp(),
@@ -179,11 +182,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $credentials = $request->only('name', 'email','password','address','date_of_birth','avatar', 'gender');
+        $credentials = $request->only('name', 'email','password','phone_number','address','date_of_birth','avatar', 'gender');
         $rules = [
             'name' => 'required',
             'email' => 'required',
             'password' => 'required',
+            'phone_number' => 'required',
             'address' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required'
@@ -275,6 +279,7 @@ class UserController extends Controller
     {
         $user = $this->mModelUser->getById($id);
         $filename = $user->avatar;
+        \Log::info($filename);
         $this->mModelUser->deleteById($id);
         if ($this->mModelUser->getById($id) != null) {
             return json_encode([

@@ -13,9 +13,10 @@
                             <thead>
                             <tr>
                                 <th style="width: 5.00%">ID</th>
-                                <th style="width: 20.00%">Name</th>
-                                <th style="width: 20.00%">Email</th>
+                                <th style="width: 15.00%">Name</th>
+                                <th style="width: 15.00%">Email</th>
                                 <th style="width: 5.00%">Avatar</th>
+                                <th style="width: 10.00%">Phone Number</th>
                                 <th style="width: 5.00%">Gender</th>
                                 <th style="width: 10.00%">Date of Birth</th>
                                 <th style="width: 25.00%">Address</th>
@@ -24,6 +25,7 @@
                             </thead>
                             <tbody>
                             <tr>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -70,6 +72,7 @@
                         return '<img src="' + avatar + '" width="36px;" height="36px;" alt="avatar"/>';
                     }
                 },
+                {"data": "phone_number"},
                 {
                     "data": "gender", "render": function (gender) {
                         if (gender == 1)
@@ -99,7 +102,7 @@
 
     $('#newUser').click(function () {
         $('#createUserModal').modal('show');
-        $('#userFormCreate').find('img').attr('src', '');
+        $('#userFormCreate').find('img').attr('src', '/images/users/profile.png');
         $('#userFormCreate').find(':radio[name="gender"][value="0"]').prop('checked', false);
         $('#userFormCreate').find(':radio[name="gender"][value="1"]').prop('checked', false);
         $('#userFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], input[type=date], input[type=radio] textarea').val('');
@@ -113,6 +116,7 @@
                     email: "required",
                     password: "required",
                     // confirm_password: "required",
+                    phone_number: "required",
                     date_of_birth: "required",
                     gender: "required",
                     address: "required",
@@ -122,6 +126,7 @@
                     email: "Email is empty!",
                     password: "Password is empty!",
                     // confirm_password: "Confirm password is empty!",
+                    phone_number: "Phone number is empty!",
                     date_of_birth: "Name is empty!",
                     gender: "Gender is empty!",
                     address: "Address is empty!"
@@ -159,6 +164,7 @@
                                 data['user']['name'],
                                 data['user']['email'],
                                 data['user']['avatar'],
+                                data['user']['phone_number'],
                                 data['user']['gender'],
                                 data['user']['date_of_birth'],
                                 data['user']['address'],
@@ -185,6 +191,7 @@
                     name: "required",
                     email: "required",
                     password: "required",
+                    phone_number: "required",
                     date_of_birth: "required",
                     gender: "required",
                     address: "required",
@@ -193,6 +200,7 @@
                     name: "Please fill name",
                     email: "Please fill email",
                     password: "Please fill password",
+                    phone_number: "required",
                     date_of_birth: "Please choose the birthday",
                     gender: "Please choose gender",
                     address: "Please fill address"
@@ -234,6 +242,7 @@
                                         data['user']['name'],
                                         data['user']['email'],
                                         data['user']['avatar'],
+                                        data['user']['phone_number'],
                                         data['user']['gender'],
                                         data['user']['date_of_birth'],
                                         data['user']['address'],
@@ -273,6 +282,7 @@
                 $('#editUserId').val(data['user']['id']);
                 $('#editUserName').val(data['user']['name']);
                 $('#editUserEmail').val(data['user']['email']);
+                $('#editUserPhoneNumber').val(data['user']['phone_number']);
                 $('#editUserPassword').val(data['user']['password']);
                 $('#editUserAddress').val(data['user']['address']);
 

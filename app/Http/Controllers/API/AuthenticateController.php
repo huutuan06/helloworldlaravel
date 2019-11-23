@@ -69,7 +69,10 @@ class AuthenticateController extends Controller
             }
         } else {
             if ($this->mModelUser->isEmailExisted($request->email)) {
-                $request['password'] = $this->mModelUser->isEmailExisted($request->email)['password'];
+                $request['password'] = $this->mModelUser->getByEmail($request->email)->password;
+//                $request['password'] = $this->mModelUser->getByEmail($request->email)->password;
+                \Log::info($request['password']);
+
                 $jwt_credentials = $request->only('email','password');
                 $this->response_array = ([
                     'http_response_code' => http_response_code(),
@@ -79,7 +82,8 @@ class AuthenticateController extends Controller
                     ],
                     'data' => [
                         'user' => $this->mModelUser->getByEmail($request->email),
-                        'token' => 'Bearer ' . JWTAuth::attempt($jwt_credentials),
+//                        'token' => 'Bearer ' . JWTAuth::attempt($jwt_credentials),
+                        'token' => 'Bearer ' . JWTAuth::fromUser($this->mModelUser->getByEmail($request->email)),
                     ]
                 ]);
             } else {
@@ -103,7 +107,8 @@ class AuthenticateController extends Controller
                         ],
                         'data' => [
                             'user' => $this->mModelUser->getByEmail($request->email),
-                            'token' => 'Bearer ' . JWTAuth::attempt($jwt_credentials),
+                            'token' => 'Bearer ' . JWTAuth::fromUser($this->mModelUser->getByEmail($request->email)),
+//                            'token' => 'Bearer ' . JWTAuth::attempt($jwt_credentials),
                         ]
                     ]);
                 } else {
