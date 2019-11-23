@@ -23,14 +23,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/**
- * Using this Lib for tracking Log error from System
- * Laravel Log Viewer
- */
-
-Route::group(['prefix' => '', 'note' => 'LOG'], function () {
-    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-});
 
 Auth::routes();
 
@@ -77,3 +69,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
 });
 
+
+/**
+ * Show laravel.log in browser to observe
+ */
+Route::group(['prefix' => '', 'note' => 'LOG'], function () {
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+});

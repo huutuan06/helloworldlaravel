@@ -6,6 +6,9 @@
  * Time: 4:49 PM
  */
 return [
+    'head' => [
+        'title_login' => 'Admin Login System',
+    ],
     'error' => [
         'user_not_verify' => 'Bạn chưa kích hoạt tài khoản qua email.',
     ]
