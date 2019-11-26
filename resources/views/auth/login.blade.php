@@ -14,7 +14,7 @@
     <!-- Custom Theme Style -->
     <link href="{{ URL::asset('css/custom.min.css') }}" rel="stylesheet">
     <!-- Custom Your Style -->
-    <link href="{{ URL::asset('css/style.min.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('css/login.min.css') }}" rel="stylesheet">
 </head>
 
 <body class="clear_login">

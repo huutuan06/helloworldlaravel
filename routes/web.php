@@ -23,33 +23,30 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::group(['prefix' => '', 'note' => 'Routes for Book'], function () {
+    Route::resource('/admin/book', 'Dashboard\BookController');
 
-        Route::resource('/admin/book', 'Dashboard\BookController');
+    Route::post('/admin/book/{book}', 'Dashboard\BookController@update')->name('book.update');
 
-        Route::post('/admin/book/{book}', 'Dashboard\BookController@update')->name('book.update');
+    Route::get('/admin/book/scrawl/top_selling', 'Dashboard\BookController@topselling')->name('book.topselling');
 
-        Route::get('/admin/book/scrawl/top_selling', 'Dashboard\BookController@topselling')->name('book.topselling');
-    });
 
 
     Route::resource('/admin/category', 'Dashboard\CategoryController');
 
     Route::post('/admin/category/{category}', 'Dashboard\CategoryController@update')->name('category.update');
 
+
     Route::resource('/admin/user', 'Dashboard\UserController');
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
 
-    /**
-     * Similarity with CRUD for User, Doctor, Disease, Pharmacy,...
-     */
+
     Route::resource('/user', 'Dashboard\UserController');
+
     Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
 
 
