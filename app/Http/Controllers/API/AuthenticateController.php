@@ -30,6 +30,7 @@ class AuthenticateController extends Controller
      */
 
     public function loginSocialNetwork(Request $request) {
+        $jwt_credentials = $request->only('email','password');
 
         $credentials = $request->only('name','email');
         $rules = [
@@ -70,8 +71,6 @@ class AuthenticateController extends Controller
         } else {
             if ($this->mModelUser->isEmailExisted($request->email)) {
                 $request['password'] = $this->mModelUser->getByEmail($request->email)->password;
-//                $request['password'] = $this->mModelUser->getByEmail($request->email)->password;
-                \Log::info($request['password']);
 
                 $jwt_credentials = $request->only('email','password');
                 $this->response_array = ([

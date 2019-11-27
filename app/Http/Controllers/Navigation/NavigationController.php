@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Navigation;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class NavigationController extends Controller
 {
@@ -48,8 +49,27 @@ class NavigationController extends Controller
         ]);
         echo json_encode($response_array);
     }
-    public function cms() {
+
+    public function customer() {
+        $returnHTML = view('ajax.page.user.customer')->render();
+        $response_array = ([
+            'success' => true,
+            'html' => $returnHTML
+        ]);
+        echo json_encode($response_array);
+    }
+
+    public function cms(Request $id) {
         $returnHTML = view('ajax.page.cms.index')->render();
+        $response_array = ([
+            'success' => true,
+            'id' => $id,
+            'html' => $returnHTML
+        ]);
+        echo json_encode($response_array);
+    }
+    public function books() {
+        $returnHTML = view('ajax.page.category.books')->render();
         $response_array = ([
             'success' => true,
             'html' => $returnHTML

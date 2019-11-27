@@ -20,7 +20,14 @@
                         <br>
                         <img src="" id="showGetImage" height="200px">
                         <input name="image" type="file" class="form-control" onchange="readImageCreate(this);" id="bookImage">
-{{--                        <textarea name="image" class="form-control" id="bookImage"/>--}}
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Category:</label>
+                        <select name="category_id" class="form-control" id="bookCategory">
+
+                        </select>
                     </div>
                 </div>
                 <div class="modal-body">

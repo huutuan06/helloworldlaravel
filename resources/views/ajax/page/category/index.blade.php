@@ -67,7 +67,7 @@
                 {"data": "id"},
                 {"data": "name"},
                 {"data": "description"},
-                {"render": function (id) {
+                {"data": "list_books", "render": function (id) {
                         return '<div class="text-center">'
                             + '<a href="javascript:void(0)" onclick= "showBooks(' + id + ')"><img src="/images/icon_books.png"  width="18px" height="18px"></a>'
                             + '</div>';
@@ -281,6 +281,27 @@
             })
             .fail(function (error) {
                 console.log(error);
+            });
+    }
+
+    function showBooks(id) {
+        console.log(id);
+        localStorage.setItem("category_id", id);
+        $.ajax({
+            url: 'admin/ajax/books',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            type: 'POST',
+            beforeSend: function () {
+                $('#modal-loading').modal('show');
+            }
+        })
+            .done(function (data) {
+                console.log(data['html']);
+                $('#modal-loading').modal('hide');
+                $('#page_content_ajax').replaceWith(data['html']);
             });
     }
 </script>
