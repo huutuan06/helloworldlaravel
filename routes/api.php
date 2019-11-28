@@ -29,7 +29,7 @@ Route::post('v1/mobile/user/loginSocialNetwork', 'API\AuthenticateController@log
 /**
  * Load List Books from server
  */
-Route::get('v1/mobile/get/books', 'App\Http\Controllers\API\BookController@index')->name('get_books');
+Route::get('v1/mobile/get/books', 'API\BookController@index')->name('get_books');
 
 /**
  * Case 2: Need Token in Header (After Application had logined successfully)
