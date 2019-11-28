@@ -13,12 +13,13 @@
                         <thead>
                         <tr>
                             <th style="width: 5.00%">Id</th>
-                            <th style="width: 25.00%">Title</th>
+                            <th style="width: 20.00%">Title</th>
                             <th style="width: 10.00%">Image</th>
-                            <th style="width: 40.00%">Description</th>
+                            <th style="width: 35.00%">Description</th>
                             <th style="width: 10.00%">Pages</th>
                             <th style="width: 5.00%">Price</th>
                             <th style="width: 5.00%">Amount</th>
+                            <th style="width: 10.00%">Author</th>
                         </tr>
                         </thead>
 
@@ -76,8 +77,11 @@
                 },
                 {"data": "description"},
                 {"data": "total_pages"},
-                {"data": "price"},
+                {"data": "price", "render": function (price) {
+                        return '<div>$'+price+'</div>'
+                    }},
                 {"data": "amount"},
+                {"data": "author"},
             ]
         });
     });

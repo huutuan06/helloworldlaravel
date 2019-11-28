@@ -21,19 +21,21 @@
                         <thead>
                         <tr>
                             <th style="width: 5.00%">Id</th>
-                            <th style="width: 25.00%">Title</th>
+                            <th style="width: 15.00%">Title</th>
                             <th style="width: 10.00%">Image</th>
                             <th style="width: 10.00%">Category</th>
                             <th style="width: 25.00%">Description</th>
                             <th style="width: 5.00%">Pages</th>
                             <th style="width: 5.00%">Price</th>
                             <th style="width: 5.00%">Amount</th>
+                            <th style="width: 10.00%">Author</th>
                             <th style="width: 10.00%; text-align: center">Manipulation</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -88,8 +90,11 @@
                 {"data": "category"},
                 {"data": "description"},
                 {"data": "total_pages"},
-                {"data": "price"},
+                {"data": "price", "render": function (price) {
+                        return '<div>$'+price+'</div>'
+                    }},
                 {"data": "amount"},
+                {"data": "author"},
                 {
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
@@ -139,7 +144,8 @@
                     description: "required",
                     total_pages: "required",
                     price: "required",
-                    amount: "required"
+                    amount: "required",
+                    author: "required"
                 },
                 messages: {
                     title: "Please fill title!",
@@ -147,7 +153,8 @@
                     category_id: "Please choose category",
                     description: "Please fill description!",
                     total_pages: "Please fill total pages!",
-                    amount: "Please fill amount!"
+                    amount: "Please fill amount!",
+                    author: "Please fill author!"
                 }
             });
             if (!$(this).valid()) return false;
@@ -186,6 +193,7 @@
                                 data['book']['total_pages'],
                                 data['book']['price'],
                                 data['book']['amount'],
+                                data['book']['author'],
                                 function (id) {
                                     return '<div class="text-center">'
                                         + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br><br>'
@@ -252,6 +260,7 @@
                                         data['book']['total_pages'],
                                         data['book']['price'],
                                         data['book']['amount'],
+                                        data['book']['author'],
                                         function (id) {
                                             return '<div class="text-center">'
                                                 + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br><br> '
@@ -314,6 +323,7 @@
                 $('#editTotalPages').val(data['book']['total_pages']);
                 $('#editPrice').val(data['book']['price']);
                 $('#editAmount').val(data['book']['amount']);
+                $('#editAuthor').val(data['book']['author']);
                 $('#modal-loading').modal('hide');
                 $('#editBookModal').modal('show');
             })

@@ -33,11 +33,12 @@ class BookController extends Controller
                 'id' => $book->id,
                 'title' => $book->title,
                 'image' => $book->image,
-                'category' => $this->mModelBook->getCategorybyId($book->category_id)->name,
+                'category' => $this->mModelBook->getCategoryById($book->category_id)->name,
                 'description' => $book->description,
                 'total_pages' => $book->total_pages,
                 'price' => $book->price,
                 'amount' => $book->amount,
+                'author' => $book->author,
                 'manipulation' => $book->id
             );
             $collections->push($arr);
@@ -68,7 +69,6 @@ class BookController extends Controller
                 $getTitle = substr($node2->text(), 13, -9);
                 return $getTitle;
             });
-
             if ($node->filter('div.a-size-small > a.a-link-child')->each(function ($node3) {
                 }) != null) {
                 $author = $node->filter('div.a-size-small > a.a-link-child')->each(function ($node3) {
@@ -79,7 +79,6 @@ class BookController extends Controller
                     return $node3->text();
                 });
             }
-
             //star rate
             $node->filter('div.a-spacing-none > a.a-link-normal > i.a-icon-star > span.a-icon-alt')->each(function ($node4) {
                 return $node4->text();
@@ -89,16 +88,30 @@ class BookController extends Controller
             });
             $node->filter('div.a-size-small > span.a-color-secondary')->each(function ($node6) {
             });
-            $price = $node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
-                return $node7->text();
-            });
+//            $price = $node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
+//                \Log::info($node7->html());
+//                return (float) substr(strstr($node7->text(),'$'),1);
+//
+//            });
+            if ($node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
+                }) != null) {
+                $price = $node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
+                    return (float)substr(strstr($node7->text(), '$'), 1);
+                });
+            } else {
+                $price = $node->filter('a.a-link-normal > span.a-color-secondary > span.a-size-base')->each(function ($node7) {
+                    return (float)substr(strstr($node7->text(), '$'), 1);
+                });
+            }
             $book = array(
                 'title' => $title[0],
                 'image' => $image[0],
+                'category_id' => 3,
                 'description' => '',
                 'total_pages' => 1,
                 'price' => $price[0],
-                'amount' => '',
+                'amount' => 100,
+                'author' => $author[0],
                 'created_at' => $this->freshTimestamp(),
                 'updated_at' => $this->freshTimestamp(),
             );
@@ -114,7 +127,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $credentials = $request->only('title', 'image', 'category_id', 'description', 'total_pages', 'price', 'amount');
+        $credentials = $request->only('title', 'image', 'category_id', 'description', 'total_pages', 'price', 'amount', 'author');
         if ($request->has('image')) {
             // Get image file
             $image = $request->file('image');
@@ -137,6 +150,7 @@ class BookController extends Controller
             'total_pages' => 'required',
             'price' => 'required',
             'amount' => 'required',
+            'author' => 'required',
         ];
         $customMessages = [
             'required' => 'The attribute field is required.'
@@ -167,6 +181,7 @@ class BookController extends Controller
                         'total_pages' => $request->total_pages,
                         'price' => $request->price,
                         'amount' => $request->amount,
+                        'author' => $request->author,
                         'created_at' => $this->freshTimestamp(),
                         'updated_at' => $this->freshTimestamp(),
                     ])) > 0) {
@@ -219,13 +234,14 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price', 'amount');
+        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price', 'amount', 'author');
         $rules = [
             'title' => 'required',
             'description' => 'required',
             'total_pages' => 'required',
             'price' => 'required',
-            'amount' => 'required'
+            'amount' => 'required',
+            'author' => 'required'
         ];
         $customMessages = [
             'required' => 'Please fill in form!'
@@ -334,7 +350,8 @@ class BookController extends Controller
         }
     }
 
-    public function showBooksByCategory(Request $request) {
+    public function showBooksByCategory(Request $request)
+    {
         $books = $this->mModelBook->getByCategory($request->id);
         $collections = collect();
         foreach ($books as $book) {
@@ -345,7 +362,8 @@ class BookController extends Controller
                 'description' => $book->description,
                 'total_pages' => $book->total_pages,
                 'price' => $book->price,
-                'amount' => $book->amount
+                'amount' => $book->amount,
+                'author' => $book->author
             );
             $collections->push($arr);
         }

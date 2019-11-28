@@ -57,13 +57,19 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Price:</label>
-                        <input name="price" type="text" class="form-control" id="editPrice"/>
+                        <input name="price" type="number" class="form-control" step="0.01" id="editPrice"/>
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Amount:</label>
                         <input name="amount" type="text" class="form-control" id="editAmount"/>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Author:</label>
+                        <input name="author" type="text" class="form-control" id="editAuthor"/>
                     </div>
                 </div>
                 <div class="modal-footer">

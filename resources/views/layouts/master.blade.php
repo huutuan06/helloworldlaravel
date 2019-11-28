@@ -75,7 +75,7 @@
                                 </ul>
                             </li>
                         </ul>
-                    </div>
+                    </div>dataTables_paginate paging_simple_numbers
                 </div>
                 <!-- /sidebar menu -->
             </div>
