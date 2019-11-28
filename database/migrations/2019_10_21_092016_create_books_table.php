@@ -17,6 +17,7 @@ class CreateBooksTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('image');
+            $table->string('category_id');
             $table->string('description');
             $table->integer('total_pages');
             $table->string('price');

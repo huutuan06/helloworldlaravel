@@ -7,7 +7,8 @@
  */
 ?>
 <!-- Refer here https://getbootstrap.com/docs/4.0/components/modal/ -->
-<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editBookModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -29,7 +30,16 @@
                         <label for="recipient-name" class="col-form-label">Image:</label>
                         <br>
                         <img src="" id="showEditImage" height="200px">
-                        <input name="image" type="file" class="form-control" onchange="readImageEdit(this);" id="editImage">
+                        <input name="image" type="file" class="form-control" onchange="readImageEdit(this);"
+                               id="editImage">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Category:</label>
+                        <select name="category_id" class="form-control" id="editCategory">
+
+                        </select>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -47,13 +57,19 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Price:</label>
-                        <input name="price" type="text" class="form-control" id="editPrice"/>
+                        <input name="price" type="number" class="form-control" step="0.01" id="editPrice"/>
                     </div>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Amount:</label>
                         <input name="amount" type="text" class="form-control" id="editAmount"/>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Author:</label>
+                        <input name="author" type="text" class="form-control" id="editAuthor"/>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -21,18 +21,22 @@
                         <thead>
                         <tr>
                             <th style="width: 5.00%">Id</th>
-                            <th style="width: 25.00%">Title</th>
+                            <th style="width: 15.00%">Title</th>
                             <th style="width: 10.00%">Image</th>
-                            <th style="width: 35.00%">Description</th>
+                            <th style="width: 10.00%">Category</th>
+                            <th style="width: 25.00%">Description</th>
                             <th style="width: 5.00%">Pages</th>
                             <th style="width: 5.00%">Price</th>
                             <th style="width: 5.00%">Amount</th>
+                            <th style="width: 10.00%">Author</th>
                             <th style="width: 10.00%; text-align: center">Manipulation</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <tr>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -49,6 +53,7 @@
         </div>
     </div>
 </div>
+
 </div>
 @include("modal.book.create")
 @include("modal.book.edit")
@@ -82,10 +87,14 @@
                             + '</div>';
                     }
                 },
+                {"data": "category"},
                 {"data": "description"},
                 {"data": "total_pages"},
-                {"data": "price"},
+                {"data": "price", "render": function (price) {
+                        return '<div>$'+price+'</div>'
+                    }},
                 {"data": "amount"},
+                {"data": "author"},
                 {
                     "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
@@ -102,7 +111,27 @@
     $('#newBook').click(function () {
         $('#createBookModal').modal('show');
         $('#bookFormCreate').find('img').attr('src', '');
-        $('#bookFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], textarea').val('');
+        $('#bookFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], textarea, select').val('');
+        $.ajax({
+            url: 'admin/vogo/book/categories/',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            type: "GET",
+        })
+            .done(function (data) {
+                if (data['message']['status'] === 'success') {
+                    for ($i = 0; $i < data['categories'].length; $i++) {
+                        $('#bookCategory').append('<option value="' + data['categories'][$i]["id"] + '">' + data['categories'][$i]["name"] + '</option>')
+                    }
+                } else if (data.status === 'error') {
+                    swal("", data['message']['description'], "error");
+                }
+            })
+            .fail(function (error) {
+                console.log(error);
+            });
     });
 
     $(document).ready(function () {
@@ -111,17 +140,21 @@
                 rules: {
                     title: "required",
                     image: "required",
+                    category_id: "required",
                     description: "required",
                     total_pages: "required",
                     price: "required",
-                    amount: "required"
+                    amount: "required",
+                    author: "required"
                 },
                 messages: {
                     title: "Please fill title!",
                     image: "Please choose image!",
+                    category_id: "Please choose category",
                     description: "Please fill description!",
                     total_pages: "Please fill total pages!",
-                    amount: "Please fill amount!"
+                    amount: "Please fill amount!",
+                    author: "Please fill author!"
                 }
             });
             if (!$(this).valid()) return false;
@@ -155,10 +188,12 @@
                             [
                                 data['book']['title'],
                                 data['book']['image'],
+                                data['book']['category_id'],
                                 data['book']['description'],
                                 data['book']['total_pages'],
                                 data['book']['price'],
                                 data['book']['amount'],
+                                data['book']['author'],
                                 function (id) {
                                     return '<div class="text-center">'
                                         + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br><br>'
@@ -169,7 +204,7 @@
                             ]
                         ).draw();
                     } else if (data.status === 'error') {
-                        swal("", data['message']['description'], "error");s
+                        swal("", data['message']['description'], "error");
                     }
                 })
                 .fail(function (error) {
@@ -190,7 +225,7 @@
             if (!$(this).valid()) return false;
             event.preventDefault();
 
-            $('#editCategoryModal').modal('hide');
+            $('#editBookModal').modal('hide');
             var formData = new FormData(this);
             $.ajax({
                 url: '/admin/book/' + $('#editId').val(),
@@ -225,6 +260,7 @@
                                         data['book']['total_pages'],
                                         data['book']['price'],
                                         data['book']['amount'],
+                                        data['book']['author'],
                                         function (id) {
                                             return '<div class="text-center">'
                                                 + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br><br> '
@@ -248,6 +284,26 @@
 
     function editBook(id) {
         $.ajax({
+            url: 'admin/vogo/book/categories/',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            type: "GET",
+        })
+            .done(function (data) {
+                if (data['message']['status'] === 'success') {
+                    for ($i = 0; $i < data['categories'].length; $i++) {
+                        $('#editCategory').append('<option value="' + data['categories'][$i]["id"] + '">' + data['categories'][$i]["name"] + '</option>')
+                    }
+                } else if (data.status === 'error') {
+                    swal("", data['message']['description'], "error");
+                }
+            })
+            .fail(function (error) {
+                console.log(error);
+            });
+        $.ajax({
             url: '/admin/book/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -262,16 +318,19 @@
                 $('#editId').val(data['book']['id']);
                 $('#editTitle').val(data['book']['title']);
                 $('#showEditImage').attr('src', data['book']['image']);
+                $('#editCategory').val( data['book']['category_id']);
                 $('#editDescription').val(data['book']['description']);
                 $('#editTotalPages').val(data['book']['total_pages']);
                 $('#editPrice').val(data['book']['price']);
                 $('#editAmount').val(data['book']['amount']);
+                $('#editAuthor').val(data['book']['author']);
                 $('#modal-loading').modal('hide');
-                $('#editCategoryModal').modal('show');
+                $('#editBookModal').modal('show');
             })
             .fail(function (error) {
                 console.log(error);
             });
+
     }
 
     function deleteBook(id) {
@@ -332,7 +391,7 @@
 
     function navReview(id) {
         $.ajax({
-            url: 'admin/ajax/cms',
+            url: 'admin/ajax/cms/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -348,6 +407,7 @@
                 $('#page_content_ajax').replaceWith(data['html']);
             });
     }
+
 </script>
 
 

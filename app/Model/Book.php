@@ -13,10 +13,10 @@ class Book extends Model
     protected $fillable = [];
     protected $hidden = [];
     protected $casts = [];
-
-    public function categories() {
-        return $this->$this->belongsToMany('app\Model\Category');
-    }
+//
+//    public function categories() {
+//        return $this->$this->belongsToMany('app\Model\Category');
+//    }
 
     public function add($data)
     {
@@ -45,10 +45,28 @@ class Book extends Model
 
     public function updateById($id, $data)
     {
-        return DB::table('books')->where('id', $id)->update(['title' => $data['title'], 'image' => $data->image, 'description' => $data['description'], 'total_pages' => $data['total_pages'], 'price' => $data['price'], 'amount'=>$data['amount']]);
+        return DB::table('books')->where('id', $id)->update(['title' => $data['title'], 'image' => $data->image,
+            'category_id' => $data['category_id'], 'description' => $data['description'],
+            'total_pages' => $data['total_pages'], 'price' => $data['price'], 'amount' => $data['amount'],
+            'author' => $data['author']]);
     }
 
-    public function deleteAllData() {
+    public function deleteAllData()
+    {
         return DB::table('books')->delete();
     }
+
+    public function getCategoryById($id)
+    {
+        return DB::table('categories')->where('id', $id)->first();
+    }
+
+    public function getByCategory($id)
+    {
+        return DB::table('books')->where('category_id', $id)->get();
+    }
+//
+//    public function getAllCategories() {
+//        return DB::table('categories')->get();
+//    }
 }

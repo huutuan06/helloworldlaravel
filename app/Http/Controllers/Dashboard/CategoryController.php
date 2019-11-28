@@ -34,6 +34,7 @@ class CategoryController extends Controller
                 'id' => $category->id,
                 'name' => $category->name,
                 'description' => $category->description,
+                'list_books' => $category->id,
                 'manipulation' => $category->id
             );
             $collections->push($arr);
@@ -113,7 +114,7 @@ class CategoryController extends Controller
             return json_encode(([
                 'message' => [
                     'status' => "error",
-                    'description' => "The customer didn't exist in our system!"
+                    'description' => "The category didn't exist in our system!"
                 ]
             ]));
         } else {
@@ -228,6 +229,26 @@ class CategoryController extends Controller
                     'description' => "Delete the category success! "
                 ],
                 'id' => $id
+            ]));
+        }
+    }
+
+    public function showAll() {
+        $categories = $this->mModelCat->get();
+        if ($categories == null) {
+            return json_encode(([
+                'message' => [
+                    'status' => "error",
+                    'description' => "Delete the category failure!",
+                ]
+            ]));
+        } else {
+            return json_encode(([
+                'message' => [
+                    'status' => "success",
+                    'description' => "Get all categories successfully! "
+                ],
+                'categories' => $categories
             ]));
         }
     }

@@ -68,7 +68,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function updateById($id, $data)
     {
-        return DB::table('users')->where('id', $id)->update(['name' => $data['name'], 'password' => $data->password,
+        return DB::table('users')->where('id', $id)->update(['name' => $data['name'], 'password' => $data->password, 'phone_number' => $data->phone_number,
             'date_of_birth' => $data['date_of_birth'], 'gender' => $data['gender'], 'avatar' => $data->avatar, 'address'=> $data['address']]);
     }
 

@@ -5,7 +5,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <button id="newUser" class="btn btn-default" type="button">New Staff</button>
+                        <button id="newUser" class="btn btn-default" type="button">New User</button>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">

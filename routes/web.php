@@ -34,11 +34,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/book/scrawl/top_selling', 'Dashboard\BookController@topselling')->name('book.topselling');
 
 
+    Route::group(['prefix' => '', 'note' => 'Routes for Category'], function () {
+        Route::resource('/admin/category', 'Dashboard\CategoryController');
 
-    Route::resource('/admin/category', 'Dashboard\CategoryController');
+        Route::post('/admin/category/{category}', 'Dashboard\CategoryController@update')->name('category.update');
 
-    Route::post('/admin/category/{category}', 'Dashboard\CategoryController@update')->name('category.update');
+        Route::get('/admin/vogo/category/books', 'Dashboard\BookController@showBooksByCategory')->name('category.books');
 
+    });
+
+
+    Route::delete('/admin/category/detach/{book}', 'Dashboard\CategoryController@detachBook')->name('category.detach.book');
 
     Route::resource('/admin/user', 'Dashboard\UserController');
 
@@ -61,7 +67,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('admin/ajax/user', 'Navigation\NavigationController@user')->name('ajax.user');
 
-    Route::get('admin/ajax/cms', 'Navigation\NavigationController@cms')->name('ajax.cms');
+    Route::get('admin/ajax/user/customer', 'Navigation\NavigationController@customer')->name('ajax.user');
+
+    Route::get('admin/ajax/cms/{cms}', 'Navigation\NavigationController@cms')->name('ajax.cms');
+
+    Route::post('admin/ajax/books', 'Navigation\NavigationController@books')->name('ajax.category.books');
 
     Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
 });

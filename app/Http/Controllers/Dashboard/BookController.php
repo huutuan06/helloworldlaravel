@@ -24,11 +24,6 @@ class BookController extends Controller
         $this->mModelBook = $book;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function index()
     {
         $books = $this->mModelBook->get();
@@ -38,10 +33,12 @@ class BookController extends Controller
                 'id' => $book->id,
                 'title' => $book->title,
                 'image' => $book->image,
+                'category' => $this->mModelBook->getCategoryById($book->category_id)->name,
                 'description' => $book->description,
                 'total_pages' => $book->total_pages,
                 'price' => $book->price,
                 'amount' => $book->amount,
+                'author' => $book->author,
                 'manipulation' => $book->id
             );
             $collections->push($arr);
@@ -49,11 +46,6 @@ class BookController extends Controller
         return Datatables::collection($collections)->make();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     protected $imageBooScrawling;
 
     public function topselling()
@@ -68,61 +60,58 @@ class BookController extends Controller
         $url = "https://www.amazon.com/gp/bestsellers/2019/books";
         $crawler = $goutteClient->request('GET', $url);
         $crawler->filter('span.zg-item')->each(function ($node) {
-//            \Log::info("Link refer to books:".$node->filter('a.a-link-normal')->attr('href'));
             $image = $node->filter('a.a-link-normal > span.zg-text-center-align > div.a-section')->each(function ($node1) {
                 $matches = array();
                 preg_match('/https:(?=.*[!$#%\/]).*.jpg/', $node1->html(), $matches);
-//                https:(?=.*[!$#%\/]).*.jpg
-//                \Log::info($matches[0]);
                 return $matches[0];
             });
-            //title
             $title = $node->filter('a.a-link-normal > div.p13n-sc-line-clamp-1')->each(function ($node2) {
-//                \Log::info(substr( $node2->text(),12,-9));
                 $getTitle = substr($node2->text(), 13, -9);
                 return $getTitle;
             });
-
-            // If- Else. Author
             if ($node->filter('div.a-size-small > a.a-link-child')->each(function ($node3) {
                 }) != null) {
                 $author = $node->filter('div.a-size-small > a.a-link-child')->each(function ($node3) {
-//                    \Log::info($node3->html());
                     return $node3->text();
                 });
             } else {
                 $author = $node->filter('div.a-size-small > span.a-color-base')->each(function ($node3) {
-//                    \Log::info($node3->html());
                     return $node3->text();
                 });
             }
-
             //star rate
             $node->filter('div.a-spacing-none > a.a-link-normal > i.a-icon-star > span.a-icon-alt')->each(function ($node4) {
-//                \Log::info($node4->html());
                 return $node4->text();
             });
 
-            //total rate
             $node->filter('div.a-spacing-none > a.a-size-small')->each(function ($node5) {
-//                \Log::info($node5->html());
             });
-            //type (hardcover/ paperback/ mp3/ kindle)
             $node->filter('div.a-size-small > span.a-color-secondary')->each(function ($node6) {
-//                \Log::info($node6->html());
             });
-            //price
-            $price = $node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
+//            $price = $node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
 //                \Log::info($node7->html());
-                return $node7->text();
-            });
+//                return (float) substr(strstr($node7->text(),'$'),1);
+//
+//            });
+            if ($node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
+                }) != null) {
+                $price = $node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
+                    return (float)substr(strstr($node7->text(), '$'), 1);
+                });
+            } else {
+                $price = $node->filter('a.a-link-normal > span.a-color-secondary > span.a-size-base')->each(function ($node7) {
+                    return (float)substr(strstr($node7->text(), '$'), 1);
+                });
+            }
             $book = array(
                 'title' => $title[0],
                 'image' => $image[0],
+                'category_id' => 3,
                 'description' => '',
                 'total_pages' => 1,
                 'price' => $price[0],
-                'amount' => '',
+                'amount' => 100,
+                'author' => $author[0],
                 'created_at' => $this->freshTimestamp(),
                 'updated_at' => $this->freshTimestamp(),
             );
@@ -138,7 +127,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price', 'amount');
+        $credentials = $request->only('title', 'image', 'category_id', 'description', 'total_pages', 'price', 'amount', 'author');
         if ($request->has('image')) {
             // Get image file
             $image = $request->file('image');
@@ -156,10 +145,12 @@ class BookController extends Controller
         $rules = [
             'title' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category_id' => 'required',
             'description' => 'required',
             'total_pages' => 'required',
             'price' => 'required',
             'amount' => 'required',
+            'author' => 'required',
         ];
         $customMessages = [
             'required' => 'The attribute field is required.'
@@ -185,10 +176,12 @@ class BookController extends Controller
                 if ($this->mModelBook->add(array([
                         'title' => $request->title,
                         'image' => $request->image,
+                        'category_id' => $request->category_id,
                         'description' => $request->description,
                         'total_pages' => $request->total_pages,
                         'price' => $request->price,
                         'amount' => $request->amount,
+                        'author' => $request->author,
                         'created_at' => $this->freshTimestamp(),
                         'updated_at' => $this->freshTimestamp(),
                     ])) > 0) {
@@ -241,13 +234,14 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price','amount');
+        $credentials = $request->only('title', 'image', 'description', 'total_pages', 'price', 'amount', 'author');
         $rules = [
             'title' => 'required',
             'description' => 'required',
             'total_pages' => 'required',
             'price' => 'required',
-            'amount' => 'required'
+            'amount' => 'required',
+            'author' => 'required'
         ];
         $customMessages = [
             'required' => 'Please fill in form!'
@@ -261,10 +255,7 @@ class BookController extends Controller
                 ]
             ]));
         } else {
-
             if ($this->mModelBook->getByTitle($request->title)) {
-                \Log::info($request->title);
-                \Log::info($this->mModelBook->getByTitle($request->title)->title);
                 if ($this->mModelBook->getByTitle($request->title)->id == $id) {
                     if ($request->image === null) {
                         $request->image = $this->mModelBook->getById($request->id)->image;
@@ -335,8 +326,7 @@ class BookController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function destroy($id)
+    public function destroy($id)
     {
         $book = $this->mModelBook->getById($id);
         $filename = $book->image;
@@ -358,5 +348,25 @@ class BookController extends Controller
                 'id' => $id
             ]);
         }
+    }
+
+    public function showBooksByCategory(Request $request)
+    {
+        $books = $this->mModelBook->getByCategory($request->id);
+        $collections = collect();
+        foreach ($books as $book) {
+            $arr = array(
+                'id' => $book->id,
+                'title' => $book->title,
+                'image' => $book->image,
+                'description' => $book->description,
+                'total_pages' => $book->total_pages,
+                'price' => $book->price,
+                'amount' => $book->amount,
+                'author' => $book->author
+            );
+            $collections->push($arr);
+        }
+        return Datatables::collection($collections)->make();
     }
 }

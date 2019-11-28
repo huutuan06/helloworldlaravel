@@ -43,6 +43,12 @@
 {{--                </div>--}}
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Phone number:</label>
+                        <input name="phone_number" type="number" class="form-control" id="userPhoneNumber">
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Avatar:</label>
                         <br>
                         <img src="" id="showGetAvatar" width="100px" height="100px">
