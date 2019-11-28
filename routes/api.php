@@ -21,12 +21,15 @@ use Illuminate\Support\Facades\Route;
  * RegisterController, LogOutController => AuthenticateController and put it inside folder API
  * Here is syntax: php artisan make:controller \API\AuthenticateController
  */
-
-Route::post('v1/mobile/user/register', 'API\AuthenticateController@register')->name('api_register_user');
-Route::post('v1/mobile/user/login', 'API\AuthenticateController@login')->name('api_login_user');
+/**
+ * Login with social
+ */
 Route::post('v1/mobile/user/loginSocialNetwork', 'API\AuthenticateController@loginSocialNetwork')->name('api_login_social_network_user');
 
-Route::get('v1/mobile/get/pharmacy', 'API\AuthenticateController@getPharmacy')->name('get_pharmacy');
+/**
+ * Load List Books from server
+ */
+Route::get('v1/mobile/get/books', 'App\Http\Controllers\API\BookController@index')->name('get_books');
 
 /**
  * Case 2: Need Token in Header (After Application had logined successfully)

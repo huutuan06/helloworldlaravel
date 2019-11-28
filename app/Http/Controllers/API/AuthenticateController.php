@@ -119,16 +119,5 @@ class AuthenticateController extends Controller
         }
         echo json_encode($this->response_array);
     }
-
-    public function getPharmacy() {
-        $this->response_array = ([
-            'http_response_code' => http_response_code(),
-            'error' => [
-                'code'        => 202,
-                'message'   => "The email address you have entered is already registered"
-            ],
-            'data' => null
-        ]);
-    }
 }
 
