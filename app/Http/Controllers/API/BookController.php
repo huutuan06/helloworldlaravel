@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Model\Book;
 use App\Model\Category;
 use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {
     protected $modelCategory;
+    protected $modelBook;
 
-    public function __construct(Category $category )
+    public function __construct(Category $category, Book $book)
     {
+        $this->modelBook = $book;
         $this->modelCategory = $category;
     }
 
@@ -28,16 +31,8 @@ class BookController extends Controller
          * After you have Database and you can query from DB and execute response that data you want.
          *
          */
-        $categpries = $this->modelCategory->getAll();
-
-        $result = array();
-        foreach($categpries as $item) {
-            $result[] = array(
-                'id' => $item->id,
-                'name' => $item->name
-            );
-        }
-
+        $categories = $this->modelCategory->get();
+        $books = $this->modelBook->get();
         $this->response_array = ([
             'http_response_code' => http_response_code(),
             'error' => [
@@ -45,7 +40,8 @@ class BookController extends Controller
                 'message'   => "Success"
             ],
             'data' => [
-                'books' => $result
+                'categories' => $categories,
+                'books' => $books
             ]
         ]);
         return json_encode($this->response_array);
