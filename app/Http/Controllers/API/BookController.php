@@ -25,12 +25,6 @@ class BookController extends Controller
 
     public function index()
     {
-        /**
-         * For example:
-         * I just dummy two array and nested two array to show data.
-         * After you have Database and you can query from DB and execute response that data you want.
-         *
-         */
         $categories = $this->modelCategory->get();
         $books = $this->modelBook->get();
         $this->response_array = ([
