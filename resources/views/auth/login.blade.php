@@ -27,8 +27,7 @@
             <div class="top"></div>
             <div class="bottom"></div>
             <div class="center">
-                    <h2>Please Sign In</h2>
-                    <h1>Login Form</h1>
+                    <h1>VogoBook</h1>
                     <input name="email" type="text" placeholder="Email" required=""/>
                     @if ($errors->has('email'))
                         <span class="help-block error">

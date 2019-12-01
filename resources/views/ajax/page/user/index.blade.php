@@ -40,6 +40,141 @@
                 </div>
             </div>
         </div>
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="x_panel">
+                    <div class="x_title custom_x_title">
+                        <div class="pull-left">
+                            <input id="btnNewRole" class="form-control" type="button" value="New Role">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content" style="overflow-x:auto">
+                        <table id="mroleTable" class="table">
+                            <thead>
+                            <tr>
+                                <th class="text-left" style="width: 50.00%">Name</th>
+                                <th class="text-left" style="width: 10.00%">Scope</th>
+                                <th class="text-center" style="width: 40.00%">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="x_panel">
+                    <div class="x_title custom_x_title">
+                        <div class="pull-left">
+                            <input id="btnNewPermission" class="form-control" type="button" value="New Permission">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content" style="overflow-x:auto">
+                        <table id="mpermissionTable" class="table">
+                            <thead>
+                            <tr>
+                                <th class="text-left" style="width: 50.00%">Name</th>
+                                <th class="text-left" style="width: 10.00%">Scope</th>
+                                <th class="text-center" style="width: 40.00%">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-left"></td>
+                                <td class="text-left"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <form id="formSentence" class="outerAndroidPost">
+                    <div class="form-group padding-content-20">
+                        <h2 class="heading">ADD PERMISSION TO ROLE</h2>
+                        <div class="controls">
+                            <input type="text" id="roleAdjustName" class="floatLabel" name="roleAdjustName">
+                            <label for="roleAdjustName">Role</label>
+                            <input type="hidden" name="roleAdjustID" id="roleAdjustID">
+                        </div>
+                        <div class="controls">
+                            <i class="fa fa-sort"></i>
+                            <select class="floatLabel" id="cat_permissions">
+                                <option value="blank"></option>
+                            </select>
+                            <label for="cat_permissions">Permissions</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group padding-content-20">
+                        <h2 class="heading">ADD PERMISSION TO USER</h2>
+                        <div class="controls">
+                            <input type="text" id="userAdjustName" class="floatLabel" name="userAdjustName">
+                            <label for="userAdjustName">Current User ID</label>
+                            <input type="hidden" name="userAdjustID" id="userAdjustID">
+                        </div>
+                        <div class="controls" style="margin-bottom: 18px;">
+                            <span class="radiobtn"><input class="radio_default" type='radio' name='optionPermission'
+                                                          value='Default'/>Default</span>
+                            <span class="radiobtn"><input class="radio_direct" type='radio' name='optionPermission'
+                                                          value='Direct'/>Direct</span>
+                            <span class="radiobtn"><input class="radio_via" type='radio' name='optionPermission'
+                                                          value='ViaRoles'/>Via Roles</span>
+                            <span class="radiobtn"><input class="radio_all" type='radio' name='optionPermission'
+                                                          value='All'/>All</span>
+                        </div>
+                        <div class="controls">
+                            <i class="fa fa-sort"></i>
+                            <select class="floatLabel" id="cat_user_roles">
+                                <option value="blank"></option>
+                            </select>
+                            <label for="cat_user_roles">Roles</label>
+                        </div>
+                        <div class="controls">
+                            <i class="fa fa-sort"></i>
+                            <select class="floatLabel" id="cat_user_permissions">
+                                <option value="blank"></option>
+                            </select>
+                            <label for="cat_user_permissions">Permissions</label>
+                        </div>
+                        <div class="controls search-box">
+                            <input type="text" class="search-input floatLabel" id="userSearch" name="userSearch"/>
+                            <label for="userSearch">Search users</label>
+                            <div class="search_filters_ajax_user search-filters-user delegatedUser"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group padding-content-20">
+                        <h2 class="heading">QUERY USERS FROM ROLE</h2>
+                        <div class="controls search-box">
+                            <input type="text" class="search-input floatLabel" id="roleSearch" name="roleSearch"/>
+                            <label for="roleSearch">Search roles</label>
+                            <div class="search_filters_ajax_role search-filters-role delegatedRole"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group padding-content-20">
+                        <h2 class="heading">QUERY USERS FROM PERMISSION</h2>
+                        <div class="controls search-box">
+                            <input type="text" class="search-input floatLabel" id="permissionSearch" name="permissionSearch"/>
+                            <label for="permissionSearch">Search permissions</label>
+                            <div class="search_filters_ajax_permission search-filters-permission delegatedPermission"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 @include('modal.user.create')
@@ -334,28 +469,6 @@
             .fail(function (error) {
                 console.log(error);
             })
-    }
-
-    function readAvatarCreate(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#showGetAvatar')
-                    .attr('src', e.target.result)
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function readAvatarEdit(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#showEditAvatar')
-                    .attr('src', e.target.result)
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
     }
 
 </script>

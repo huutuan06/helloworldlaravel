@@ -164,7 +164,7 @@
 }
 
 .left_col {
-    background: #2A3F54
+    background: #449085
 }
 
 .nav-sm .container.body .col-md-3.left_col {
@@ -416,7 +416,7 @@ body .container.body .right_col {
 .nav_title {
     width: 230px;
     float: left;
-    background: #2A3F54;
+    background: #449085;
     border-radius: 0;
     height: 57px
 }
@@ -568,7 +568,7 @@ body .container.body .right_col {
 
 body {
     color: #73879C;
-    background: #2A3F54;
+    background: #449085;
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -793,7 +793,7 @@ a {
 }
 
 .nav-md ul.nav.child_menu li:before {
-    background: #425668;
+    background: #3f9e91;
     bottom: auto;
     content: "";
     height: 8px;
@@ -807,7 +807,7 @@ a {
 }
 
 .nav-md ul.nav.child_menu li:after {
-    border-left: 1px solid #425668;
+    border-left: 1px solid #3f9e91;
     bottom: 0;
     content: "";
     left: 27px;
@@ -856,7 +856,7 @@ a {
 
 .nav.side-menu > li.active > a {
     text-shadow: rgba(0, 0, 0, .25) 0 -1px 0;
-    background: linear-gradient(#334556, #2C4257), #2A3F54;
+    background: linear-gradient(#3f9e91, #3f9e91), #449085;
     box-shadow: rgba(0, 0, 0, .25) 0 1px 0, inset rgba(255, 255, 255, .16) 0 1px 0
 }
 
@@ -1838,7 +1838,7 @@ span.right {
     padding: 5px 0 0;
     position: fixed;
     width: 230px;
-    background: #2A3F54;
+    background: #449085;
     z-index: 999
 }
 

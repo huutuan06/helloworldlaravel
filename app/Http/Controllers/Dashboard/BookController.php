@@ -50,6 +50,7 @@ class BookController extends Controller
 
     public function topselling()
     {
+        \Log::info("Hello World");
         $this->mModelBook->deleteAllData();
         $goutteClient = new \Goutte\Client();
         $guzzleClient = new Client([
