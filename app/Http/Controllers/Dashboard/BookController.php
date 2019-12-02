@@ -50,8 +50,6 @@ class BookController extends Controller
 
     public function topselling()
     {
-        \Log::info("Hello World");
-        $this->mModelBook->deleteAllData();
         $goutteClient = new \Goutte\Client();
         $guzzleClient = new Client([
             'timeout' => 60,
@@ -89,11 +87,6 @@ class BookController extends Controller
             });
             $node->filter('div.a-size-small > span.a-color-secondary')->each(function ($node6) {
             });
-//            $price = $node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
-//                \Log::info($node7->html());
-//                return (float) substr(strstr($node7->text(),'$'),1);
-//
-//            });
             if ($node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
                 }) != null) {
                 $price = $node->filter('div.a-row > a.a-link-normal > span.a-color-price > span.p13n-sc-price')->each(function ($node7) {
@@ -116,7 +109,7 @@ class BookController extends Controller
                 'created_at' => $this->freshTimestamp(),
                 'updated_at' => $this->freshTimestamp(),
             );
-            $this->mModelBook->add($book);
+            $this->mModelBook->synchWithServerFromLocal($book);
         });
     }
 
