@@ -72,7 +72,7 @@ class AuthenticateController extends Controller
             if ($this->mModelUser->isEmailExisted($request->email)) {
                 $request['password'] = $this->mModelUser->getByEmail($request->email)->password;
 
-                $jwt_credentials = $request->only('email','password');
+//                $jwt_credentials = $request->only('email','password');
                 $this->response_array = ([
                     'http_response_code' => http_response_code(),
                     'error' => [
