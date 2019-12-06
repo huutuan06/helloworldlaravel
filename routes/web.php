@@ -33,6 +33,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/admin/book/scrawl/top_selling', 'Dashboard\BookController@topselling')->name('book.topselling');
 
+    Route::get('/admin/vogo/book/categories/', 'Dashboard\CategoryController@showAll')->name('book.categories');
+
 
     Route::group(['prefix' => '', 'note' => 'Routes for Category'], function () {
         Route::resource('/admin/category', 'Dashboard\CategoryController');
@@ -55,6 +57,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
 
+    Route::resource('/admin/order', 'Dashboard\OrderController');
+
+    Route::get('/admin/vogo/order/detail/{detail}', 'Dashboard\OrderController@getOrderDetail')-> name('order.detail');
 
     /**
      * Using Ajax to navigate page
@@ -72,6 +77,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/ajax/cms/{cms}', 'Navigation\NavigationController@cms')->name('ajax.cms');
 
     Route::post('admin/ajax/books', 'Navigation\NavigationController@books')->name('ajax.category.books');
+
+    Route::post('admin/ajax/order/detail', 'Navigation\NavigationController@order')->name('ajax.order.detail');
+
+    Route::get('admin/ajax/order', 'Navigation\NavigationController@orders')->name('ajax.order');
 
     Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
 });

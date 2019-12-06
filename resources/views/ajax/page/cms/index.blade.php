@@ -116,3 +116,21 @@
     };
     tinymce.init(editor_config);
 </script>
+<script>
+    $.ajax({
+        url: 'admin/ajax/books',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        dataType: 'json',
+        type: 'POST',
+        beforeSend: function () {
+            $('#modal-loading').modal('show');
+        }
+    })
+        .done(function (data) {
+            // console.log(data['html']);
+            $('#modal-loading').modal('hide');
+            console.log("here:" + data['id']);
+        });
+</script>

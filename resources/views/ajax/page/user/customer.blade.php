@@ -200,7 +200,7 @@
                     name: "Please fill name",
                     email: "Please fill email",
                     password: "Please fill password",
-                    phone_number: "required",
+                    phone_number: "Please fill phone number",
                     date_of_birth: "Please choose the birthday",
                     gender: "Please choose gender",
                     address: "Please fill address"

@@ -67,7 +67,8 @@
                 {"data": "id"},
                 {"data": "name"},
                 {"data": "description"},
-                {"data": "list_books", "render": function (id) {
+                {
+                    "data": "list_books", "render": function (id) {
                         return '<div class="text-center">'
                             + '<a href="javascript:void(0)" onclick= "showBooks(' + id + ')"><img src="/images/icon_books.png"  width="18px" height="18px"></a>'
                             + '</div>';
@@ -285,7 +286,6 @@
     }
 
     function showBooks(id) {
-        console.log(id);
         localStorage.setItem("category_id", id);
         $.ajax({
             url: 'admin/ajax/books',
@@ -293,6 +293,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             dataType: 'json',
+            data: {id: id},
             type: 'POST',
             beforeSend: function () {
                 $('#modal-loading').modal('show');

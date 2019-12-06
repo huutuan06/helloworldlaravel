@@ -68,12 +68,32 @@ class NavigationController extends Controller
         ]);
         echo json_encode($response_array);
     }
-    public function books() {
+    public function books(Request $id) {
+//        \Log::info($id);
         $returnHTML = view('ajax.page.category.books')->render();
+        $response_array = ([
+            'success' => true,
+            'id' => $id,
+            'html' => $returnHTML
+        ]);
+        echo json_encode($response_array);
+    }
+
+    public function orders() {
+        $returnHTML = view('ajax.page.order.index')->render();
         $response_array = ([
             'success' => true,
             'html' => $returnHTML
         ]);
         echo json_encode($response_array);
     }
+    public function order() {
+        $returnHTML = view('ajax.page.order.detail')->render();
+        $response_array = ([
+            'success' => true,
+            'html' => $returnHTML
+        ]);
+        echo json_encode($response_array);
+    }
+
 }
