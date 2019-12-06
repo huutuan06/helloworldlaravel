@@ -51,11 +51,6 @@ class Book extends Model
             'author' => $data['author']]);
     }
 
-    public function deleteAllData()
-    {
-        return DB::table('books')->delete();
-    }
-
     public function getCategoryById($id)
     {
         return DB::table('categories')->where('id', $id)->first();
@@ -65,8 +60,8 @@ class Book extends Model
     {
         return DB::table('books')->where('category_id', $id)->get();
     }
-//
-//    public function getAllCategories() {
-//        return DB::table('categories')->get();
-//    }
+
+    public function getAllCategories() {
+        return DB::table('categories')->get();
+    }
 }
