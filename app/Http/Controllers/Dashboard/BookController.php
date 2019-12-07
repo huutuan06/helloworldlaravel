@@ -109,7 +109,7 @@ class BookController extends Controller
                 'created_at' => $this->freshTimestamp(),
                 'updated_at' => $this->freshTimestamp(),
             );
-            $this->mModelBook->add($book);
+            $this->mModelBook->synchWithServerFromLocal($book);
         });
     }
 

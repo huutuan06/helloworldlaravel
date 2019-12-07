@@ -396,6 +396,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             dataType: 'json',
+            data: {id: id},
             type: 'GET',
             beforeSend: function () {
                 $('#modal-loading').modal('show');

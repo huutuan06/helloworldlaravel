@@ -1,0 +1,12 @@
+/**
+ * Adjust modal_title for createCustomerModal, createUserModal, ...
+ */
+.modal-title {
+    font-size: 18px;
+    color: white;
+}
+
+.modal-header {
+    background-color: #449085;
+    border-bottom: 0;
+}

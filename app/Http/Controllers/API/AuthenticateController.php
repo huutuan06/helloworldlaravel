@@ -24,11 +24,11 @@ class AuthenticateController extends Controller
     }
 
     /**
-     * Allow user to register from Mobile
+     * Login with Google/Facebook from Android App
      * @param Request $request
      */
 
-    public function loginSocialNetwork(Request $request) {
+    public function login(Request $request) {
         $credentials = $request->only('name','email');
         $rules = [
             'name' => 'required',
@@ -66,29 +66,52 @@ class AuthenticateController extends Controller
                 ]);
             }
         } else {
-            if ($this->mModelUser->isEmailExisted($request->email)) {
-                $request['password'] = $this->mModelUser->isEmailExisted($request->email)['password'];
-                $jwt_credentials = $request->only('email','password');
-                $this->response_array = ([
-                    'http_response_code' => http_response_code(),
-                    'error' => [
-                        'code'        => 0,
-                        'message'   => "Success"
-                    ],
-                    'data' => [
-                        'user' => $this->mModelUser->getByEmail($request->email),
-                        'token' => 'Bearer ' . JWTAuth::attempt($jwt_credentials),
-                    ]
-                ]);
-            } else {
-                // Update to DB. Please search Model in Laravel
-                $request['password'] =  str_random(25);
+            if ($this->mModelUser->getByEmail($request->email) != null) {
+                $user = $this->mModelUser->getByEmail($request->email);
+                $this->mModelUser->deleteById($user->id);
+                $request['password'] =  str_random(8);
                 $jwt_credentials = $request->only('email','password');
                 if ($this->mModelUser->add(array([
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'password' => Hash::make($request->password),
+                        'phone_number' => $user->phone_number,
+                        'date_of_birth' => $user->date_of_birth,
+                        'gender' => $user->gender,
+                        'avatar' => $user->avatar,
+                        'address' => $user->address,
+                        'is_verified' => $user->is_verified,
+                        'platform' => $user->platform,
+                        'remember_token' => $user->remember_token,
+                        'created_at' => $user->created_at,
+                        'updated_at' => $user->updated_at
+                    ])) > 0) {
+                    // Success
+                    $this->response_array = ([
+                        'http_response_code' => http_response_code(),
+                        'error' => [
+                            'code'        => 0,
+                            'message'   => "Success"
+                        ],
+                        'data' => [
+                            'user' => $this->mModelUser->getByEmail($request->email),
+                            'token' => 'Bearer ' . JWTAuth::attempt($jwt_credentials),
+                        ]
+                    ]);
+                }
+            } else {
+                // Update to DB. Please search Model in Laravel
+                $request['password'] =  str_random(8);
+                $jwt_credentials = $request->only('email','password');
+                if ($this->mModelUser->add(array([
+                        'id' => self::resetOrderInDB(),
                         'name' => $request->name,
                         'email' => $request->email,
                         'password' => Hash::make($request->password),
                         'is_verified' => 0,
+                        'avatar' => $request->image,
+                        'platform' => $request->platform,
                         'created_at' => $this->freshTimestamp(),
                         'updated_at' => $this->freshTimestamp()
                     ])) > 0) {
@@ -118,6 +141,19 @@ class AuthenticateController extends Controller
             }
         }
         echo json_encode($this->response_array);
+    }
+
+    /**
+     * Order ID in User table
+     * @return int
+     */
+    public function resetOrderInDB() {
+        $i = 1;
+        while (true){
+            if ($this->mModelUser->getById($i) == null) break;
+            $i++;
+        }
+        return $i;
     }
 }
 

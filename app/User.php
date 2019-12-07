@@ -42,24 +42,60 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function isEmailExisted($email) {
-        return DB::table('users')->where('email', '=', $email)->first() != null;
+    /**
+     * Get User from DB by attribute ID
+     * @param $id
+     * @return mixed
+     */
+    public function getById($id) {
+        return DB::table('users')->where('id', '=', $id)->first();
     }
+
+    /**
+     * Get User from DB by attribute Email
+     * @param $email
+     * @return mixed
+     */
+    public function getByEmail($email) {
+        return DB::table('users')->where('email', '=', $email)->first();
+    }
+
+    /**
+     * Delete User from DB by attribute ID
+     * @param $id
+     * @return mixed
+     */
+    public function deleteById($id) {
+        return DB::table('users')->where('id', $id)->delete();
+    }
+
+    /**
+     * Get all customers from DB (type = null)
+     * @return mixed
+     */
+    public function getAllCustomers() {
+        return DB::table('users')->where('type', null)->get();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function add($data) {
         return DB::table('users')->insert($data);
     }
 
-    public function getByEmail($email) {
-        return DB::table('users')->where('email', '=', $email)->first();
-    }
-
     public function get() {
         return DB::table('users')->get();
-    }
-
-    public function getById($id) {
-        return DB::table('users')->where('id', '=', $id)->first();
     }
 
     public function getByName($name) {
@@ -70,11 +106,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return DB::table('users')->where('id', $id)->update(['name' => $data['name'], 'password' => $data->password, 'phone_number' => $data->phone_number,
             'date_of_birth' => $data['date_of_birth'], 'gender' => $data['gender'], 'avatar' => $data->avatar, 'address'=> $data['address']]);
-    }
-
-    public function deleteById($id)
-    {
-        return DB::table('users')->where('id', $id)->delete();
     }
 
     /**

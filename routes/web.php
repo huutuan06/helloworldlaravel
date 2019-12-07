@@ -33,8 +33,12 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/admin/book/scrawl/top_selling', 'Dashboard\BookController@topselling')->name('book.topselling');
 
+    Route::get('/admin/vogo/book/categories/', 'Dashboard\CategoryController@showAll')->name('book.categories');
+
+    Route::delete('/admin/category/detach/{book}', 'Dashboard\CategoryController@detachBook')->name('category.detach.book');
 
     Route::group(['prefix' => '', 'note' => 'Routes for Category'], function () {
+
         Route::resource('/admin/category', 'Dashboard\CategoryController');
 
         Route::post('/admin/category/{category}', 'Dashboard\CategoryController@update')->name('category.update');
@@ -43,18 +47,27 @@ Route::group(['middleware' => 'auth'], function () {
 
     });
 
+    Route::group(['prefix' => '', 'note' => 'Routes for User'], function () {
 
-    Route::delete('/admin/category/detach/{book}', 'Dashboard\CategoryController@detachBook')->name('category.detach.book');
+//        Route::resource('/admin/user', 'Dashboard\UserController');
 
-    Route::resource('/admin/user', 'Dashboard\UserController');
+        Route::get('/admin/user', 'Dashboard\UserController@index')->name('get_list_user');
+    });
+
+    Route::group(['prefix' => '', 'note' => 'Routes for Customer'], function () {
+        Route::get('/admin/customer', 'Dashboard\CustomerController@index')->name('get_list_customers');
+    });
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
 
 
-    Route::resource('/user', 'Dashboard\UserController');
+//    Route::resource('/user', 'Dashboard\UserController');
 
-    Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
+//    Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
 
+    Route::resource('/admin/order', 'Dashboard\OrderController');
+
+    Route::get('/admin/vogo/order/detail/{detail}', 'Dashboard\OrderController@getOrderDetail')-> name('order.detail');
 
     /**
      * Using Ajax to navigate page
@@ -72,6 +85,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/ajax/cms/{cms}', 'Navigation\NavigationController@cms')->name('ajax.cms');
 
     Route::post('admin/ajax/books', 'Navigation\NavigationController@books')->name('ajax.category.books');
+
+    Route::post('admin/ajax/order/detail', 'Navigation\NavigationController@order')->name('ajax.order.detail');
+
+    Route::get('admin/ajax/order', 'Navigation\NavigationController@orders')->name('ajax.order');
 
     Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
 });

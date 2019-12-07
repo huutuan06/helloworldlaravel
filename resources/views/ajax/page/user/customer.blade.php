@@ -5,7 +5,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <button id="newUser" class="btn btn-default" type="button">New User</button>
+                        <button id="newCustomer" class="btn btn-default" type="button">New User</button>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -42,8 +42,8 @@
         </div>
     </div>
 </div>
-@include('modal.user.create')
-@include('modal.user.edit')
+@include('modal.customer.create')
+@include('modal.customer.edit')
 <script>
     $(document).ready(function () {
         $('#datatablesUser').dataTable({
@@ -59,7 +59,7 @@
             "serverSide": true,
 
             "ajax": {
-                url: '/admin/user',
+                url: '/admin/customer',
                 type: 'GET'
             },
 
@@ -100,17 +100,17 @@
         });
     });
 
-    $('#newUser').click(function () {
-        $('#createUserModal').modal('show');
-        $('#userFormCreate').find('img').attr('src', '/images/users/profile.png');
-        $('#userFormCreate').find(':radio[name="gender"][value="0"]').prop('checked', false);
-        $('#userFormCreate').find(':radio[name="gender"][value="1"]').prop('checked', false);
-        $('#userFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], input[type=date], input[type=radio] textarea').val('');
+    $('#newCustomer').click(function () {
+        $('#createCustomerModal').modal('show');
+        $('#customerFormCreate').find('img').attr('src', '/images/users/profile.png');
+        $('#customerFormCreate').find(':radio[name="gender"][value="0"]').prop('checked', false);
+        $('#customerFormCreate').find(':radio[name="gender"][value="1"]').prop('checked', false);
+        $('#customerFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], input[type=date], input[type=radio] textarea').val('');
     });
 
     $(document).ready(function () {
-        $('#userFormCreate').on('submit', function (event) {
-            $("#userFormCreate").validate({
+        $('#customerFormCreate').on('submit', function (event) {
+            $("#customerFormCreate").validate({
                 rules: {
                     name: "required",
                     email: "required",
@@ -125,7 +125,6 @@
                     name: "Name is empty!",
                     email: "Email is empty!",
                     password: "Password is empty!",
-                    // confirm_password: "Confirm password is empty!",
                     phone_number: "Phone number is empty!",
                     date_of_birth: "Name is empty!",
                     gender: "Gender is empty!",
@@ -135,7 +134,7 @@
             if (!$(this).valid()) return false;
             event.preventDefault();
 
-            $('#createUserModal').modal('hide');
+            $('#createCustomerModal').modal('hide');
             var formData = new FormData(this);
             $.ajax({
                 url: '/admin/user',
@@ -200,7 +199,7 @@
                     name: "Please fill name",
                     email: "Please fill email",
                     password: "Please fill password",
-                    phone_number: "required",
+                    phone_number: "Please fill phone number",
                     date_of_birth: "Please choose the birthday",
                     gender: "Please choose gender",
                     address: "Please fill address"
@@ -334,28 +333,6 @@
             .fail(function (error) {
                 console.log(error);
             })
-    }
-
-    function readAvatarCreate(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#showGetAvatar')
-                    .attr('src', e.target.result)
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function readAvatarEdit(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#showEditAvatar')
-                    .attr('src', e.target.result)
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
     }
 
 </script>

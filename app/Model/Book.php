@@ -13,10 +13,6 @@ class Book extends Model
     protected $fillable = [];
     protected $hidden = [];
     protected $casts = [];
-//
-//    public function categories() {
-//        return $this->$this->belongsToMany('app\Model\Category');
-//    }
 
     public function add($data)
     {
@@ -63,5 +59,9 @@ class Book extends Model
 
     public function getAllCategories() {
         return DB::table('categories')->get();
+    }
+
+    public function synchWithServerFromLocal($book) {
+        $this->add($book);
     }
 }
