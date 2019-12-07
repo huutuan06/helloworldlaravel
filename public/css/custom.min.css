@@ -568,7 +568,7 @@ body .container.body .right_col {
 
 body {
     color: #73879C;
-    background: #0098ff;
+    background: white;
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -793,7 +793,7 @@ a {
 }
 
 .nav-md ul.nav.child_menu li:before {
-    background: #3f9e91;
+    background: #0072bf;
     bottom: auto;
     content: "";
     height: 8px;
@@ -807,7 +807,7 @@ a {
 }
 
 .nav-md ul.nav.child_menu li:after {
-    border-left: 1px solid #3f9e91;
+    border-left: 1px solid #0072bf;
     bottom: 0;
     content: "";
     left: 27px;
@@ -838,7 +838,7 @@ a {
 }
 
 .nav.side-menu > li.active, .nav.side-menu > li.current-page {
-    border-right: 5px solid #1ABB9C
+    border-right: 5px solid #0098ff;
 }
 
 .nav li.current-page {
@@ -856,7 +856,7 @@ a {
 
 .nav.side-menu > li.active > a {
     text-shadow: rgba(0, 0, 0, .25) 0 -1px 0;
-    background: linear-gradient(#3f9e91, #3f9e91), #0098ff;
+    background: linear-gradient(#0098ff, #0098ff), #0098ff;
     box-shadow: rgba(0, 0, 0, .25) 0 1px 0, inset rgba(255, 255, 255, .16) 0 1px 0
 }
 

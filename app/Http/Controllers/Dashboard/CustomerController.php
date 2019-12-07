@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\UploadTrait;
@@ -60,8 +61,18 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $credentials = $request->only('name', 'email', 'password', 'avatar','phone_number', 'date_of_birth', 'gender', 'address');
-
+        $credentials = $request->only('name', 'email', 'password');
+        $rules = [
+            'name' => 'required', 'string', 'max:255',
+            'email' => 'required','string', 'email', 'max:255', 'unique:users',
+            'password' => 'required'
+        ];
+        $customMessages = [
+            'required' => 'The attribute field is required',
+            'email' => 'The email address is invalid',
+            'max:255' => 'The max of the length of content is limited by 255 characters.',
+            'unique:users' => 'The email address have already existed in the system',
+        ];
         if ($request->has('avatar')) {
             $image = $request->file('avatar');
             $name = str_slug($request->input('name')).'_'.time();
@@ -72,22 +83,6 @@ class CustomerController extends Controller
         } else {
             $request->avatar = '/images/users/'.'profile.png';
         }
-        $rules = [
-            'name' => 'required', 'string', 'max:255',
-            'email' => 'required','string', 'email', 'max:255', 'unique:users',
-            'password' => 'required',
-            'phone_number' => 'required',
-            'date_of_birth' => 'required',
-            'gender' => 'required',
-            'address' => 'required',
-        ];
-        $customMessages = [
-            'required' => 'The attribute field is required!',
-            'email' => "Email isn't right!",
-            'max:255' => 'Total characters are surpass 255!',
-            'unique:users' => 'The email already exists in the system!',
-        ];
-        $request->password = bcrypt($request->password);
         $validator = Validator::make($credentials, $rules, $customMessages);
         if ($validator->fails()) {
             $this->response_array = ([
@@ -108,7 +103,7 @@ class CustomerController extends Controller
                 if ($this->mModelUser->add(array([
                         'name' => $request->name,
                         'email' => $request->email,
-                        'password' => $request->password,
+                        'password' => Hash::make($request->password),
                         'date_of_birth' => $request->date_of_birth,
                         'gender' => $request->gender,
                         'phone_number' => $request->phone_number,

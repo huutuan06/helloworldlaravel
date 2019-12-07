@@ -5,7 +5,6 @@ namespace App\Traits;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-
 trait UploadTrait
 {
     public function uploadImage(UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null)

@@ -15,15 +15,13 @@
                                 <th style="width: 20.00%; text-align: center">Name</th>
                                 <th style="width: 20.00%; text-align: center">Email</th>
                                 <th style="width: 20.00%; text-align: center">Phone Number</th>
-                                <th style="width: 5.00%; text-align: center">Gender</th>
-                                <th style="width: 10.00%; text-align: center">Date of Birth</th>
-                                <th style="width: 25.00%; text-align: center">Address</th>
+                                <th style="width: 10.00%; text-align: center">Gender</th>
+                                <th style="width: 20.00%; text-align: center">Address</th>
                                 <th style="width: 10.00%; text-align: center">Manipulation</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -73,7 +71,6 @@
                             return '';
                     }
                 },
-                {"data": "date_of_birth"},
                 {"data": "address"},
                 {"data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
@@ -111,11 +108,10 @@
             });
             if (!$(this).valid()) return false;
             event.preventDefault();
-
             $('#createCustomerModal').modal('hide');
             var formData = new FormData(this);
             $.ajax({
-                url: '/admin/user',
+                url: '/admin/customer',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -140,10 +136,8 @@
                             [
                                 data['user']['name'],
                                 data['user']['email'],
-                                data['user']['avatar'],
                                 data['user']['phone_number'],
                                 data['user']['gender'],
-                                data['user']['date_of_birth'],
                                 data['user']['address'],
                                 function (id) {
                                     return '<div class="text-center">'
