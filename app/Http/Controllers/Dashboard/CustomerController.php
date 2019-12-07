@@ -40,7 +40,7 @@ class CustomerController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'date_of_birth' => date("d M Y", strtotime( $user->date_of_birth)),
+                'date_of_birth' => $user->date_of_birth == null ? null : date("d M Y", strtotime( $user->date_of_birth)),
                 'avatar' => $user->avatar,
                 'phone_number' => $user->phone_number,
                 'address' => $user->address,

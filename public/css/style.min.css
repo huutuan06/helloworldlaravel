@@ -7,6 +7,33 @@
 }
 
 .modal-header {
-    background-color: #449085;
+    background-color: #0098ff;
     border-bottom: 0;
+}
+
+.btn {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border-color: #0098ff;
+    background-color: #0098ff;
+    color: white;
+}
+
+.btn:hover {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border-color: white;
+    background-color: white;
+    color: #0098ff;
+}
+
+.modal-content > form {
+    padding: 15px;
+}
+
+.error {
+    color: red;
+    font-family: normal;
 }

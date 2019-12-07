@@ -5,27 +5,24 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <button id="newCustomer" class="btn btn-default" type="button">New User</button>
+                        <button id="newCustomer" class="btn btn-default" type="button">New Customer</button>
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
                         <table id="datatablesUser" class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th style="width: 5.00%">ID</th>
-                                <th style="width: 15.00%">Name</th>
-                                <th style="width: 15.00%">Email</th>
-                                <th style="width: 5.00%">Avatar</th>
-                                <th style="width: 10.00%">Phone Number</th>
-                                <th style="width: 5.00%">Gender</th>
-                                <th style="width: 10.00%">Date of Birth</th>
-                                <th style="width: 25.00%">Address</th>
+                                <th style="width: 20.00%; text-align: center">Name</th>
+                                <th style="width: 20.00%; text-align: center">Email</th>
+                                <th style="width: 20.00%; text-align: center">Phone Number</th>
+                                <th style="width: 5.00%; text-align: center">Gender</th>
+                                <th style="width: 10.00%; text-align: center">Date of Birth</th>
+                                <th style="width: 25.00%; text-align: center">Address</th>
                                 <th style="width: 10.00%; text-align: center">Manipulation</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -64,32 +61,21 @@
             },
 
             "columns": [
-                {"data": "id"},
                 {"data": "name"},
                 {"data": "email"},
-                {
-                    "data": "avatar", "render": function (avatar) {
-                        return '<img src="' + avatar + '" width="36px;" height="36px;" alt="avatar"/>';
-                    }
-                },
                 {"data": "phone_number"},
-                {
-                    "data": "gender", "render": function (gender) {
-                        if (gender == 1)
-                            return '<div class="text-center">'
-                                + '<img src="/images/icon_gender_female.png"  width="18px" height="18px">'
-                                +'</div>';
-                    else
-                        return '<div class="text-center">'
-                            + '<img src="/images/icon_gender_male.png"  width="18px" height="18px">'
-                            +'</div>';
+                {"data": "gender", "render": function (gender) {
+                        if (gender === 1)
+                            return 'Female';
+                        else if (gender === 0)
+                            return 'Male';
+                        else
+                            return '';
                     }
                 },
-
                 {"data": "date_of_birth"},
                 {"data": "address"},
-                {
-                    "data": "manipulation", "render": function (id) {
+                {"data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
                             + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
                             + '<span>  </span>' + '<a href="javascript:void(0)' + id + '" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
@@ -102,10 +88,11 @@
 
     $('#newCustomer').click(function () {
         $('#createCustomerModal').modal('show');
-        $('#customerFormCreate').find('img').attr('src', '/images/users/profile.png');
-        $('#customerFormCreate').find(':radio[name="gender"][value="0"]').prop('checked', false);
-        $('#customerFormCreate').find(':radio[name="gender"][value="1"]').prop('checked', false);
-        $('#customerFormCreate').find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], input[type=date], input[type=radio] textarea').val('');
+        $('#customerFormCreate')
+            .find('img').attr('src', '/images/users/profile.png')
+            .find(':radio[name="gender"][value="0"]').prop('checked', false)
+            .find(':radio[name="gender"][value="1"]').prop('checked', false)
+            .find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], input[type=date], input[type=radio] textarea').val('');
     });
 
     $(document).ready(function () {
@@ -114,21 +101,12 @@
                 rules: {
                     name: "required",
                     email: "required",
-                    password: "required",
-                    // confirm_password: "required",
-                    phone_number: "required",
-                    date_of_birth: "required",
-                    gender: "required",
-                    address: "required",
+                    password: "required"
                 },
                 messages: {
-                    name: "Name is empty!",
-                    email: "Email is empty!",
-                    password: "Password is empty!",
-                    phone_number: "Phone number is empty!",
-                    date_of_birth: "Name is empty!",
-                    gender: "Gender is empty!",
-                    address: "Address is empty!"
+                    name: "Please enter your name",
+                    email: "Please enter your email address",
+                    password: "Please enter your password"
                 }
             });
             if (!$(this).valid()) return false;
@@ -303,7 +281,7 @@
 
     function deleteUser(id) {
         $.ajax({
-            url: '/admin/user/' + id,
+            url: '/admin/customer/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -334,5 +312,4 @@
                 console.log(error);
             })
     }
-
 </script>

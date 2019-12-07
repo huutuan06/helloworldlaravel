@@ -73,16 +73,16 @@ class AuthenticateController extends Controller
                 $jwt_credentials = $request->only('email','password');
                 if ($this->mModelUser->add(array([
                         'id' => $user->id,
-                        'name' => $user->name,
+                        'name' => $request->name != null ? $request->name : $user->name,
                         'email' => $user->email,
                         'password' => Hash::make($request->password),
                         'phone_number' => $user->phone_number,
                         'date_of_birth' => $user->date_of_birth,
                         'gender' => $user->gender,
-                        'avatar' => $user->avatar,
+                        'avatar' => $request->image != null ? $request->image : $user->avatar,
                         'address' => $user->address,
                         'is_verified' => $user->is_verified,
-                        'platform' => $user->platform,
+                        'platform' => $request->platform != null ? $request->platform : $user->platform,
                         'remember_token' => $user->remember_token,
                         'created_at' => $user->created_at,
                         'updated_at' => $user->updated_at

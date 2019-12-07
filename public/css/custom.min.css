@@ -164,7 +164,7 @@
 }
 
 .left_col {
-    background: #449085
+    background: #0098ff;
 }
 
 .nav-sm .container.body .col-md-3.left_col {
@@ -376,7 +376,7 @@
 
 .nav_menu {
     float: left;
-    background: #f7f7f7;
+    background: #ffffff;
     border-bottom: 1px solid #D9DEE4;
     margin-bottom: 10px;
     width: 100%;
@@ -405,7 +405,7 @@
 }
 
 body .container.body .right_col {
-    background: #F7F7F7
+    background: #FFFFFF
 }
 
 .nav-md .container.body .right_col {
@@ -416,7 +416,7 @@ body .container.body .right_col {
 .nav_title {
     width: 230px;
     float: left;
-    background: #449085;
+    background: #0098ff;
     border-radius: 0;
     height: 57px
 }
@@ -568,7 +568,7 @@ body .container.body .right_col {
 
 body {
     color: #73879C;
-    background: #449085;
+    background: #0098ff;
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -856,7 +856,7 @@ a {
 
 .nav.side-menu > li.active > a {
     text-shadow: rgba(0, 0, 0, .25) 0 -1px 0;
-    background: linear-gradient(#3f9e91, #3f9e91), #449085;
+    background: linear-gradient(#3f9e91, #3f9e91), #0098ff;
     box-shadow: rgba(0, 0, 0, .25) 0 1px 0, inset rgba(255, 255, 255, .16) 0 1px 0
 }
 
@@ -1838,7 +1838,7 @@ span.right {
     padding: 5px 0 0;
     position: fixed;
     width: 230px;
-    background: #449085;
+    background: #0098ff;
     z-index: 999
 }
 
@@ -3245,7 +3245,7 @@ img.avatar, ul.messages li img.avatar {
     display: inline-block;
     border-radius: 2px;
     padding: 2px;
-    background: #f7f7f7;
+    background: #FFFFFF;
     border: 1px solid #e6e6e6
 }
 
@@ -3476,7 +3476,7 @@ ul.project_files li a i {
 
 .caption {
     padding: 9px 5px;
-    background: #F7F7F7
+    background: #FFFFFF
 }
 
 .caption p {
@@ -3622,11 +3622,11 @@ ul.project_files li a i {
 }
 
 .tabs-left {
-    border-right: 1px solid #F7F7F7
+    border-right: 1px solid #FFFFFF
 }
 
 .tabs-right {
-    border-left: 1px solid #F7F7F7
+    border-left: 1px solid #FFFFFF
 }
 
 .tabs-left > li, .tabs-right > li {
@@ -3644,7 +3644,7 @@ ul.project_files li a i {
 
 .tabs-left > li > a, .tabs-right > li > a {
     margin-right: 0;
-    background: #F7F7F7;
+    background: #FFFFFF;
     overflow: hidden;
     text-overflow: ellipsis
 }
@@ -3654,12 +3654,12 @@ ul.project_files li a i {
 }
 
 .tabs-left > li.active > a, .tabs-left > li.active > a:focus, .tabs-left > li.active > a:hover {
-    border-bottom-color: #F7F7F7;
+    border-bottom-color: #FFFFFF;
     border-right-color: transparent
 }
 
 .tabs-right > li.active > a, .tabs-right > li.active > a:focus, .tabs-right > li.active > a:hover {
-    border-bottom: 1px solid #F7F7F7;
+    border-bottom: 1px solid #FFFFFF;
     border-left-color: transparent
 }
 
@@ -3810,7 +3810,7 @@ ul.project_files li a i {
 }
 
 .login {
-    background: #F7F7F7
+    background: #FFFFFF
 }
 
 .login .fa-paw {
@@ -4120,7 +4120,7 @@ fieldset {
 }
 
 .cropper .img-container, .cropper .img-preview {
-    background-color: #f7f7f7;
+    background-color: #FFFFFF;
     width: 100%;
     text-align: center
 }
@@ -4240,7 +4240,7 @@ fieldset {
 }
 
 .cropper .docs-options .dropdown-menu > li:hover {
-    background-color: #f7f7f7
+    background-color: #FFFFFF
 }
 
 .cropper .docs-options .dropdown-menu > li > label {
