@@ -42,5 +42,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
      * Request: Header: Authorization
      *          Param: Bearer<Space><Token>
      */
-    Route::post('/v1/mobile/user/profile', 'API\AuthenticateController@profile');
+    Route::post('/v1/mobile/user/profile', 'API\ProfileController@profile');
+
+    Route::post('/v1/mobile/user/logout', 'API\ProfileController@logout')->name('logout');
 });
