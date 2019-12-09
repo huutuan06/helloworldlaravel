@@ -143,6 +143,10 @@ class AuthenticateController extends Controller
         echo json_encode($this->response_array);
     }
 
+    public function profile($request) {
+        \Log::info($request);
+    }
+
     /**
      * Order ID in User table
      * @return int

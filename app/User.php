@@ -77,19 +77,11 @@ class User extends Authenticatable implements JWTSubject
         return DB::table('users')->where('type', null)->get();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Save all customer into table User
+     * @param $data
+     * @return mixed
+     */
     public function add($data) {
         return DB::table('users')->insert($data);
     }

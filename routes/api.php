@@ -42,9 +42,5 @@ Route::group(['middleware' => ['jwt.auth']], function() {
      * Request: Header: Authorization
      *          Param: Bearer<Space><Token>
      */
-    Route::resource('/v1/mobile/book', 'API\BookController');
-
-    Route::get('test', function(){
-        return response()->json(['foo'=>'bar']);
-    });
+    Route::post('/v1/mobile/user/profile', 'API\AuthenticateController@profile');
 });

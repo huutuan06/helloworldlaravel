@@ -23,7 +23,6 @@ class CustomerController extends Controller
     use UploadTrait;
     public function __construct(User $user)
     {
-        $this->middleware('auth');
         $this->mModelUser = $user;
     }
 
@@ -81,7 +80,7 @@ class CustomerController extends Controller
             $this->uploadImage($image, $folder, 'public', $name);
             $request->avatar = $filePath;
         } else {
-            $request->avatar = '/images/users/'.'profile.png';
+            $request->avatar = Request::url().'/images/users/'.'profile.png';
         }
         $validator = Validator::make($credentials, $rules, $customMessages);
         if ($validator->fails()) {
@@ -101,6 +100,7 @@ class CustomerController extends Controller
                 ]);
             } else {
                 if ($this->mModelUser->add(array([
+                        'id' => self::resetOrderInDB(),
                         'name' => $request->name,
                         'email' => $request->email,
                         'password' => Hash::make($request->password),
@@ -115,9 +115,16 @@ class CustomerController extends Controller
                     $this->response_array = ([
                         'message' => [
                             'status' => 'success',
-                            'description' => 'Add a new user successfully!'
+                            'description' => 'Create a new customer successfully'
                         ],
                         'user' => $this->mModelUser->getByEmail($request->email)
+                    ]);
+                } else {
+                    $this->response_array = ([
+                        'message' => [
+                            'status' => 'error',
+                            'description' => 'Create a new customer in failure'
+                        ]
                     ]);
                 }
             }
@@ -271,5 +278,18 @@ class CustomerController extends Controller
                 'id' => $id
             ]);
         }
+    }
+
+    /**
+     * Order ID in User table
+     * @return int
+     */
+    public function resetOrderInDB() {
+        $i = 1;
+        while (true){
+            if ($this->mModelUser->getById($i) == null) break;
+            $i++;
+        }
+        return $i;
     }
 }

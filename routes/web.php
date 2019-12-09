@@ -51,16 +51,15 @@ Route::group(['middleware' => 'auth'], function () {
 
 //        Route::resource('/admin/user', 'Dashboard\UserController');
 
-        Route::get('/admin/user', 'Dashboard\UserController@index')->name('get_list_user');
+//        Route::get('/admin/user', 'Dashboard\UserController@index')->name('get_list_user');
     });
 
     Route::group(['prefix' => '', 'note' => 'Routes for Customer'], function () {
-        Route::get('/admin/customer', 'Dashboard\CustomerController@index')->name('get_list_customers');
-        Route::post('/admin/customer', 'Dashboard\CustomerController@store')->name('create_customer');
+        Route::get('/admin/customer/get', 'Dashboard\CustomerController@index')->name('get_list_customers');
+        Route::post('/admin/customer/new', 'Dashboard\CustomerController@store')->name('create_customer');
     });
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
-
 
 //    Route::resource('/user', 'Dashboard\UserController');
 

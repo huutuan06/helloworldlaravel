@@ -54,7 +54,7 @@
             "serverSide": true,
 
             "ajax": {
-                url: '/admin/customer',
+                url: '/admin/customer/get',
                 type: 'GET'
             },
 
@@ -111,7 +111,7 @@
             $('#createCustomerModal').modal('hide');
             var formData = new FormData(this);
             $.ajax({
-                url: '/admin/customer',
+                url: '/admin/customer/new',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -137,7 +137,14 @@
                                 data['user']['name'],
                                 data['user']['email'],
                                 data['user']['phone_number'],
-                                data['user']['gender'],
+                                function (gender) {
+                                    if (gender === 1)
+                                        return 'Female';
+                                    else if (gender === 0)
+                                        return 'Male';
+                                    else
+                                        return '';
+                                },
                                 data['user']['address'],
                                 function (id) {
                                     return '<div class="text-center">'
