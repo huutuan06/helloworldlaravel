@@ -45,4 +45,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::post('/v1/mobile/user/profile', 'API\ProfileController@profile');
 
     Route::post('/v1/mobile/user/logout', 'API\ProfileController@logout')->name('logout');
+
+    Route::post('/v1/mobile/user/manageorders', 'API\ProfileController@manageorders')->name('manageorders');
 });

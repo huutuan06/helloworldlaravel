@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Model\Book_Order;
+use App\Model\Order;
 use App\User;
 use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
@@ -14,13 +16,17 @@ class ProfileController extends Controller
 
     protected $response_array;
     protected $mModelUser;
+    protected $mModelOrder;
+    protected $mBookOrder;
 
     use HasTimestamps;
     use UploadTrait;
 
-    public function __construct(User $user)
+    public function __construct(User $user, Order $order, Book_Order $book_Order)
     {
+        $this->mBookOrder = $book_Order;
         $this->mModelUser = $user;
+        $this->mModelOrder = $order;
     }
 
     public function profile($request) {
@@ -68,6 +74,35 @@ class ProfileController extends Controller
 //            ]);
 //            echo json_encode($response_array);
 //        }
+    }
+
+    public function manageorders() {
+        $orders = $this->mModelOrder->get();
+        $result = array();
+        foreach($orders as $order) {
+            $result[] = array(
+                'id' => $order->id,
+                'code' => $order->code,
+                'user_id' => $order->user_id,
+                'address' => $order->address,
+                'is_confirmed_ordering' => $order->is_confirmed_ordering,
+                'is_unsuccessful_payment' => $order->is_unsuccessful_payment,
+                'is_delivery' => $order->is_delivery,
+                'is_success' => $order->is_success,
+                'is_cancel' => $order->is_cancel,
+                'created_at' => $order->created_at,
+                'updated_at' => $order->updated_at,
+                'book_order' => $this->mBookOrder->get($order->id),
+            );
+        }
+        $this->response_array = ([
+            'message' => [
+                'status' => 'success',
+                'description' => 'Add a new book successfully'
+            ],
+            'data' => $result
+        ]);
+        echo json_encode($this->response_array);
     }
 
     public function logout(Request $request)
