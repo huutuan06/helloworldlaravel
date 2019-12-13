@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Model\Book;
 use App\Model\Book_Order;
 use App\Model\Order;
 use App\User;
@@ -18,15 +19,17 @@ class ProfileController extends Controller
     protected $mModelUser;
     protected $mModelOrder;
     protected $mBookOrder;
+    protected $mModelBook;
 
     use HasTimestamps;
     use UploadTrait;
 
-    public function __construct(User $user, Order $order, Book_Order $book_Order)
+    public function __construct(User $user, Order $order, Book_Order $book_Order, Book $book)
     {
         $this->mBookOrder = $book_Order;
         $this->mModelUser = $user;
         $this->mModelOrder = $order;
+        $this->mModelBook = $book;
     }
 
     public function profile($request) {
@@ -82,6 +85,7 @@ class ProfileController extends Controller
         foreach($orders as $order) {
             $result[] = array(
                 'id' => $order->id,
+                'name' => self::getProductNames($this->mBookOrder->get($order->id)),
                 'code' => $order->code,
                 'user_id' => $order->user_id,
                 'address' => $order->address,
@@ -103,6 +107,14 @@ class ProfileController extends Controller
             'data' => $result
         ]);
         echo json_encode($this->response_array);
+    }
+
+    public function getProductNames($book_orders) {
+        $orderName = '';
+        foreach ($book_orders as $book_order) {
+            $orderName .= $this->mModelBook->getById($book_order->book_id)->title. " ";
+        }
+        return $orderName;
     }
 
     public function logout(Request $request)
