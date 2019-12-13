@@ -164,7 +164,7 @@
 }
 
 .left_col {
-    background: #0098ff;
+    background: #488A99;
 }
 
 .nav-sm .container.body .col-md-3.left_col {
@@ -416,7 +416,7 @@ body .container.body .right_col {
 .nav_title {
     width: 230px;
     float: left;
-    background: #0098ff;
+    background: #488A99;
     border-radius: 0;
     height: 57px
 }
@@ -696,7 +696,7 @@ table.no-margin .progress {
 }
 
 a {
-    color: #5A738E
+    color: #488A99;
 }
 
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus, :active, :focus, :visited, a, a:active, a:focus, a:visited {
@@ -838,7 +838,7 @@ a {
 }
 
 .nav.side-menu > li.active, .nav.side-menu > li.current-page {
-    border-right: 5px solid #0098ff;
+    border-right: 5px solid #488AAA;
 }
 
 .nav li.current-page {
@@ -856,7 +856,7 @@ a {
 
 .nav.side-menu > li.active > a {
     text-shadow: rgba(0, 0, 0, .25) 0 -1px 0;
-    background: linear-gradient(#0098ff, #0098ff), #0098ff;
+    background: linear-gradient(#488A99, #488A99), #488A99;
     box-shadow: rgba(0, 0, 0, .25) 0 1px 0, inset rgba(255, 255, 255, .16) 0 1px 0
 }
 
@@ -1838,7 +1838,7 @@ span.right {
     padding: 5px 0 0;
     position: fixed;
     width: 230px;
-    background: #0098ff;
+    background: #488A99;
     z-index: 999
 }
 

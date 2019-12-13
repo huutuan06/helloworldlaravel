@@ -9,7 +9,6 @@
     <title>Dashboard</title>
     <link rel="icon" href="{{ URL::asset('images/favicon.ico') }}" type="image/ico"/>
     <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::asset('css/bootstrap2-toggle.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/notifications.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('css/sweetalert.css') }}" rel="stylesheet">
@@ -31,7 +30,7 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Vogo Book</span></a>
+                    <a href="{{ Route('admin.index') }}" class="site_title"><i class="fa fa-paw"></i> <span>Vogo Book</span></a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -96,7 +95,7 @@
             <div class="nav_menu">
                 <nav>
                     <div class="nav toggle">
-                        <a id="menu_toggle"><i class="fa fa-arrows-alt"></i></a>
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
 
                     <ul class="nav navbar-nav navbar-right">
