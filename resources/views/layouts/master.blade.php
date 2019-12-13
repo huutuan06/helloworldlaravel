@@ -52,13 +52,13 @@
                     <div class="menu_section">
                         <h3>General</h3>
                         <ul class="nav side-menu">
-                            <li><a><i class="fa fa-home"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-line-chart"></i> Analytics <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li><a id="nav_index" href="javascript:void(0)">Google Analytics</a></li>
                                     <li><a id="nav_index" href="javascript:void(0)">Firebase Analytics</a></li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-home"></i> Customer <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-users"></i> Customer <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li><a id="nav_view_customer" href="javascript:void(0)">View Customer</a></li>
                                 </ul>
