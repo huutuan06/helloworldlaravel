@@ -36,11 +36,12 @@ class CustomerController extends Controller
         $users = $this->mModelUser->getAllCustomers();
         $collections = collect();
         foreach ($users as $user) {
+            \Log::info($user->date_of_birth);
             $arr = array(
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'date_of_birth' => $user->date_of_birth == null ? null : date("d M Y", strtotime( $user->date_of_birth)),
+                'date_of_birth' => $user->date_of_birth == null ? null : date("M d, Y", $user->date_of_birth),
                 'avatar' => $user->avatar,
                 'phone_number' => $user->phone_number,
                 'address' => $user->address,
@@ -55,8 +56,8 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request
+     * @return void
      */
     public function store(Request $request)
     {

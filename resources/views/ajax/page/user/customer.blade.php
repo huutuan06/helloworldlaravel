@@ -12,10 +12,11 @@
                         <table id="datatablesUser" class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th style="width: 20.00%; text-align: center">Name</th>
+                                <th style="width: 10.00%; text-align: center">Name</th>
                                 <th style="width: 20.00%; text-align: center">Email</th>
                                 <th style="width: 20.00%; text-align: center">Phone Number</th>
                                 <th style="width: 10.00%; text-align: center">Gender</th>
+                                <th style="width: 10.00%; text-align: center">Date of Birth</th>
                                 <th style="width: 20.00%; text-align: center">Address</th>
                                 <th style="width: 10.00%; text-align: center">Manipulation</th>
                             </tr>
@@ -25,6 +26,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td style="text-align: center;"></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -71,6 +73,7 @@
                             return '';
                     }
                 },
+                {"data": "date_of_birth"},
                 {"data": "address"},
                 {"data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
