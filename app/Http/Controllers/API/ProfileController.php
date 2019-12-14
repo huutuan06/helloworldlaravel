@@ -100,9 +100,9 @@ class ProfileController extends Controller
             );
         }
         $this->response_array = ([
-            'message' => [
-                'status' => 'success',
-                'description' => 'Add a new book successfully'
+            'error' => [
+                'code'        => 0,
+                'message'   => "Success"
             ],
             'data' => $result
         ]);

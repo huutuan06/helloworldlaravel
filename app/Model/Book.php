@@ -14,6 +14,10 @@ class Book extends Model
     protected $hidden = [];
     protected $casts = [];
 
+    protected $primaryKey = 'id';
+
+    public $autoincrement = false;
+
     public function add($data)
     {
         return DB::table('books')->insert($data);
@@ -29,6 +33,14 @@ class Book extends Model
         return DB::table('books')->where('title', $title)->first();
     }
 
+    public function getByTitlenAuthor($title, $price)
+    {
+        return DB::table('books')
+            ->where('title', $title)
+            ->where('price', $price)
+            ->first();
+    }
+
     public function deleteById($id)
     {
         return DB::table('books')->where('id', $id)->delete();
@@ -41,10 +53,18 @@ class Book extends Model
 
     public function updateById($id, $data)
     {
-        return DB::table('books')->where('id', $id)->update(['title' => $data['title'], 'image' => $data->image,
-            'category_id' => $data['category_id'], 'description' => $data['description'],
-            'total_pages' => $data['total_pages'], 'price' => $data['price'], 'amount' => $data['amount'],
-            'author' => $data['author']]);
+        return DB::table('books')->where('id', $id)->update([
+            'id' => $data[0]['id'],
+            'title' => $data[0]['title'],
+            'numeral' => $data[0]['numeral'],
+            'image' => $data[0]['image'],
+            'category_id' => $data[0]['category_id'],
+            'description' => $data[0]['description'],
+            'total_pages' => $data[0]['total_pages'],
+            'price' => $data[0]['price'],
+            'amount' => $data[0]['amount'],
+            'author' => $data[0]['author']
+        ]);
     }
 
     public function getCategoryById($id)
@@ -62,6 +82,21 @@ class Book extends Model
     }
 
     public function synchWithServerFromLocal($book) {
-        $this->add($book);
+        if ($this->getByTitlenAuthor($book['title'], $book['price']) != null)
+            $this->updateById($this->getByTitlenAuthor($book['title'], $book['author'])->id, array([
+                'id' => $this->getByTitlenAuthor($book['title'], $book['author'])->id,
+                'title' => $this->getByTitlenAuthor($book['title'], $book['author'])->title,
+                'numeral' => $this->getByTitlenAuthor($book['title'], $book['author'])->id,
+                'image' => $this->getByTitlenAuthor($book['title'], $book['author'])->image,
+                'category_id' => $this->getByTitlenAuthor($book['title'], $book['author'])->category_id,
+                'description' => $this->getByTitlenAuthor($book['title'], $book['author'])->description,
+                'total_pages' => $this->getByTitlenAuthor($book['title'], $book['author'])->total_pages,
+                'price' => $this->getByTitlenAuthor($book['title'], $book['author'])->price,
+                'amount' => $this->getByTitlenAuthor($book['title'], $book['author'])->amount,
+                'author' => $this->getByTitlenAuthor($book['title'], $book['author'])->author
+            ]));
+        else {
+            $this->add($book);
+        }
     }
 }

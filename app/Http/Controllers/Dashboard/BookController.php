@@ -97,8 +97,11 @@ class BookController extends Controller
                     return (float)substr(strstr($node7->text(), '$'), 1);
                 });
             }
+            $numeral = self::resetOrderInDB();
             $book = array(
+                'id' => $numeral,
                 'title' => $title[0],
+                'numeral' => $numeral,
                 'image' => $image[0],
                 'category_id' => 3,
                 'description' => '',
@@ -111,6 +114,19 @@ class BookController extends Controller
             );
             $this->mModelBook->synchWithServerFromLocal($book);
         });
+    }
+
+    /**
+     * Order ID in User table
+     * @return int
+     */
+    public function resetOrderInDB() {
+        $i = 1;
+        while (true){
+            if ($this->mModelBook->getById($i) == null) break;
+            $i++;
+        }
+        return $i;
     }
 
     /**
