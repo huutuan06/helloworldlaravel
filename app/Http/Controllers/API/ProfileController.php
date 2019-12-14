@@ -24,8 +24,7 @@ class ProfileController extends Controller
     use HasTimestamps;
     use UploadTrait;
 
-    public function __construct(User $user, Order $order, Book_Order $book_Order, Book $book)
-    {
+    public function __construct(User $user, Order $order, Book_Order $book_Order, Book $book) {
         $this->mBookOrder = $book_Order;
         $this->mModelUser = $user;
         $this->mModelOrder = $order;
