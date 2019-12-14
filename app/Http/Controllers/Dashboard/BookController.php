@@ -48,7 +48,7 @@ class BookController extends Controller
 
     protected $imageBooScrawling;
 
-    public function topselling()
+    public function topSellingBook($yearBookSelling)
     {
         $goutteClient = new \Goutte\Client();
         $guzzleClient = new Client([
@@ -56,7 +56,7 @@ class BookController extends Controller
             'verify' => false,
         ]);
         $goutteClient->setClient($guzzleClient);
-        $url = "https://www.amazon.com/gp/bestsellers/2019/books";
+        $url = $yearBookSelling;
         $crawler = $goutteClient->request('GET', $url);
         $crawler->filter('span.zg-item')->each(function ($node) {
             $image = $node->filter('a.a-link-normal > span.zg-text-center-align > div.a-section')->each(function ($node1) {
