@@ -80,6 +80,8 @@
                             </li>
                             <li><a><i class="fa fa-home"></i> User <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
+                                    <li><a id="nav_permission" href="javascript:void(0)">Permission</a></li>
+                                    <li><a id="nav_view_user" href="javascript:void(0)">Admin</a></li>
                                     <li><a id="nav_view_user" href="javascript:void(0)">Staff</a></li>
                                 </ul>
                             </li>

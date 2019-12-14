@@ -69,28 +69,62 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/admin/vogo/order/detail/{detail}', 'Dashboard\OrderController@getOrderDetail')-> name('order.detail');
 
-    /**
-     * Using Ajax to navigate page
-     */
-    Route::get('/admin', 'Dashboard\DashboardController@index')->name('admin.index');
+    Route::group(['prefix' => '', 'note' => 'MANAGERS'], function () {
+        /**
+         * Using Ajax to navigate page
+         */
+        Route::get('/admin', 'Dashboard\DashboardController@index')->name('admin.index');
 
-    Route::get('admin/ajax/book', 'Navigation\NavigationController@book')->name('ajax.book');
+        Route::get('admin/ajax/book', 'Navigation\NavigationController@book')->name('ajax.book');
 
-    Route::get('admin/ajax/category', 'Navigation\NavigationController@category')->name('ajax.category');
+        Route::get('admin/ajax/category', 'Navigation\NavigationController@category')->name('ajax.category');
 
-    Route::get('admin/ajax/user', 'Navigation\NavigationController@user')->name('ajax.user');
+        Route::get('admin/ajax/user', 'Navigation\NavigationController@user')->name('ajax.user');
 
-    Route::get('admin/ajax/user/customer', 'Navigation\NavigationController@customer')->name('ajax.user');
+        Route::get('admin/ajax/user/customer', 'Navigation\NavigationController@customer')->name('ajax.user');
 
-    Route::get('admin/ajax/cms/{cms}', 'Navigation\NavigationController@cms')->name('ajax.cms');
+        Route::get('admin/ajax/cms/{cms}', 'Navigation\NavigationController@cms')->name('ajax.cms');
 
-    Route::post('admin/ajax/books', 'Navigation\NavigationController@books')->name('ajax.category.books');
+        Route::post('admin/ajax/books', 'Navigation\NavigationController@books')->name('ajax.category.books');
 
-    Route::post('admin/ajax/order/detail', 'Navigation\NavigationController@order')->name('ajax.order.detail');
+        Route::post('admin/ajax/order/detail', 'Navigation\NavigationController@order')->name('ajax.order.detail');
 
-    Route::get('admin/ajax/order', 'Navigation\NavigationController@orders')->name('ajax.order');
+        Route::get('admin/ajax/order', 'Navigation\NavigationController@orders')->name('ajax.order');
 
-    Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
+        Route::get('admin/ajax/dashboard', 'Navigation\NavigationController@dashboard')->name('ajax.dashboard');
+    });
+
+    Route::group(['prefix' => '', 'note' => 'MANAGERS'], function () {
+
+        Route::get('admin/permission/index', 'Dashboard\PermissionController@index')->name('manager.index');
+
+        Route::get('admin/permission/role/loading', 'Dashboard\PermissionController@roles')->name('manager.roles');
+
+        Route::post('admin/permission/role/store', 'Dashboard\PermissionController@rolesStore')->name('manager.roles.store');
+
+        Route::get('admin/permission/role/detail/{id}', 'Dashboard\PermissionController@roleDetail')->name('manager.roles.detail');
+
+        Route::get('admin/permission/role/adjust/{id}', 'Dashboard\PermissionController@roleAdjust')->name('manager.roles.adjust');
+
+        Route::get('admin/permission/role/delete/{id}', 'Dashboard\PermissionController@roleDelete')->name('manager.roles.delete');
+
+        Route::post('admin/permission/role/update', 'Dashboard\PermissionController@roleUpdate')->name('manager.roles.update');
+
+        Route::get('admin/permission/loading', 'Dashboard\PermissionController@permissions')->name('manager.permission');
+
+        Route::post('admin/permission/store', 'Dashboard\PermissionController@permissionsStore')->name('manager.permission.store');
+
+        Route::get('admin/permission/detail/{id}', 'Dashboard\PermissionController@permissionDetail')->name('manager.permission.detail');
+
+        Route::get('admin/permission/revoke/{id}/{roleid}', 'Dashboard\PermissionController@revokeDetail')->name('manager.permission.revoke');
+
+        Route::get('admin/permission/adjust/{id}/{roleid}', 'Dashboard\PermissionController@permissionAdjust')->name('manager.permission.adjust');
+
+        Route::get('admin/permission/delete/{id}', 'Dashboard\PermissionController@permissionDelete')->name('manager.permission.delete');
+
+        Route::post('admin/permission/update', 'Dashboard\PermissionController@permissionUpdate')->name('manager.permission.update');
+
+    });
 });
 
 

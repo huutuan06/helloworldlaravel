@@ -41,6 +41,6 @@ class cronFetchBookAutomatically extends Command
     public function handle()
     {
         $this->bookController->topSellingBook("https://www.amazon.com/gp/bestsellers/2019/books");
-        $this->bookController->topSellingBook("https://www.amazon.com/gp/bestsellers/2018/books/ref=zg_bsar_pg_2?ie=UTF8&pg=2");
+        $this->bookController->topSellingBook("https://www.amazon.com/gp/bestsellers/2019/books/ref=zg_bsar_pg_2?ie=UTF8&pg=2");
     }
 }
