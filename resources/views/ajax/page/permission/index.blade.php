@@ -136,10 +136,10 @@
             </div>
         </div>
     </div>
-    @include('modal.english.roles.create')
-    @include('modal.english.permissions.create')
-    @include('modal.english.roles.edit')
-    @include('modal.english.permissions.edit')
+    @include('modal.roles.create')
+    @include('modal.permissions.create')
+    @include('modal.roles.edit')
+    @include('modal.permissions.edit')
 </div>
 <!-- /temp content -->
 <script>

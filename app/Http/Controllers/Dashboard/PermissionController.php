@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\Home;
+namespace App\Http\Controllers\Dashboard;
 
 use App\User;
 use Illuminate\Support\Facades\DB;
