@@ -31,6 +31,8 @@ Route::post('v1/mobile/user/login', 'API\AuthenticateController@login')->name('a
  */
 Route::get('v1/mobile/get/books', 'API\BookController@index')->name('api_get_books');
 
+Route::get('/v1/mobile/user/reviews/{book_id}', 'API\ReviewController@reviews')->name('reviews');
+
 /**
  * Case 2: Need Token in Header (After Application had logined successfully)
  */
@@ -47,8 +49,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::post('/v1/mobile/user/logout', 'API\ProfileController@logout')->name('logout');
 
     Route::get('/v1/mobile/user/manageorders', 'API\ProfileController@manageorders')->name('manageorders');
-
-    Route::get('/v1/mobile/user/reviews/{book_id}', 'API\ReviewController@reviews')->name('reviews');
 
     Route::post('/v1/mobile/user/reviews', 'API\ReviewController@add_review')->name('add_review');
 });
