@@ -12,8 +12,7 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 
-class ProfileController extends Controller
-{
+class ProfileController extends Controller {
 
     protected $response_array;
     protected $mModelUser;

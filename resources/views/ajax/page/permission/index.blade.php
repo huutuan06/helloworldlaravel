@@ -62,74 +62,11 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <form id="formSentence" class="outerAndroidPost">
                     <div class="form-group padding-content-20">
-                        <h2 class="heading">ADD PERMISSION TO ROLE</h2>
-                        <div class="controls">
-                            <input type="text" id="roleAdjustName" class="floatLabel" name="roleAdjustName">
-                            <label for="roleAdjustName">Role</label>
-                            <input type="hidden" name="roleAdjustID" id="roleAdjustID">
-                        </div>
-                        <div class="controls">
-                            <i class="fa fa-sort"></i>
-                            <select class="floatLabel" id="cat_permissions">
-                                <option value="blank"></option>
-                            </select>
-                            <label for="cat_permissions">Permissions</label>
-                        </div>
-                    </div>
-
-                    <div class="form-group padding-content-20">
                         <h2 class="heading">ADD PERMISSION TO USER</h2>
-                        <div class="controls">
-                            <input type="text" id="userAdjustName" class="floatLabel" name="userAdjustName">
-                            <label for="userAdjustName">Current User ID</label>
-                            <input type="hidden" name="userAdjustID" id="userAdjustID">
-                        </div>
-                        <div class="controls" style="margin-bottom: 18px;">
-                            <span class="radiobtn"><input class="radio_default" type='radio' name='optionPermission'
-                                                          value='Default'/>Default</span>
-                            <span class="radiobtn"><input class="radio_direct" type='radio' name='optionPermission'
-                                                          value='Direct'/>Direct</span>
-                            <span class="radiobtn"><input class="radio_via" type='radio' name='optionPermission'
-                                                          value='ViaRoles'/>Via Roles</span>
-                            <span class="radiobtn"><input class="radio_all" type='radio' name='optionPermission'
-                                                          value='All'/>All</span>
-                        </div>
-                        <div class="controls">
-                            <i class="fa fa-sort"></i>
-                            <select class="floatLabel" id="cat_user_roles">
-                                <option value="blank"></option>
-                            </select>
-                            <label for="cat_user_roles">Roles</label>
-                        </div>
-                        <div class="controls">
-                            <i class="fa fa-sort"></i>
-                            <select class="floatLabel" id="cat_user_permissions">
-                                <option value="blank"></option>
-                            </select>
-                            <label for="cat_user_permissions">Permissions</label>
-                        </div>
                         <div class="controls search-box">
                             <input type="text" class="search-input floatLabel" id="userSearch" name="userSearch"/>
                             <label for="userSearch">Search users</label>
                             <div class="search_filters_ajax_user search-filters-user delegatedUser"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group padding-content-20">
-                        <h2 class="heading">QUERY USERS FROM ROLE</h2>
-                        <div class="controls search-box">
-                            <input type="text" class="search-input floatLabel" id="roleSearch" name="roleSearch"/>
-                            <label for="roleSearch">Search roles</label>
-                            <div class="search_filters_ajax_role search-filters-role delegatedRole"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group padding-content-20">
-                        <h2 class="heading">QUERY USERS FROM PERMISSION</h2>
-                        <div class="controls search-box">
-                            <input type="text" class="search-input floatLabel" id="permissionSearch" name="permissionSearch"/>
-                            <label for="permissionSearch">Search permissions</label>
-                            <div class="search_filters_ajax_permission search-filters-permission delegatedPermission"></div>
                         </div>
                     </div>
                 </form>
