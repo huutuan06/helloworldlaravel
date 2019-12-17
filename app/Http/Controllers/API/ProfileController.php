@@ -30,51 +30,50 @@ class ProfileController extends Controller {
         $this->mModelBook = $book;
     }
 
-    public function profile($request) {
-        \Log::info($request);
-//        $image_path = '';
-//        if ($request->has('avatar')) {
-//            $image = $request->file('avatar');
-//            $name = str_slug($request->input('name')).'_'.time();
-//            $folder = '/images/users/';
-//            $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
-//            $this->uploadImage($image, $folder, 'public', $name);
-//            $request->avatar = $filePath;
-//        } else {
-//            $request->avatar = Request::url().'/images/users/'.'profile.png';
-//        }
-//        if ($this->modelUser->getByEmail($request->mUserMail)) {
-//            if ($this->modelUser->updateItem($this->getInfoMUser($request, $image_path, true)) > 0) {
-//                $response_array = ([
-//                    'error' => [
-//                        'code' => 0,
-//                        'message' => "Cập nhật thông tin người chơi thành công!"
-//                    ],
-//                    'data' => [
-//                        'user' => DB::table('users')->where('email', '=', $request->mUserMail)->first(),
-//                    ]
-//                ]);
-//                echo json_encode($response_array);
-//            } else {
-//                $response_array = ([
-//                    'error' => [
-//                        'code' => 408,
-//                        'message' => "Cập nhật thông tin người chơi thất bại!"
-//                    ],
-//                    'data' => null
-//                ]);
-//                echo json_encode($response_array);
-//            }
-//        } else {
-//            $response_array = ([
-//                'error' => [
-//                    'code' => 223,
-//                    'message' => "Người chơi không tồn tại trong hệ thống!"
-//                ],
-//                'data' => null
-//            ]);
-//            echo json_encode($response_array);
-//        }
+    public function profile(Request $request) {
+        $image_path = '';
+        if ($request->has('avatar')) {
+            $image = $request->file('avatar');
+            $name = str_slug($request->input('name')).'_'.time();
+            $folder = '/images/users/';
+            $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+            $this->uploadImage($image, $folder, 'public', $name);
+            $request->avatar = $filePath;
+        } else {
+            $request->avatar = Request::url().'/images/users/'.'profile.png';
+        }
+        if ($this->modelUser->getByEmail($request->email)) {
+            if ($this->modelUser->updateItem($this->getInfoMUser($request, $image_path, true)) > 0) {
+                $response_array = ([
+                    'error' => [
+                        'code' => 0,
+                        'message' => "Cập nhật thông tin người chơi thành công!"
+                    ],
+                    'data' => [
+                        'user' => DB::table('users')->where('email', '=', $request->mUserMail)->first(),
+                    ]
+                ]);
+                echo json_encode($response_array);
+            } else {
+                $response_array = ([
+                    'error' => [
+                        'code' => 408,
+                        'message' => "Cập nhật thông tin người chơi thất bại!"
+                    ],
+                    'data' => null
+                ]);
+                echo json_encode($response_array);
+            }
+        } else {
+            $response_array = ([
+                'error' => [
+                    'code' => 223,
+                    'message' => "Người chơi không tồn tại trong hệ thống!"
+                ],
+                'data' => null
+            ]);
+            echo json_encode($response_array);
+        }
     }
 
     public function manageorders() {
@@ -87,6 +86,7 @@ class ProfileController extends Controller {
                 'code' => $order->code,
                 'user_id' => $order->user_id,
                 'address' => $order->address,
+                'is_payment' => $order->is_payment,
                 'is_confirmed_ordering' => $order->is_confirmed_ordering,
                 'is_unsuccessful_payment' => $order->is_unsuccessful_payment,
                 'is_delivery' => $order->is_delivery,

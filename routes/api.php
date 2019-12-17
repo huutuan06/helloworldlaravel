@@ -51,4 +51,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('/v1/mobile/user/manageorders', 'API\ProfileController@manageorders')->name('manageorders');
 
     Route::post('/v1/mobile/user/reviews', 'API\ReviewController@add_review')->name('add_review');
+
+    Route::post('/v1/mobile/order/submit', 'API\OrderController@submit')->name('submit');
 });
