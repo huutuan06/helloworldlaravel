@@ -78,7 +78,7 @@
                 {"data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
                             + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
-                            + '<span>  </span>' + '<a href="javascript:void(0)' + id + '" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                             + '</div>';
                     }
                 }
@@ -89,7 +89,7 @@
     $('#newCustomer').click(function () {
         $('#createCustomerModal').modal('show');
         $('#customerFormCreate')
-            .find('img').attr('src', '/images/users/profile.png')
+            .find('img').attr('src', 'https://vogobook.s3-ap-southeast-1.amazonaws.com/avatar/data/profile.png')
             .find(':radio[name="gender"][value="0"]').prop('checked', false)
             .find(':radio[name="gender"][value="1"]').prop('checked', false)
             .find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], input[type=date], input[type=radio] textarea').val('');
@@ -249,7 +249,7 @@
 
     function editUser(id) {
         $.ajax({
-            url: '/admin/user/' + id,
+            url: '/admin/customer/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -285,12 +285,12 @@
 
     function deleteUser(id) {
         $.ajax({
-            url: '/admin/customer/' + id,
+            url: '/admin/customer/delete/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             dataType: 'json',
-            type: "DELETE",
+            type: "GET",
             beforeSend: function () {
                 $('#modal-loading').modal('show');
             }

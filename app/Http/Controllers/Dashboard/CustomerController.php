@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\User;
+use App\Utilize\Helper;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,7 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use App\Traits\UploadTrait;
-
+use Storage;
+use Config;
 
 /**
  * Class CustomerController
@@ -19,11 +21,15 @@ use App\Traits\UploadTrait;
 class CustomerController extends Controller
 {
     protected $mModelCustomer;
+    protected $helper;
     use HasTimestamps;
     use UploadTrait;
-    public function __construct(User $user)
+
+
+    public function __construct(User $user, Helper $helper)
     {
         $this->mModelUser = $user;
+        $this->helper = $helper;
     }
 
     /**
@@ -72,15 +78,23 @@ class CustomerController extends Controller
             'max:255' => 'The max of the length of content is limited by 255 characters.',
             'unique:users' => 'The email address have already existed in the system',
         ];
-        if ($request->has('avatar')) {
-            $image = $request->file('avatar');
-            $name = str_slug($request->input('name')).'_'.time();
-            $folder = '/images/users/';
-            $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
-            $this->uploadImage($image, $folder, 'public', $name);
-            $request->avatar = $filePath;
-        } else {
-            $request->avatar = Request::url().'/images/users/'.'profile.png';
+        $request->avatar = '';
+        if (isset($_FILES['avatar']['tmp_name'])) {
+            if (!file_exists($_FILES['avatar']['tmp_name']) || !is_uploaded_file($_FILES['avatar']['tmp_name'])) {
+                $request->avatar = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/avatar/data/profile.png';
+            } else {
+                $fileExt = $request->file('avatar')->getClientOriginalName();
+                $fileName = pathinfo($fileExt, PATHINFO_FILENAME);
+                $info = pathinfo($_FILES['avatar']['name']);
+                if (preg_match("/^.*picture.*$/", $info['filename']) == 0) {
+                    $ext = $info['extension'];
+                } else {
+                    $ext = 'png';
+                }
+                $key = $this->helper->clean(trim(strtolower($fileName)) . "_" . time()) . "." . $ext;
+                Storage::disk('s3')->put(Config::get('constants.options.ezbook') . '/' . $key, fopen($request->file('avatar'), 'r+'), 'public');
+                $request->avatar = preg_replace("/^http:/i", "https:", Storage::disk('s3')->url(Config::get('constants.options.ezbook') . '/' . $key));
+            }
         }
         $validator = Validator::make($credentials, $rules, $customMessages);
         if ($validator->fails()) {
@@ -104,7 +118,7 @@ class CustomerController extends Controller
                         'name' => $request->name,
                         'email' => $request->email,
                         'password' => Hash::make($request->password),
-                        'date_of_birth' => $request->date_of_birth,
+                        'date_of_birth' => strtotime($request->date_of_birth),
                         'gender' => $request->gender,
                         'phone_number' => $request->phone_number,
                         'avatar' => $request->avatar,
@@ -256,6 +270,7 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
+        \Log::info($id);
         $user = $this->mModelUser->getById($id);
         $filename = $user->avatar;
         $this->mModelUser->deleteById($id);
@@ -267,8 +282,8 @@ class CustomerController extends Controller
                 ]
             ]);
         } else {
-            if ($filename != '/images/users/profile.png'){
-                $this->deleteImage('public', $filename);
+            if ($filename != 'https://vogobook.s3-ap-southeast-1.amazonaws.com/avatar/data/profile.png'){
+                Storage::disk('s3')->delete(basename($filename));
             }
             return json_encode([
                 'message' => [

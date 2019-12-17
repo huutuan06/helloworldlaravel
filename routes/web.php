@@ -56,7 +56,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => '', 'note' => 'Routes for Customer'], function () {
         Route::get('/admin/customer/get', 'Dashboard\CustomerController@index')->name('get_list_customers');
+
         Route::post('/admin/customer/new', 'Dashboard\CustomerController@store')->name('create_customer');
+
+        Route::get('/admin/customer/delete/{id}', 'Dashboard\CustomerController@destroy')->name('delete_customer');
     });
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');

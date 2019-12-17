@@ -11,6 +11,9 @@ return [
     ],
     'error' => [
         'user_not_verify' => 'Bạn chưa kích hoạt tài khoản qua email.',
+    ],
+    'options' => [
+        'ezbook' => 'avatar/data',
     ]
 ];
 
