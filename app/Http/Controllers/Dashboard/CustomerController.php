@@ -36,7 +36,6 @@ class CustomerController extends Controller
         $users = $this->mModelUser->getAllCustomers();
         $collections = collect();
         foreach ($users as $user) {
-            \Log::info($user->date_of_birth);
             $arr = array(
                 'id' => $user->id,
                 'name' => $user->name,
