@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 class BookController extends Controller
 {
     protected $mModelBook;
+    protected $numeral;
     use HasTimestamps;
     use UploadTrait;
 
@@ -48,7 +49,7 @@ class BookController extends Controller
 
     protected $imageBooScrawling;
 
-    public function topSellingBook($yearBookSelling)
+    public function topSellingBook($yearBookSelling, $indexOf)
     {
         $goutteClient = new \Goutte\Client();
         $guzzleClient = new Client([
@@ -58,6 +59,7 @@ class BookController extends Controller
         $goutteClient->setClient($guzzleClient);
         $url = $yearBookSelling;
         $crawler = $goutteClient->request('GET', $url);
+        $this->numeral = $indexOf;
         $crawler->filter('span.zg-item')->each(function ($node) {
             $image = $node->filter('a.a-link-normal > span.zg-text-center-align > div.a-section')->each(function ($node1) {
                 $matches = array();
@@ -97,11 +99,11 @@ class BookController extends Controller
                     return (float)substr(strstr($node7->text(), '$'), 1);
                 });
             }
-            $numeral = self::resetOrderInDB();
+            $this->numeral += 1;
             $book = array(
-                'id' => $numeral,
+                'id' => self::resetOrderInDB(),
                 'title' => $title[0],
-                'numeral' => $numeral,
+                'numeral' => $this->numeral,
                 'image' => $image[0],
                 'category_id' => 3,
                 'description' => '',

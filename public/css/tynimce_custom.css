@@ -1,0 +1,10 @@
+p {
+    line-height: 2.2em;
+}
+
+body {
+    font-family: helveticaneue, 'Roboto', sans-serif;
+    color: #3A3B3E;
+    font-weight: 300;
+    font-size: 16px;
+}

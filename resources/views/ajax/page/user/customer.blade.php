@@ -249,7 +249,7 @@
 
     function editUser(id) {
         $.ajax({
-            url: '/admin/customer/' + id,
+            url: '/admin/customer/show/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },

@@ -51,6 +51,11 @@ class Book extends Model
         return DB::table('books')->where('id', $id)->first();
     }
 
+    public function getByNumeral($numeral)
+    {
+        return DB::table('books')->where('numeral', $numeral)->first();
+    }
+
     public function updateById($id, $data)
     {
         return DB::table('books')->where('id', $id)->update([
@@ -82,20 +87,55 @@ class Book extends Model
     }
 
     public function synchWithServerFromLocal($book) {
-        if ($this->getByTitlenAuthor($book['title'], $book['price']) != null)
-            $this->updateById($this->getByTitlenAuthor($book['title'], $book['author'])->id, array([
-                'id' => $this->getByTitlenAuthor($book['title'], $book['author'])->id,
-                'title' => $this->getByTitlenAuthor($book['title'], $book['author'])->title,
-                'numeral' => $this->getByTitlenAuthor($book['title'], $book['author'])->id,
-                'image' => $this->getByTitlenAuthor($book['title'], $book['author'])->image,
-                'category_id' => $this->getByTitlenAuthor($book['title'], $book['author'])->category_id,
-                'description' => $this->getByTitlenAuthor($book['title'], $book['author'])->description,
-                'total_pages' => $this->getByTitlenAuthor($book['title'], $book['author'])->total_pages,
-                'price' => $this->getByTitlenAuthor($book['title'], $book['author'])->price,
-                'amount' => $this->getByTitlenAuthor($book['title'], $book['author'])->amount,
-                'author' => $this->getByTitlenAuthor($book['title'], $book['author'])->author
-            ]));
-        else {
+        if (sizeof($this->get()) > 0) {
+            if ($this->getByNumeral($book['numeral']) != null) {
+                $item = $this->getByNumeral($book['numeral']);
+                // Old => Update
+                \Log::info(abs(($book['price'] - $item->price) < 0.0001));
+                if (strcmp($book['title'],$item->title) == 0 && abs(($book['price'] - $item->price) < 0.0001) == 1 && strcmp($book['author'], $item->author) == 0) {
+                    $this->updateById($item->id, array([
+                        'id' => $item->id,
+                        'title' => $item->title,
+                        'numeral' => $book['numeral'],
+                        'image' => $item->image,
+                        'category_id' => $item->category_id,
+                        'description' => $item->description,
+                        'total_pages' => $item->total_pages,
+                        'price' => $item->price,
+                        'amount' => $item->amount,
+                        'author' => $item->author
+                    ]));
+                } else {
+                    $this->updateById($item->id, array([
+                        'id' => $item->id,
+                        'title' => $item->title,
+                        'numeral' => 0,
+                        'image' => $item->image,
+                        'category_id' => $item->category_id,
+                        'description' => $item->description,
+                        'total_pages' => $item->total_pages,
+                        'price' => $item->price,
+                        'amount' => $item->amount,
+                        'author' => $item->author
+                    ]));
+                    // New => Add
+                    $this->add(array(
+                        'id' => $book['id'],
+                        'title' => $book['title'],
+                        'numeral' => $book['numeral'],
+                        'image' => $book['image'],
+                        'category_id' => $book['category_id'],
+                        'description' => $book['description'],
+                        'total_pages' => $book['total_pages'],
+                        'price' => $book['price'],
+                        'amount' => $book['amount'],
+                        'author' => $book['author']
+                    ));
+                }
+            } else {
+                $this->add($book);
+            }
+        } else {
             $this->add($book);
         }
     }

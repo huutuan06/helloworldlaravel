@@ -1,136 +1,214 @@
+<!-- module content -->
+<script src="{{ URL::asset('js/tynimce_custom.min.js') }}"></script>
 <div id="page_content_ajax" class="right_col" role="main">
-    <div class="clearfix"></div>
-
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_title">
-                <h4>New Post</h4>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-8" style="background-color: rgba(112,112,112,0.26);">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="input">Content</label>
-                    <textarea class="form-control" name="content" id="input" rows="28"></textarea>
+        <div class="col-md-9">
+            <form id="articleForm" method="post">
+                <div class="row">
+                    <div>
+                        <input id="slugTitle" name="slugTitle" class="form-control" type="text" placeholder="Slug" maxlength="255">
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-4" style="background-color: rgba(112,112,112,0.26);">
-            <div class="modal-body">
-                <div class="row row h-100 align-items-center justify-content-centerr">
-                    <div class="col align-self-cente ">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label for="titleTag">Title tag</label>
-                                        <input type="text" class="form-control" id="titleTag" placeholder="">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label for="descriptionTag">Description tag</label>
-                                        <input type="text" class="form-control" id="descriptionTag">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label for="referrerTag">Referrer tag</label>
-                                        <input type="text" class="form-control" id="referrerTag" value="always">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label for="keywordTag">Keyword tag</label>
-                                        <input type="text" class="form-control" id="keywordTag">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label for="viewportTag">ViewPort tag</label>
-                                        <input type="text" class="form-control" id="viewportTag"
-                                               value="width=device-width, initial-scale=1">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-12">
-                                        <label for="contentTypeTag">Content-Type tag</label>
-                                        <input type="text" class="form-control" id="contentTypeTag"
-                                               value="text/html; charset=utf-8">
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-lg btn-block">Post</button>
-                            </div>
+                <div class="row" style="margin-top: 20px;">
+                    <textarea id="bookDesc" name="bookDesc">Write your description here!</textarea>
+                </div>
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="col-sm-12 col-md-12">
+                            <img src="https://vogobook.s3-ap-southeast-1.amazonaws.com/cms/placeholder_cms.png"
+                                 alt="" class="img-rounded img-responsive" />
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <div class="row">
+                            <label for="exampleInputFile">Chọn tập tin ảnh</label>
+                            <input name="bookPlaceholder" type="file" id="bookPlaceholder" accept="image/*" >
                         </div>
                     </div>
                 </div>
+                <div class="_clearFix"></div>
+                <div class="row" style="margin-top: 20px;">
+                    <textarea id="bookContent" name="bookContent">Write your content here!</textarea>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-3">
+            <div class="row buttonPublish" style="margin: 0 auto;">
+                <button id="pushlisher" class="btn">Publish</button>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_title" style="margin-left: 10px;">Title:</label>
+                <input type="text" class="form-control" placeholder="" style="border: 0;" id="_title"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <div class="form-group">
+                    <label for="referrer" style="margin-left: 10px;">Referrer:</label>
+                    <select class="form-control" id="referrer" style="border: 0;">
+                        <option>none</option>
+                        <option>none-when-downgrade</option>
+                        <option>origin</option>
+                        <option>origin-when-crossorigin</option>
+                        <option>unsafe-url</option>
+                        <option>always</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <div class="form-group">
+                    <label for="_description" style="margin-left: 10px;">Description:</label>
+                    <textarea class="form-control" rows="5" id="_description" style="border: 0;"></textarea>
+                </div>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_keywords" style="margin-left: 10px;">Keywords:</label>
+                <input type="text" class="form-control" placeholder="" style="border: 0;" id="_keywords"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_author" style="margin-left: 10px;">Author:</label>
+                <input type="text" class="form-control" placeholder="" style="border: 0;" id="_meta_author"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_theme_color" style="margin-left: 10px;">Theme Color:</label>
+                <input type="color" class="" value="#000000" style="border: 0;" id="_meta_theme_color"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_og_title" style="margin-left: 10px;">Og Title:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_og_title"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_og_image" style="margin-left: 10px;">Og Image:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_og_image"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_og_url" style="margin-left: 10px;">Og URL:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_og_url"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_og_site_name" style="margin-left: 10px;">Og Site Name:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_og_site_name"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_og_description" style="margin-left: 10px;">Og Description:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_og_description"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_fb_app_id" style="margin-left: 10px;">Fb App ID:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_fb_app_id"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_twitter_card" style="margin-left: 10px;">Twitter Card:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_twitter_card"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_twitter_title" style="margin-left: 10px;">Twitter Title:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_twitter_title"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_twitter_description" style="margin-left: 10px;">Twitter Description:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_twitter_description"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_twitter_url" style="margin-left: 10px;">Twitter URL:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_twitter_url"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_twitter_image" style="margin-left: 10px;">Twitter Image:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_twitter_image"/>
+            </div>
+            <div class="row" style="margin: 10px auto 0;">
+                <label for="_meta_parsely_link" style="margin-left: 10px;">Parsely Link:</label>
+                <input type="text" class="form-control" style="border: 0;" id="_meta_parsely_link"/>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $('#pushlisher').click(function(event){
+        event.preventDefault();
+        var formData = new FormData();
+        formData.append('slugTitle', $("#slugTitle").val());
+        formData.append('bookDesc', tinyMCE.get('bookDesc').getContent());
+        formData.append('bookPlaceholder', $("#imageUpload").attr("src"));
+        formData.append('bookContent', tinyMCE.get('bookContent').getContent());
 
-<script src="{{ URL::to('js/vendor/tinymce/js/tinymce/tinymce.min.js') }}"></script>
-<script>
-    var editor_config = {
-        path_absolute: "{{ URL::to('/') }}/",
-        selector: "textarea",
-        plugins: [
-            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-            "searchreplace wordcount visualblocks visualchars code fullscreen",
-            "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern",
-        ],
-        file_picker_types: 'file image media',
-
-        toolbar: "code preview | undo redo | formatselect | fontselect | fontsizeselect | bold italic underline strikethrough backcolor | subscript superscript | numlist bullist | alignleft aligncenter alignright alignjustify | outdent indent | paste searchreplace | toc link image media charmap insertdatetime emoticons hr | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | removeformat",
-        insertdatetime_element: true,
-        media_scripts: [
-            {filter: 'platform.twitter.com'},
-            {filter: 's.imgur.com'},
-            {filter: 'instagram.com'},
-            {filter: 'https://platform.twitter.com/widgets.js'},
-        ],
-        relative_urls: false,
-        browser_spellcheck: true,
-        contextmenu: false,
-        file_browser_callback: function (field_name, url, type, win) {
-            var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-            var y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
-            var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-            if (type == 'image') {
-                cmsURL = cmsURL + "&type=Images";
-            } else {
-                cmsURL = cmsURL + "&type=Files";
+        $.ajax({
+            url: '/admin/cms/new',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            method: 'POST',
+            dataType: 'json',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                $('#modal-loading').modal('show');
             }
-            tinyMCE.activeEditor.windowManager.open({
-                file: cmsURL,
-                title: 'Filemanager',
-                width: x * 0.8,
-                height: y * 0.8,
-                resizable: "yes",
-                close_previous: "no"
+        })
+            .done(function (data) {
+                $('#modal-loading').modal('hide');
+                if(data['message']['status'] === 'invalid') {
+                    swal("", data['message']['description'], "error");
+                }
+                if (data['message']['status'] === 'existed') {
+                    swal("", data['message']['description'], "error");
+                }
+                if (data['message']['status'] === 'success') {
+                    $.ajax({
+                        url: '/admin/articles',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        dataType: 'json',
+                        type: "GET"
+                    })
+                        .done(function(data) {
+                            tinyMCE.remove();
+                            $('#page_content_ajax').replaceWith(data['html']);
+                        });
+                } else if (data.status === 'error') {
+                    swal("", data['message']['description'], "error");
+                }
+            })
+            .fail(function (error) {
+                console.log(error);
             });
-        }
-    };
-    tinymce.init(editor_config);
-</script>
-<script>
-    $.ajax({
-        url: 'admin/ajax/books',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        dataType: 'json',
-        type: 'POST',
-        beforeSend: function () {
-            $('#modal-loading').modal('show');
-        }
-    })
-        .done(function (data) {
-            // console.log(data['html']);
-            $('#modal-loading').modal('hide');
-            console.log("here:" + data['id']);
+    });
+
+    $(function(){
+        $("#bookPlaceholder").change(function(event) {
+            if (!$(this).valid()) return false;
+            event.preventDefault();
+            var form = document.createElement('form');
+            form.enctype = "application/x-www-form-urlencoded";
+            var formData = new FormData(form);
+            var file = document.getElementById("bookPlaceholder").files[0];
+            if (file) {
+                formData.append('articleID' , 0);
+                formData.append('bookPlaceholder', file);
+            }
+            $.ajax({
+                url: '/admin/categories/imageupload',
+                method: "POST",
+                dataType: 'json',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            })
+                .done(function (data) {
+                    if(data['message']['status'] === 'success') {
+                        swal("", data['message']['description'], "success");
+                        var image_path = data['imageupload'];
+                        $("#imageUpload").attr("src", image_path);
+                    }
+                    if(data['message']['status'] === 'error') {
+                        swal("", data['message']['description'], "error");
+                    }
+                })
+                .fail(function (error) {
+                    console.log(error);
+                });
         });
+    });
 </script>

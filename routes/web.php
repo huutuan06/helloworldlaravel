@@ -59,7 +59,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/admin/customer/new', 'Dashboard\CustomerController@store')->name('create_customer');
 
+        Route::get('/admin/customer/show/{id}', 'Dashboard\CustomerController@show')->name('show_customer');
+
         Route::get('/admin/customer/delete/{id}', 'Dashboard\CustomerController@destroy')->name('delete_customer');
+    });
+
+    Route::group(['prefix' => '', 'note' => 'Routes for CMS'], function () {
+        Route::post('/admin/cms/new', 'Dashboard\CMSController@cms')->name('create_cms');
     });
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');

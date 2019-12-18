@@ -20,6 +20,8 @@
     <link href="{{ URL::asset('css/custom.min.css') }}" rel="stylesheet">
     <!-- Custom your style -->
     <link href="{{ URL::asset('css/style.min.css') }}" rel="stylesheet">
+    <script src="{{ URL::asset('js/handlebars.min.js') }}"></script>
+    <script src="{{ URL::asset('js/tinymce.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 </head>
