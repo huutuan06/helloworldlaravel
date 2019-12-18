@@ -206,6 +206,9 @@
             $.ajax({
                 url: '/admin/cms/placeholder',
                 method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 dataType: 'json',
                 data: formData,
                 cache: false,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Model\Book;
+use App\Utilize\Helper;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Http\Request;
@@ -14,12 +15,14 @@ use Config;
 class CMSController extends Controller
 {
     protected $mModelBook;
+    protected $helper;
     use HasTimestamps;
 
-    public function __construct(Book $book)
+    public function __construct(Book $book, Helper $helper)
     {
         $this->middleware('auth');
         $this->mModelBook = $book;
+        $this->helper = $helper;
     }
 
     public function cms(Request $request) {
@@ -101,10 +104,11 @@ class CMSController extends Controller
 
     public function placeholder(Request $request)
     {
+        \Log::info($request);
         $request->place_holder = '';
         if (isset($_FILES['bookPlaceholder']['tmp_name'])) {
             if (!file_exists($_FILES['bookPlaceholder']['tmp_name']) || !is_uploaded_file($_FILES['bookPlaceholder']['tmp_name'])) {
-                $request->avatar = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/cms/placeholder_cms.png';
+                $request->place_holder = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/cms/placeholder_cms.png';
             } else {
                 $fileExt = $request->file('bookPlaceholder')->getClientOriginalName();
                 $fileName = pathinfo($fileExt, PATHINFO_FILENAME);
@@ -115,7 +119,7 @@ class CMSController extends Controller
                     $ext = 'png';
                 }
                 $key = $this->helper->clean(trim(strtolower($fileName)) . "_" . time()) . "." . $ext;
-                Storage::disk('s3')->put(Config::get('constants.options.placeholder') . '/' . $key, fopen($request->file('avatar'), 'r+'), 'public');
+                Storage::disk('s3')->put(Config::get('constants.options.placeholder') . '/' . $key, fopen($request->file('bookPlaceholder'), 'r+'), 'public');
                 $request->place_holder = preg_replace("/^http:/i", "https:", Storage::disk('s3')->url(Config::get('constants.options.placeholder') . '/' . $key));
             }
         }
