@@ -28,7 +28,7 @@
                     <label class="col-form-label">Avatar:</label>
                     <br>
                     <img src="" id="showGetAvatar" width="100px" height="100px">
-                    <input name="avatar" type="file" class="form-control" onchange="readAvatarCreate(this);" id="userAvatar">
+                    <input name="avatar" type="file" class="form-control" id="userAvatar">
                 </div>
                 <div class="form-group">
                     <label class="col-form-label">Gender:</label>

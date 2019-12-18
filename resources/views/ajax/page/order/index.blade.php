@@ -92,7 +92,6 @@
             }
         })
             .done(function (data) {
-                console.log(data['html']);
                 $('#modal-loading').modal('hide');
                 $('#page_content_ajax').replaceWith(data['html']);
             });

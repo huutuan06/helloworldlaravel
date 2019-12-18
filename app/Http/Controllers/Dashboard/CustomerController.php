@@ -270,7 +270,6 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        \Log::info($id);
         $user = $this->mModelUser->getById($id);
         $filename = $user->avatar;
         $this->mModelUser->deleteById($id);

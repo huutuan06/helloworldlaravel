@@ -279,7 +279,6 @@ class UserController extends Controller
     {
         $user = $this->mModelUser->getById($id);
         $filename = $user->avatar;
-        \Log::info($filename);
         $this->mModelUser->deleteById($id);
         if ($this->mModelUser->getById($id) != null) {
             return json_encode([

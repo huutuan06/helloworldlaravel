@@ -66,6 +66,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => '', 'note' => 'Routes for CMS'], function () {
         Route::post('/admin/cms/new', 'Dashboard\CMSController@cms')->name('create_cms');
+
+        Route::post('/admin/cms/placeholder', 'Dashboard\CMSController@placeholder')->name('placeholder_cms');
+
+        Route::post('/admin/cms/resource', 'Dashboard\CMSController@resource')->name('resource_cms');
     });
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
@@ -92,7 +96,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('admin/ajax/user/customer', 'Navigation\NavigationController@customer')->name('ajax.user');
 
-        Route::get('admin/ajax/cms/{cms}', 'Navigation\NavigationController@cms')->name('ajax.cms');
+        Route::get('admin/ajax/cms/{id}', 'Navigation\NavigationController@cms')->name('ajax.cms');
 
         Route::post('admin/ajax/books', 'Navigation\NavigationController@books')->name('ajax.category.books');
 

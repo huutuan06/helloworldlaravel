@@ -13,7 +13,8 @@ return [
         'user_not_verify' => 'Bạn chưa kích hoạt tài khoản qua email.',
     ],
     'options' => [
-        'ezbook' => 'avatar/data',
+        'ezbook' => 'vogobook/avatar/data',
+        'placeholder' => 'vogobook/cms/data',
     ]
 ];
 

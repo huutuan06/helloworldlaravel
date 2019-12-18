@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Navigation;
 
 use App\Http\Controllers\Controller;
+use App\Model\Book;
 use App\Model\Category;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,11 @@ class NavigationController extends Controller
 {
 
     protected $mModelCat;
+    protected $mModelBook;
 
-    public function __construct(Category $category) {
+    public function __construct(Category $category, Book $book) {
         $this->mModelCat = $category;
+        $this->mModelBook = $book;
     }
 
     /**
@@ -63,15 +66,16 @@ class NavigationController extends Controller
         echo json_encode($response_array);
     }
 
-    public function cms(Request $id) {
+    public function cms($id) {
         $categories = $this->mModelCat->get();
 //        $user = DB::table('users')->where('id', Auth::user()->id)->first();
 //        self::deleteTempImageResource(0);
 //        self::deleteTempMediaResource(0);
+        $book = $this->mModelBook->getById($id);
         try {
             $returnHTML = view('ajax.page.cms.index')
-                ->with(compact('categories'))
-                ->with(compact('user'))
+                ->with(compact('book'))
+                ->with('book', $book)
                 ->render();
             $response_array = ([
                 'success' => true,

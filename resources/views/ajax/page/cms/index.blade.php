@@ -6,7 +6,7 @@
             <form id="articleForm" method="post">
                 <div class="row">
                     <div>
-                        <input id="slugTitle" name="slugTitle" class="form-control" type="text" placeholder="Slug" maxlength="255">
+                        <input id="slugTitle" name="slugTitle" class="form-control" type="text" value="{{ $book->title }}" maxlength="255">
                     </div>
                 </div>
                 <div class="row" style="margin-top: 20px;">
@@ -15,7 +15,7 @@
                 <div class="row" style="margin-top: 20px;">
                     <div class="col-sm-12 col-md-12">
                         <div class="col-sm-12 col-md-12">
-                            <img src="https://vogobook.s3-ap-southeast-1.amazonaws.com/cms/placeholder_cms.png"
+                            <img id="place_holder" src="https://vogobook.s3-ap-southeast-1.amazonaws.com/cms/placeholder_cms.png"
                                  alt="" class="img-rounded img-responsive" />
                         </div>
                     </div>
@@ -37,13 +37,13 @@
                 <button id="pushlisher" class="btn">Publish</button>
             </div>
             <div class="row" style="margin: 10px auto 0;">
-                <label for="_title" style="margin-left: 10px;">Title:</label>
-                <input type="text" class="form-control" placeholder="" style="border: 0;" id="_title"/>
+                <label for="title" style="margin-left: 10px;">Title:</label>
+                <input type="text" class="form-control" placeholder="" style="border: 0;" id="title"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <div class="form-group">
                     <label for="referrer" style="margin-left: 10px;">Referrer:</label>
-                    <select class="form-control" id="referrer" style="border: 0;">
+                    <select class="form-control" id="referrer"  style="border: 0;">
                         <option>none</option>
                         <option>none-when-downgrade</option>
                         <option>origin</option>
@@ -56,24 +56,24 @@
             <div class="row" style="margin: 10px auto 0;">
                 <div class="form-group">
                     <label for="_description" style="margin-left: 10px;">Description:</label>
-                    <textarea class="form-control" rows="5" id="_description" style="border: 0;"></textarea>
+                    <textarea class="form-control" rows="5" id="description" style="border: 0;"></textarea>
                 </div>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="_keywords" style="margin-left: 10px;">Keywords:</label>
-                <input type="text" class="form-control" placeholder="" style="border: 0;" id="_keywords"/>
+                <input type="text" class="form-control" placeholder="" style="border: 0;" id="keywords"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="_meta_author" style="margin-left: 10px;">Author:</label>
-                <input type="text" class="form-control" placeholder="" style="border: 0;" id="_meta_author"/>
+                <input type="text" class="form-control" placeholder="" style="border: 0;" id="author"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="_meta_theme_color" style="margin-left: 10px;">Theme Color:</label>
-                <input type="color" class="" value="#000000" style="border: 0;" id="_meta_theme_color"/>
+                <input type="color" class="" value="#000000" style="border: 0;" id="theme_color"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="_meta_og_title" style="margin-left: 10px;">Og Title:</label>
-                <input type="text" class="form-control" style="border: 0;" id="_meta_og_title"/>
+                <input type="text" class="form-control" style="border: 0;" id="og_title"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="_meta_og_image" style="margin-left: 10px;">Og Image:</label>
@@ -130,7 +130,24 @@
         formData.append('bookDesc', tinyMCE.get('bookDesc').getContent());
         formData.append('bookPlaceholder', $("#imageUpload").attr("src"));
         formData.append('bookContent', tinyMCE.get('bookContent').getContent());
-
+        formData.append('title', $('#title').val());
+        formData.append('referrer', $('#referrer').val());
+        formData.append('description', $('#description').val());
+        formData.append('keywords', $('#keywords').val());
+        formData.append('author', $('#_meta_author').val());
+        formData.append('theme_color', $('#theme_color').val());
+        formData.append('_meta_og_title', $('#_meta_og_title').val());
+        formData.append('_meta_og_image', $('#_meta_og_image').val());
+        formData.append('_meta_og_url', $('#_meta_og_url').val());
+        formData.append('_meta_og_site_name', $('#_meta_og_site_name').val());
+        formData.append('_meta_og_description', $('#_meta_og_description').val());
+        formData.append('_meta_fb_app_id', $('#_meta_fb_app_id').val());
+        formData.append('_meta_twitter_card', $('#_meta_twitter_card').val());
+        formData.append('_meta_twitter_title', $('#_meta_twitter_title').val());
+        formData.append('_meta_twitter_description', $('#_meta_twitter_description').val());
+        formData.append('_meta_twitter_url', $('#_meta_twitter_url').val());
+        formData.append('_meta_twitter_image', $('#_meta_twitter_image').val());
+        formData.append('_meta_parsely_link', $('#_meta_parsely_link').val());
         $.ajax({
             url: '/admin/cms/new',
             headers: {
@@ -184,11 +201,10 @@
             var formData = new FormData(form);
             var file = document.getElementById("bookPlaceholder").files[0];
             if (file) {
-                formData.append('articleID' , 0);
                 formData.append('bookPlaceholder', file);
             }
             $.ajax({
-                url: '/admin/categories/imageupload',
+                url: '/admin/cms/placeholder',
                 method: "POST",
                 dataType: 'json',
                 data: formData,
@@ -199,8 +215,8 @@
                 .done(function (data) {
                     if(data['message']['status'] === 'success') {
                         swal("", data['message']['description'], "success");
-                        var image_path = data['imageupload'];
-                        $("#imageUpload").attr("src", image_path);
+                        var place_holder = data['place_holder'];
+                        $("#place_holder").attr("src", place_holder);
                     }
                     if(data['message']['status'] === 'error') {
                         swal("", data['message']['description'], "error");

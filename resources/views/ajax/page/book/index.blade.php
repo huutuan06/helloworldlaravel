@@ -367,28 +367,6 @@
             })
     }
 
-    function readImageCreate(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#showGetImage')
-                    .attr('src', e.target.result)
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function readImageEdit(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#showEditImage')
-                    .attr('src', e.target.result)
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
     function navReview(id) {
         $.ajax({
             url: 'admin/ajax/cms/' + id,
