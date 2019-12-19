@@ -4,24 +4,28 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Model\Book;
+use App\Model\Metas;
 use App\Utilize\Helper;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Http\Request;
 use Storage;
 use Config;
-
+use File;
+use Image;
 
 class CMSController extends Controller
 {
     protected $mModelBook;
+    protected $mModelMeta;
     protected $helper;
     use HasTimestamps;
 
-    public function __construct(Book $book, Helper $helper)
+    public function __construct(Book $book, Metas $meta, Helper $helper)
     {
         $this->middleware('auth');
         $this->mModelBook = $book;
+        $this->mModelMeta = $meta;
         $this->helper = $helper;
     }
 
@@ -69,46 +73,86 @@ class CMSController extends Controller
                 ]);
                 echo json_encode($response_array);
             } else {
-                \Log::info($request);
-//                if($this->modelArticle->isExistItem($request)) {
-//                    $response_array = ([
-//                        'message'       => [
-//                            'status'        => "existed",
-//                            'description'   => "The article already exists in the system."
-//                        ]
-//                    ]);
-//                } else {
-//                    if ($this->modelArticle->addAll($this->getInfoArticle($request)) > 0) {
-//                        $articleID = $this->modelArticle->getItemByTitle($request->articleTitle)->id;
-//                        self::updateImageAfterAdjustArticle($request->articleImage, $articleID);
-//                        self::updateMediaAfterAdjustArticle($request, $articleID);
-//                        $response_array = ([
-//                            'message'       => [
-//                                'status'        => "success",
-//                                'description'   => "Add article to be successful."
-//                            ]
-//                        ]);
-//                    } else {
-//                        $response_array = ([
-//                            'message'       => [
-//                                'status'        => "error",
-//                                'description'   => "Add article failed."
-//                            ]
-//                        ]);
-//                    }
-//                }
-//                echo json_encode($response_array);
+                 if ($this->mModelBook->getById($request->bookID) != null) {
+                     $item = $this->mModelBook->getById($request->bookID);
+                     $this->mModelBook->updateById($request->bookID, array([
+                         'id' => $request->bookID,
+                         'title' => $item->title,
+                         'numeral' => $item->numeral,
+                         'image' => $item->image,
+                         'category_id' => $item->category_id,
+                         'description' => $request->bookContent,
+                         'total_pages' => $item->total_pages,
+                         'price' => $item->price,
+                         'amount' => $item->amount,
+                         'author' => $item->author,
+                         'created_at' => $this->freshTimestamp(),
+                         'updated_at' => $this->freshTimestamp()
+                     ]));
+                 }
+                 if ($this->mModelMeta->getItemByBookID($request->bookID) != null) {
+                    $this->mModelMeta->update([
+                        'id' => $this->mModelMeta->getItemByBookID($request->bookID)->id,
+                        'title' => $request->title,
+                        'referrer' => $request->referrer,
+                        'description' => $request->bookDesc,
+                        'keywords' => $request->keywords,
+                        'author' => $request->author,
+                        'theme_color' => $request->theme_color,
+                        'og_title' => $request->og_title,
+                        'og_image' => $request->og_image,
+                        'og_url' => $request->og_url,
+                        'og_site_name' => $request->og_site_name,
+                        'og_description' => $request->og_description,
+                        'fb_app_id' => $request->fb_app_id,
+                        'twitter_card' => $request->twitter_card,
+                        'twitter_title' => $request->twitter_title,
+                        'twitter_description' => $request->twitter_description,
+                        'twitter_url' => $request->twitter_url,
+                        'twitter_image' => $request->twitter_image,
+                        'parsely_link' => $request->parsely_link,
+                        'bookID' => $request->bookID
+                    ]);
+                 } else {
+                     $this->mModelMeta->add([
+                         'id' => 0,
+                         'title' => $request->title,
+                         'referrer' => $request->referrer,
+                         'description' => $request->description,
+                         'keywords' => $request->keywords,
+                         'author' => $request->author,
+                         'theme_color' => $request->theme_color,
+                         'og_title' => $request->og_title,
+                         'og_image' => $request->og_image,
+                         'og_url' => $request->og_url,
+                         'og_site_name' => $request->og_site_name,
+                         'og_description' => $request->og_description,
+                         'fb_app_id' => $request->fb_app_id,
+                         'twitter_card' => $request->twitter_card,
+                         'twitter_title' => $request->twitter_title,
+                         'twitter_description' => $request->twitter_description,
+                         'twitter_url' => $request->twitter_url,
+                         'twitter_image' => $request->twitter_image,
+                         'parsely_link' => $request->parsely_link,
+                         'bookID' => $request->bookID
+                     ]);
+                 }
             }
         }
+        echo json_encode([
+            'message'       => [
+                'status'        => "success",
+                'description'   => "Update content of book successfully."
+            ]
+        ]);
     }
 
     public function placeholder(Request $request)
     {
-        \Log::info($request);
         $request->place_holder = '';
         if (isset($_FILES['bookPlaceholder']['tmp_name'])) {
             if (!file_exists($_FILES['bookPlaceholder']['tmp_name']) || !is_uploaded_file($_FILES['bookPlaceholder']['tmp_name'])) {
-                $request->place_holder = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/cms/placeholder_cms.png';
+                $request->place_holder = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/cms/data/placeholder_cms.png';
             } else {
                 $fileExt = $request->file('bookPlaceholder')->getClientOriginalName();
                 $fileName = pathinfo($fileExt, PATHINFO_FILENAME);
@@ -127,7 +171,7 @@ class CMSController extends Controller
             'place_holder'      => $request->place_holder,
             'message'       => [
                 'status'        => "success",
-                'description'   => "Upload image successfully!"
+                'description'   => "Upload place holder successfully!"
             ]
         ]);
         echo json_encode($response_array);
@@ -136,9 +180,6 @@ class CMSController extends Controller
     public function resource_cms() {
         // Allowed origins to upload images
         $accepted_origins = array("https://vogobook.luisnguyen.com", "http://vogobook.luisnguyen.com");
-
-        // Images upload path
-        $imageFolder = "images/media/";
 
         reset($_FILES);
         $temp = current($_FILES);
@@ -166,34 +207,15 @@ class CMSController extends Controller
             }
 
             // Accept upload if there was no origin, or if it is an accepted origin
-            $filetowrite = $imageFolder . time() .'_'. $temp['name'];
-            move_uploaded_file($temp['tmp_name'], $filetowrite);
-            $fileContent = File::get($filetowrite);
-            $absolutePath = public_path().'/'.$filetowrite;
-            ini_set('memory_limit', '-1');
-            Image::make($absolutePath)->resize('512', '288')->save($absolutePath);
-            $res = $this->requestGuzzle->post('https://topicsoverflow.com/backend/articles/media/image', [
-                'multipart' => [
-                    [
-                        'name' => 'mediaImage',
-                        'contents' => $fileContent,
-                        'filename' => basename($filetowrite)
-                    ],
-                    [
-                        'name' => 'email',
-                        'contents' => 'ezblog@luisnguyen.com',
-                    ],
-                    [
-                        'name' => 'password',
-                        'contents' => 'Abc@123456',
-                    ]
-                ],
-            ]);
-            $statusCode = $res->getStatusCode();
-            if ($statusCode == 200) {
-                File::delete($filetowrite);
-                echo $res->getBody();
-            }
+            $target = "images/media/" . $temp['name'];
+            move_uploaded_file($temp['tmp_name'], $target);
+            $key = time().strstr($target, '.');
+            Storage::disk('s3')->put(Config::get('constants.options.placeholder') . '/' . $key, File::get($target), 'public');
+            $this->place_holder = preg_replace("/^http:/i", "https:", Storage::disk('s3')->url(Config::get('constants.options.placeholder') . '/' . $key));
+            File::delete(File::get($target));
+            echo json_encode(([
+                    'location'      => $this->place_holder
+            ]));
         } else {
             header("HTTP/1.1 500 Server Error");
         }

@@ -23,6 +23,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/books/{slug}.html', 'HomeController@pages')->name('home.pages');
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
@@ -69,7 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('/admin/cms/placeholder', 'Dashboard\CMSController@placeholder')->name('placeholder_cms');
 
-        Route::post('/admin/cms/resource', 'Dashboard\CMSController@resource')->name('resource_cms');
+        Route::post('/admin/cms/resource', 'Dashboard\CMSController@resource_cms')->name('resource_cms');
     });
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
