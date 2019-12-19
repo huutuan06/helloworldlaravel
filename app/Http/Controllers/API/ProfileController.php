@@ -31,6 +31,7 @@ class ProfileController extends Controller {
     }
 
     public function profile(Request $request) {
+        \Log::info($request);
         $image_path = '';
         if ($request->has('avatar')) {
             $image = $request->file('avatar');
