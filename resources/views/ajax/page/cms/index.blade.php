@@ -11,12 +11,14 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top: 20px;">
-                    <textarea id="bookDesc" name="bookDesc">Write your description here!</textarea>
+                    <textarea id="bookDesc" name="bookDesc">
+                        {{ $book->description }}
+                    </textarea>
                 </div>
                 <div class="row" style="margin-top: 20px;">
                     <div class="col-sm-12 col-md-12">
                         <div class="col-sm-12 col-md-12">
-                            <img id="place_holder" src="https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/cms/data/placeholder_cms.png"
+                            <img id="place_holder" src="{{ $book->place_holder }}"
                                  alt="" class="img-rounded img-responsive" />
                         </div>
                     </div>
@@ -29,7 +31,9 @@
                 </div>
                 <div class="_clearFix"></div>
                 <div class="row" style="margin-top: 20px;">
-                    <textarea id="bookContent" name="bookContent">Write your content here!</textarea>
+                    <textarea id="bookContent" name="bookContent">
+                        {{ $book->content }}
+                    </textarea>
                 </div>
             </form>
         </div>
@@ -57,7 +61,8 @@
             <div class="row" style="margin: 10px auto 0;">
                 <div class="form-group">
                     <label for="description" style="margin-left: 10px;" {{ $book->description }}>Description:</label>
-                    <textarea class="form-control" rows="5" id="description" style="border: 0;"></textarea>
+                    <textarea class="form-control" rows="5" id="description" style="border: 0;">
+                    </textarea>
                 </div>
             </div>
             <div class="row" style="margin: 10px auto 0;">
@@ -130,7 +135,7 @@
         formData.append('slugTitle', $("#slugTitle").val());
         formData.append('bookID', $("#bookID").val());
         formData.append('bookDesc', tinyMCE.get('bookDesc').getContent());
-        formData.append('bookPlaceholder', $("#imageUpload").attr("src"));
+        formData.append('bookPlaceholder', $("#place_holder").attr("src"));
         formData.append('bookContent', tinyMCE.get('bookContent').getContent());
         formData.append('title', $('#title').val());
         formData.append('referrer', $('#referrer').val());

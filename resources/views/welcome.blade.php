@@ -88,7 +88,7 @@
                 <a href="#" class="primary-btn text-uppercase">Buy Now for $9.99</a>
             </div>
             <div class="col-lg-5 banner-right">
-                <img class="img-fluid" src="img/header-img.png" alt="">
+                <img class="img-fluid" src="<?php if(isset($book)) echo $book->image; ?>" alt="">
             </div>
         </div>
     </div>
@@ -101,13 +101,13 @@
         <div class="single-info row mt-40 align-items-center">
             <div class="col-lg-6 col-md-12 text-center no-padding info-left">
                 <div class="info-thumb">
-                    <img src="<?php if(isset($book)) echo $book->image; ?>" class="img-fluid info-img" alt="">
+                    <img src="<?php if(isset($book)) echo $book->place_holder; ?>" class="img-fluid info-img" alt="">
                 </div>
             </div>
             <div class="col-lg-6 col-md-12 no-padding info-rigth">
                 <div class="info-content">
                     <h2 class="pb-30"><?php if(isset($book)) echo $book->author; ?></h2>
-                    <?php if(isset($obj)) echo $obj->description; ?>
+                    <?php if(isset($book)) echo $book->description; ?>
                     <br>
                     <img src="img/signature.png" alt="">
                 </div>
@@ -120,13 +120,13 @@
 <!-- Start Generic Area -->
 <section class="about-generic-area section-gap">
     <div class="container border-top-generic">
-        <h3 class="about-title mb-30">Elaboration about Generic Page</h3>
+        <h3 class="about-title mb-30"><?php if(isset($book)) echo $book->title; ?></h3>
         <div class="row">
             <div class="col-lg-12">
                 <?php
-                    if (isset($book->description)) {
+                    if (isset($book->content)) {
                         $doc = new DOMDocument();
-                        $doc->loadHTML($book->description);
+                        $doc->loadHTML($book->content);
                         echo preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $doc->saveHTML()));
                     }
                 ?>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Navigation;
 use App\Http\Controllers\Controller;
 use App\Model\Book;
 use App\Model\Category;
+use App\Model\Metas;
 use Illuminate\Http\Request;
 
 class NavigationController extends Controller
@@ -12,10 +13,12 @@ class NavigationController extends Controller
 
     protected $mModelCat;
     protected $mModelBook;
+    protected $mModelMeta;
 
-    public function __construct(Category $category, Book $book) {
+    public function __construct(Category $category, Book $book, Metas $metas) {
         $this->mModelCat = $category;
         $this->mModelBook = $book;
+        $this->mModelMeta = $metas;
     }
 
     /**
@@ -67,15 +70,12 @@ class NavigationController extends Controller
     }
 
     public function cms($id) {
-        $categories = $this->mModelCat->get();
-//        $user = DB::table('users')->where('id', Auth::user()->id)->first();
-//        self::deleteTempImageResource(0);
-//        self::deleteTempMediaResource(0);
         $book = $this->mModelBook->getById($id);
         try {
             $returnHTML = view('ajax.page.cms.index')
                 ->with(compact('book'))
                 ->with('book', $book)
+                ->with('description', $this->mModelMeta->getItemByBookID($book->id) != null ? $this->mModelMeta->getItemByBookID($book->id)->description : null )
                 ->render();
             $response_array = ([
                 'success' => true,
