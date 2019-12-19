@@ -26,11 +26,10 @@ class HomeController extends Controller
     }
 
     public function pages($slug)  {
-        \Log::info($slug);
         $books = $this->mModelBook->get();
         $id = 0;
         foreach ($books as $book) {
-            $temp = preg_replace('/s+/', '-', $book->title);
+            $temp = preg_replace('/\s+/', '-', $book->title);
             if (strcmp($temp, $slug) == 0) {
                 $id = $book->id;
                 break;
