@@ -51,9 +51,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => '', 'note' => 'Routes for User'], function () {
 
-//        Route::resource('/admin/user', 'Dashboard\UserController');
+        Route::resource('/admin/user', 'Dashboard\UserController');
 
-//        Route::get('/admin/user', 'Dashboard\UserController@index')->name('get_list_user');
+        Route::get('/admin/user', 'Dashboard\UserController@index')->name('get_list_user');
     });
 
     Route::group(['prefix' => '', 'note' => 'Routes for Customer'], function () {
@@ -76,9 +76,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
 
-//    Route::resource('/user', 'Dashboard\UserController');
+    Route::resource('/user', 'Dashboard\UserController');
 
-//    Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
+    Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
 
     Route::resource('/admin/order', 'Dashboard\OrderController');
 
