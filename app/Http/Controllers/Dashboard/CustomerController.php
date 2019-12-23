@@ -41,9 +41,10 @@ class CustomerController extends Controller
     {
         $users = $this->mModelUser->getAllCustomers();
         $collections = collect();
+        $i = 1;
         foreach ($users as $user) {
             $arr = array(
-                'id' => $user->id,
+                'id' => $i,
                 'name' => $user->name,
                 'email' => $user->email,
                 'date_of_birth' => $user->date_of_birth == null ? null : date("M d, Y", $user->date_of_birth),
@@ -53,6 +54,7 @@ class CustomerController extends Controller
                 'gender' => $user->gender,
                 'manipulation' => $user->id
             );
+            $i++;
             $collections->push($arr);
         }
         return Datatables::collection($collections)->make();
@@ -81,7 +83,7 @@ class CustomerController extends Controller
         $request->avatar = '';
         if (isset($_FILES['avatar']['tmp_name'])) {
             if (!file_exists($_FILES['avatar']['tmp_name']) || !is_uploaded_file($_FILES['avatar']['tmp_name'])) {
-                $request->avatar = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/avatar/data/profile.png';
+                $request->avatar = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.jpg';
             } else {
                 $fileExt = $request->file('avatar')->getClientOriginalName();
                 $fileName = pathinfo($fileExt, PATHINFO_FILENAME);
@@ -159,7 +161,7 @@ class CustomerController extends Controller
             return json_encode(([
                 'message' => [
                     'status' => "error",
-                    'description' => "The user didn't exist in our system!"
+                    'description' => "The customer didn't exist in our system!"
                 ]
             ]));
         } else {
@@ -175,18 +177,18 @@ class CustomerController extends Controller
 
     public function update(Request $request, $id)
     {
-        $credentials = $request->only('name', 'email','password','phone_number','address','date_of_birth','avatar', 'gender');
+        \Log::info($request);
+        $credentials = $request->only('_name','_phone_number','_address','_date_of_birth','_avatar', 'gender');
         $rules = [
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'phone_number' => 'required',
-            'address' => 'required',
-            'date_of_birth' => 'required',
-            'gender' => 'required'
+            '_name' => 'required',
+            '_phone_number' => 'required',
+            '_address' => 'required',
+            '_date_of_birth' => 'required',
+            '_avatar' => 'required',
+            '_gender' => 'required'
         ];
         $customMessages = [
-            'required' => 'Please fill in form'
+            'required' => 'Please :field fill in form'
         ];
         $request->password = bcrypt($request->password);
         $validator = Validator::make($credentials, $rules, $customMessages);
@@ -214,7 +216,7 @@ class CustomerController extends Controller
                 return json_encode(([
                     'message' => [
                         'status' => "success",
-                        'description' => "Update the user success!"
+                        'description' => "Update the customer success!"
                     ],
                     'user' => $this->mModelUser->getById($id)
                 ]));
@@ -245,7 +247,7 @@ class CustomerController extends Controller
                         return json_encode(([
                             'message' => [
                                 'status' => "success",
-                                'description' => "Update the user success!"
+                                'description' => "Update the customer success!"
                             ],
                             'user' => $this->mModelUser->getById($id)
                         ]));
@@ -253,7 +255,7 @@ class CustomerController extends Controller
                         return json_encode(([
                             'message' => [
                                 'status' => "error",
-                                'description' => "Update the user failure!"
+                                'description' => "Update the customer failure!"
                             ]
                         ]));
                     }
@@ -277,19 +279,19 @@ class CustomerController extends Controller
             return json_encode([
                 'message' => [
                     'status' => 'error',
-                    'description' => 'Delete the user failure!'
+                    'description' => 'Delete the customer failure!'
                 ]
             ]);
         } else {
-            if ($filename != 'https://vogobook.s3-ap-southeast-1.amazonaws.com/avatar/data/profile.png'){
+            if ($filename != 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.jpg'){
                 Storage::disk('s3')->delete(basename($filename));
             }
             return json_encode([
                 'message' => [
                     'status' => 'success',
-                    'description' => 'Delete the user successfully!'
+                    'description' => 'Delete the customer successfully!'
                 ],
-                'id' => $id
+                'name' => $user->name
             ]);
         }
     }

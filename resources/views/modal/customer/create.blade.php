@@ -27,14 +27,13 @@
                 <div class="form-group">
                     <label class="col-form-label">Avatar:</label>
                     <br>
-                    <img src="" id="showGetAvatar" width="100px" height="100px">
-                    <input name="avatar" type="file" class="form-control" id="userAvatar">
+                    <img src="https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.jpg" id="showGetAvatar" width="100px" height="100px">
+                    <input name="avatar" type="file" class="" id="userAvatar" style="margin-top: 10px;">
                 </div>
                 <div class="form-group">
                     <label class="col-form-label">Gender:</label>
-                    <br>
-                    <input type="radio" name="gender" value="0"> Male<br>
-                    <input type="radio" name="gender" value="1"> Female<br>
+                    <input type="radio" name="gender" value="0" style="margin: 0 10px;"> Male
+                    <input type="radio" name="gender" value="1" style="margin: 0 10px;"> Female
                 </div>
                 <div class="form-group">
                     <label class="col-form-label">Address:</label>

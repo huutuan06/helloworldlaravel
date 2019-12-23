@@ -37,3 +37,7 @@
     color: red;
     font-family: normal;
 }
+
+.modal-footer {
+    border-bottom: 0;
+}
