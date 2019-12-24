@@ -93,11 +93,9 @@
     });
 
     $('#newCustomer').click(function () {
-        $('#customerFormCreate')
-            .find('img').attr('src', 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.jpg')
-            .find(':radio[name="gender"][value="0"]').prop('checked', false)
-            .find(':radio[name="gender"][value="1"]').prop('checked', false)
-            .find('input[type=text], input[type=password], input[type=number], input[type=email], input[type=file], input[type=date], input[type=radio] textarea').val('');
+        $('#customerFormCreate').each(function(){
+            $(this).find(':input').val('')
+        });
         $('#createCustomerModal').modal('show');
     });
 
