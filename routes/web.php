@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('front.home');
 });
 
 Route::get('/books/{slug}.html', 'HomeController@pages')->name('home.pages');
