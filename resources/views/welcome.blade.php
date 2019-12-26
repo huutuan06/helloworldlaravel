@@ -7,29 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @if(isset($obj))
-        @if($obj)
-            <title>{{$obj->title}}</title>
-            <meta name="title" content="{{ $obj->title }}"/>
-            <meta name="referrer" content="always">
-            <meta name="description" itemprop='description' content='{{$obj->description}}' />
-            <meta name="keywords" content="{{ $obj->keywords }}" />
-            <meta name="author" content="{{ $obj->author }}" />
-            <meta name="theme-color" content="{{ $obj->theme_color }}">
+        <title>{{$obj->title}}</title>
+        <meta name="title" content="{{ $obj->title }}"/>
+        <meta name="referrer" content="always">
+        <meta name="description" itemprop='description' content='{{$obj->description}}' />
+        <meta name="keywords" content="{{ $obj->keywords }}" />
+        <meta name="author" content="{{ $obj->author }}" />
+        <meta name="theme-color" content="{{ $obj->theme_color }}">
 
-            <meta property="og:title" content="{{ $obj->og_title }}"/>
-            <meta property="og:image" content="{{ $obj->og_image }}"/>
-            <meta property="og:url" content="{{ $obj->og_url }}"/>
-            <meta property="og:site_name" content="{{ $obj->og_site_name }}"/>
-            <meta property="og:description" content="{{ $obj->og_description }}"/>
-            <meta property="fb:app_id" content="{{ $obj->fb_app_id }}"/>
+        <meta property="og:title" content="{{ $obj->og_title }}"/>
+        <meta property="og:image" content="{{ $obj->og_image }}"/>
+        <meta property="og:url" content="{{ $obj->og_url }}"/>
+        <meta property="og:site_name" content="{{ $obj->og_site_name }}"/>
+        <meta property="og:description" content="{{ $obj->og_description }}"/>
+        <meta property="fb:app_id" content="{{ $obj->fb_app_id }}"/>
 
-            <meta name="twitter:card" content="{{ $obj->twitter_card }}" />
-            <meta name="twitter:title" content="{{ $obj->twitter_title }}" />
-            <meta name="twitter:description" content="{{ $obj->twitter_description }}" />
-            <meta name="twitter:image" content="{{ $obj->twitter_image }}" />
-            <meta name="twitter:url" content="{{ $obj->twitter_url }}" />
-            <meta name="parsely-link" content="{{ $obj->parsely_link }}">
-        @endif
+        <meta name="twitter:card" content="{{ $obj->twitter_card }}" />
+        <meta name="twitter:title" content="{{ $obj->twitter_title }}" />
+        <meta name="twitter:description" content="{{ $obj->twitter_description }}" />
+        <meta name="twitter:image" content="{{ $obj->twitter_image }}" />
+        <meta name="twitter:url" content="{{ $obj->twitter_url }}" />
+        <meta name="parsely-link" content="{{ $obj->parsely_link }}">
     @endif
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
     <!--
@@ -77,7 +75,7 @@
     <div class="container">
         <div class="row fullscreen d-flex align-items-center justify-content-start">
             <div class="banner-content col-lg-7">
-                <h5 class="text-white text-uppercase">Author: Travor James</h5>
+                <h5 class="text-white text-uppercase">Author: {{ $book->author }}</h5>
                 <h1 class="text-uppercase">
                     New Adventure
                 </h1>
@@ -88,7 +86,7 @@
                 <a href="#" class="primary-btn text-uppercase">Buy Now for $9.99</a>
             </div>
             <div class="col-lg-5 banner-right">
-                <img class="img-fluid" src="img/header-img.png" alt="">
+                <img class="img-fluid" src="<?php if(isset($book)) echo $book->image; ?>" alt="">
             </div>
         </div>
     </div>
@@ -101,13 +99,13 @@
         <div class="single-info row mt-40 align-items-center">
             <div class="col-lg-6 col-md-12 text-center no-padding info-left">
                 <div class="info-thumb">
-                    <img src="<?php if(isset($book)) echo $book->image; ?>" class="img-fluid info-img" alt="">
+                    <img src="<?php if(isset($book)) echo $book->place_holder; ?>" class="img-fluid info-img" alt="">
                 </div>
             </div>
             <div class="col-lg-6 col-md-12 no-padding info-rigth">
                 <div class="info-content">
                     <h2 class="pb-30"><?php if(isset($book)) echo $book->author; ?></h2>
-                    <?php if(isset($obj)) echo $obj->description; ?>
+                    <?php if(isset($book)) echo $book->description; ?>
                     <br>
                     <img src="img/signature.png" alt="">
                 </div>
@@ -120,13 +118,13 @@
 <!-- Start Generic Area -->
 <section class="about-generic-area section-gap">
     <div class="container border-top-generic">
-        <h3 class="about-title mb-30">Elaboration about Generic Page</h3>
+        <h3 class="about-title mb-30"><?php if(isset($book)) echo $book->title; ?></h3>
         <div class="row">
             <div class="col-lg-12">
                 <?php
-                    if (isset($book->description)) {
+                    if (isset($book->content)) {
                         $doc = new DOMDocument();
-                        $doc->loadHTML($book->description);
+                        $doc->loadHTML($book->content);
                         echo preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $doc->saveHTML()));
                     }
                 ?>

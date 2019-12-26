@@ -46,25 +46,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/admin/category/{category}', 'Dashboard\CategoryController@update')->name('category.update');
 
         Route::get('/admin/vogo/category/books', 'Dashboard\BookController@showBooksByCategory')->name('category.books');
-
     });
 
-    Route::group(['prefix' => '', 'note' => 'Routes for User'], function () {
+    Route::resource('/admin/user', 'Dashboard\UserController');
 
-//        Route::resource('/admin/user', 'Dashboard\UserController');
-
-//        Route::get('/admin/user', 'Dashboard\UserController@index')->name('get_list_user');
-    });
-
-    Route::group(['prefix' => '', 'note' => 'Routes for Customer'], function () {
-        Route::get('/admin/customer/get', 'Dashboard\CustomerController@index')->name('get_list_customers');
-
-        Route::post('/admin/customer/new', 'Dashboard\CustomerController@store')->name('create_customer');
-
-        Route::get('/admin/customer/show/{id}', 'Dashboard\CustomerController@show')->name('show_customer');
-
-        Route::get('/admin/customer/delete/{id}', 'Dashboard\CustomerController@destroy')->name('delete_customer');
-    });
+    Route::resource('/admin/customer/route', 'Dashboard\CustomerController');
 
     Route::group(['prefix' => '', 'note' => 'Routes for CMS'], function () {
         Route::post('/admin/cms/new', 'Dashboard\CMSController@cms')->name('create_cms');
@@ -76,9 +62,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
 
-//    Route::resource('/user', 'Dashboard\UserController');
-
-//    Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
+    Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
 
     Route::resource('/admin/order', 'Dashboard\OrderController');
 

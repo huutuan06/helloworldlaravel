@@ -13,12 +13,12 @@ class NavigationController extends Controller
 
     protected $mModelCat;
     protected $mModelBook;
-    protected $mModelMetas;
+    protected $mModelMeta;
 
     public function __construct(Category $category, Book $book, Metas $metas) {
         $this->mModelCat = $category;
         $this->mModelBook = $book;
-        $this->mModelMetas = $metas;
+        $this->mModelMeta = $metas;
     }
 
     /**
@@ -71,10 +71,9 @@ class NavigationController extends Controller
 
     public function cms($id) {
         $book = $this->mModelBook->getById($id);
-        $meta = $this->mModelMetas->getItemByBookID($id);
+        $meta = $this->mModelMeta->getItemByBookID($id);
         try {
             $returnHTML = view('ajax.page.cms.index')
-                ->with(compact('book'))
                 ->with('book', $book)
                 ->with('meta', $meta)
                 ->render();

@@ -32,11 +32,9 @@
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
                 <div class="navbar nav_title" style="border: 0;">
-                    <a href="{{ Route('admin.index') }}" class="site_title"><i class="fa fa-paw"></i> <span>Vogo Book</span></a>
+                    <a href="{{ Route('admin.index') }}" class="site_title"><i class="fa fa-book"></i> <span>Vogo Book</span></a>
                 </div>
-
                 <div class="clearfix"></div>
-
                 <!-- menu profile quick info -->
                 <div class="profile clearfix">
                     <div class="profile_pic">
@@ -56,7 +54,7 @@
                         <ul class="nav side-menu">
                             <li><a><i class="fa fa-line-chart"></i> Analytics <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a id="nav_index" href="javascript:void(0)">Google Analytics</a></li>
+                                    {{--<li><a id="nav_index" href="javascript:void(0)">Google Analytics</a></li>--}}
                                     <li><a id="nav_index" href="javascript:void(0)">Firebase Analytics</a></li>
                                 </ul>
                             </li>
@@ -82,8 +80,8 @@
                             </li>
                             <li><a><i class="fa fa-home"></i> User <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li><a id="nav_permission" href="javascript:void(0)">Permission</a></li>
-                                    <li><a id="nav_view_user" href="javascript:void(0)">Admin</a></li>
+                                    {{--<li><a id="nav_permission" href="javascript:void(0)">Permission</a></li>
+                                    <li><a id="nav_view_user" href="javascript:void(0)">Admin</a></li>--}}
                                     <li><a id="nav_view_user" href="javascript:void(0)">Staff</a></li>
                                 </ul>
                             </li>
@@ -157,7 +155,7 @@
 <script src="{{ URL::asset('js/jquery.dataTables.min.js') }}"></script>
 
 <script src="{{ URL::asset('js/bootstrap.min.js') }}"></script>
-<script src="{{ URL::asset('js/bootstrap2-toggle.js') }}"></script>
+{{--<script src="{{ URL::asset('js/bootstrap2-toggle.js') }}"></script>--}}
 <script src="{{ URL::asset('js/bootstrap-progressbar.min.js') }}"></script>
 <script src="{{ URL::asset('js/bootstrap-toggle.js') }}"></script>
 <script src="{{ URL::asset('js/custom.min.js') }}"></script>

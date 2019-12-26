@@ -11,12 +11,14 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top: 20px;">
-                    <textarea id="bookDesc" name="bookDesc">Write your description here!</textarea>
+                    <textarea id="bookDesc" name="bookDesc">
+                        {{ $book->description }}
+                    </textarea>
                 </div>
                 <div class="row" style="margin-top: 20px;">
                     <div class="col-sm-12 col-md-12">
                         <div class="col-sm-12 col-md-12">
-                            <img id="place_holder" src="https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/cms/data/placeholder_cms.png"
+                            <img id="place_holder" src="{{ $book->place_holder }}"
                                  alt="" class="img-rounded img-responsive" />
                         </div>
                     </div>
@@ -29,7 +31,9 @@
                 </div>
                 <div class="_clearFix"></div>
                 <div class="row" style="margin-top: 20px;">
-                    <textarea id="bookContent" name="bookContent">Write your content here!</textarea>
+                    <textarea id="bookContent" name="bookContent">
+                        {{ $book->content }}
+                    </textarea>
                 </div>
             </form>
         </div>
@@ -57,68 +61,68 @@
             <div class="row" style="margin: 10px auto 0;">
                 <div class="form-group">
                     <label for="description" style="margin-left: 10px;">Description:</label>
-                    <textarea class="form-control" rows="5" id="description" style="border: 0;">{{ $book->description }}</textarea>
+                    <textarea class="form-control" rows="5" id="description" style="border: 0;">{{ isset($meta) ? $meta->description : "" }}</textarea>
                 </div>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="keywords" style="margin-left: 10px;">Keywords:</label>
-                <input type="text" class="form-control" placeholder="" style="border: 0;" id="keywords"/>
+                <input value="{{ isset($meta) ? $meta->keywords : "" }}" type="text" class="form-control" placeholder="" style="border: 0;" id="keywords"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="author" style="margin-left: 10px;">Author:</label>
-                <input type="text" class="form-control" placeholder="" style="border: 0;" id="author" value="{{ $book->author }}"/>
+                <input value="{{ isset($meta) ? $meta->author : "" }}" type="text" class="form-control" placeholder="" style="border: 0;" id="author"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="theme_color" style="margin-left: 10px;">Theme Color:</label>
-                <input type="color" class="" value="#000000" style="border: 0;" id="theme_color"/>
+                <input value="{{ isset($meta) ? $meta->theme_color : "#000000" }}" type="color" style="border: 0;" id="theme_color"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="og_title" style="margin-left: 10px;">Og Title:</label>
-                <input type="text" class="form-control" style="border: 0;" id="og_title" value="{{ $book->title }}"/>
+                <input value="{{ isset($meta) ? $meta->og_title : "" }}" type="text" class="form-control" style="border: 0;" id="og_title"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="og_image" style="margin-left: 10px;">Og Image:</label>
-                <input type="text" class="form-control" style="border: 0;" id="og_image"/>
+                <input value="{{ isset($meta) ? $meta->og_image : "" }}" type="text" class="form-control" style="border: 0;" id="og_image"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="og_url" style="margin-left: 10px;">Og URL:</label>
-                <input type="text" class="form-control" style="border: 0;" id="og_url"/>
+                <input value="{{ isset($meta) ? $meta->og_url : "" }}" type="text" class="form-control" style="border: 0;" id="og_url"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="og_site_name" style="margin-left: 10px;">Og Site Name:</label>
-                <input type="text" class="form-control" style="border: 0;" id="og_site_name"/>
+                <input value="{{ isset($meta) ? $meta->og_site_name : "" }}" type="text" class="form-control" style="border: 0;" id="og_site_name"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="og_description" style="margin-left: 10px;">Og Description:</label>
-                <input type="text" class="form-control" style="border: 0;" id="og_description" value="{{ $book->description }}"/>
+                <input value="{{ isset($meta) ? $meta->og_description : "" }}" type="text" class="form-control" style="border: 0;" id="og_description"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="fb_app_id" style="margin-left: 10px;">Fb App ID:</label>
-                <input type="text" class="form-control" style="border: 0;" id="fb_app_id"/>
+                <input value="{{ isset($meta) ? $meta->fb_app_id : "" }}" type="text" class="form-control" style="border: 0;" id="fb_app_id"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="twitter_card" style="margin-left: 10px;">Twitter Card:</label>
-                <input type="text" class="form-control" style="border: 0;" id="twitter_card"/>
+                <input value="{{ isset($meta) ? $meta->twitter_card : "" }}" type="text" class="form-control" style="border: 0;" id="twitter_card"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="twitter_title" style="margin-left: 10px;">Twitter Title:</label>
-                <input type="text" class="form-control" style="border: 0;" id="twitter_title" value="{{ $book->title }}"/>
+                <input value="{{ isset($meta) ? $meta->twitter_title : "" }}" type="text" class="form-control" style="border: 0;" id="twitter_title"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="twitter_description" style="margin-left: 10px;">Twitter Description:</label>
-                <input type="text" class="form-control" style="border: 0;" id="twitter_description" value="{{ $book->description }}"/>
+                <input value="{{ isset($meta) ? $meta->twitter_description : "" }}" type="text" class="form-control" style="border: 0;" id="twitter_description"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="twitter_url" style="margin-left: 10px;">Twitter URL:</label>
-                <input type="text" class="form-control" style="border: 0;" id="twitter_url"/>
+                <input value="{{ isset($meta) ? $meta->twitter_url : "" }}" type="text" class="form-control" style="border: 0;" id="twitter_url"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="twitter_image" style="margin-left: 10px;">Twitter Image:</label>
-                <input type="text" class="form-control" style="border: 0;" id="twitter_image"/>
+                <input value="{{ isset($meta) ? $meta->twitter_image : "" }}" type="text" class="form-control" style="border: 0;" id="twitter_image"/>
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <label for="parsely_link" style="margin-left: 10px;">Parsely Link:</label>
-                <input type="text" class="form-control" style="border: 0;" id="parsely_link"/>
+                <input value="{{ isset($meta) ? $meta->parsely_link : "" }}" type="text" class="form-control" style="border: 0;" id="parsely_link"/>
             </div>
         </div>
     </div>
@@ -130,7 +134,7 @@
         formData.append('slugTitle', $("#slugTitle").val());
         formData.append('bookID', $("#bookID").val());
         formData.append('bookDesc', tinyMCE.get('bookDesc').getContent());
-        formData.append('bookPlaceholder', $("#imageUpload").attr("src"));
+        formData.append('bookPlaceholder', $("#place_holder").attr("src"));
         formData.append('bookContent', tinyMCE.get('bookContent').getContent());
         formData.append('title', $('#title').val());
         formData.append('referrer', $('#referrer').val());

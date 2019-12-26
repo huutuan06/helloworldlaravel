@@ -36,10 +36,12 @@ class BookController extends Controller
                 'image' => $book->image,
                 'category' => $this->mModelBook->getCategoryById($book->category_id)->name,
                 'description' => $book->description,
+                'content' => $book->content,
                 'total_pages' => $book->total_pages,
                 'price' => $book->price,
                 'amount' => $book->amount,
                 'author' => $book->author,
+                'place_holder' => $book->place_holder,
                 'manipulation' => $book->id
             );
             $collections->push($arr);
@@ -107,6 +109,8 @@ class BookController extends Controller
                 'image' => $image[0],
                 'category_id' => 3,
                 'description' => '',
+                'content' => '',
+                'place_holder' => '',
                 'total_pages' => 1,
                 'price' => $price[0],
                 'amount' => 100,

@@ -64,7 +64,7 @@ class CMSController extends Controller
                 echo json_encode($response_array);
             }
         } else {
-            if ($request->bookPlaceholder =="http://topicsoverflow.com/images/img_placeholder.png") {
+            if ($request->bookPlaceholder =="https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/cms/data/placeholder_cms.png") {
                 $response_array = ([
                     'message'       => [
                         'status'        => "invalid",
@@ -81,7 +81,9 @@ class CMSController extends Controller
                          'numeral' => $item->numeral,
                          'image' => $item->image,
                          'category_id' => $item->category_id,
-                         'description' => $request->bookContent,
+                         'description' => $request->bookDesc,
+                         'content' => $request->bookContent,
+                         'place_holder' => $request->bookPlaceholder,
                          'total_pages' => $item->total_pages,
                          'price' => $item->price,
                          'amount' => $item->amount,
@@ -95,7 +97,7 @@ class CMSController extends Controller
                         'id' => $this->mModelMeta->getItemByBookID($request->bookID)->id,
                         'title' => $request->title,
                         'referrer' => $request->referrer,
-                        'description' => $request->bookDesc,
+                        'description' => $request->description,
                         'keywords' => $request->keywords,
                         'author' => $request->author,
                         'theme_color' => $request->theme_color,
