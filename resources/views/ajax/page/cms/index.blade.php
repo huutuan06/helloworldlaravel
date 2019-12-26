@@ -56,8 +56,8 @@
             </div>
             <div class="row" style="margin: 10px auto 0;">
                 <div class="form-group">
-                    <label for="description" style="margin-left: 10px;" {{ $book->description }}>Description:</label>
-                    <textarea class="form-control" rows="5" id="description" style="border: 0;"></textarea>
+                    <label for="description" style="margin-left: 10px;">Description:</label>
+                    <textarea class="form-control" rows="5" id="description" style="border: 0;">{{ $book->description }}</textarea>
                 </div>
             </div>
             <div class="row" style="margin: 10px auto 0;">
