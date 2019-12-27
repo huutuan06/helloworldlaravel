@@ -20,8 +20,8 @@ class Order extends Model
         return DB::table('orders')->insert($data);
     }
 
-    public function getLastOrder()
+    public function getOrderByCode($code)
     {
-        return DB::table('orders')->orderBy('created_At', 'desc')->first();
+        return DB::table('orders')->where('code', '=', $code)->first();
     }
 }

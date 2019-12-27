@@ -22,10 +22,13 @@ class OrderController extends Controller
     protected $modelBookOrder;
     protected $modelUser;
 
-    public function __construct(Category $category, Book $book)
+    public function __construct(Category $category, Book $book, Order $order, Book_Order $book_Order, User $user)
     {
         $this->modelBook = $book;
         $this->modelCategory = $category;
+        $this->modelOrder = $order;
+        $this->modelBookOrder = $book_Order;
+        $this->modelUser = $user;
     }
 
     /**
@@ -41,8 +44,8 @@ class OrderController extends Controller
         $this->response_array = ([
             'http_response_code' => http_response_code(),
             'error' => [
-                'code'        => 0,
-                'message'   => "Success"
+                'code' => 0,
+                'message' => "Success"
             ],
             'data' => [
                 'categories' => $categories,
@@ -52,71 +55,39 @@ class OrderController extends Controller
         return json_encode($this->response_array);
     }
 
-    public function submit(Request $request) {
+    public function submit(Request $request)
+    {
         \Log::info($request);
+        $code = strtoupper(substr(md5(uniqid(rand(), true)), 0, 8));
 
-        $credentials = $request->address->only('address','name','phone_number');
-        $rules = [
-            'address' => 'required',
-            'name' => 'required',
-            'phone_number' => 'required',
-        ];
-        $validator = Validator::make($credentials, $rules);
-        if ($validator->fails()) {
-            if ($validator->errors()->get('name') != null) {
-                $this->response_array = ([
-                    'http_response_code' => http_response_code(),
-                    'error' => [
-                        'code'      => 201,
-                        'message'   => "Please provide a properly name"
-                    ],
-                    'data' => null
-                ]);
-            } else if ($validator->errors()->get('address') != null) {
-                $this->response_array = ([
-                    'http_response_code' => http_response_code(),
-                    'error' => [
-                        'code' => 201,
-                        'message' => "Please provide a properly address"
-                    ],
-                    'data' => null
-                ]);
-            } else if ($validator->errors()->get('phone_number') != null) {
-                $this->response_array = ([
-                    'http_response_code' => http_response_code(),
-                    'error' => [
-                        'code' => 201,
-                        'message' => "Please provide a properly phone number"
-                    ],
-                    'data' => null
-                ]);
-            } else {
-                $this->modelOrder->add(array([
-                    'code' => mt_srand(10),
-                    'user_id' => $request->user_id,
-                    'address' => $request->address->address
-                ]));
-                foreach ($request->carts as $cart) {
-                    $this->modelBookOrder->add(array([
-                        "book_id" => $cart->book_id,
-                        "book_title" => $cart->book_title,
-                        "order_id"=> $this->modelOrder->getLastOrder()->id,
-                        "total_book" => $cart->total_book,
-                        "price" => $cart->price,
-                        "image" => $cart->image
-                    ]));
-                }
-                $this->modelUser->updatePhoneNumber($request->user_id, $request->address->phone_number);
-                $this->response_array = ([
-                    'http_response_code' => http_response_code(),
-                    'error' => [
-                        'code'        => 0,
-                        'message'   => "Success"
-                    ],
-                    'data' => null
-                ]);
-                return json_encode($this->response_array);
-            }
+        $this->modelOrder->add(array([
+            'code' => $code,
+            'user_id' => $request->user_id,
+            'address' => $request->address['address']
+        ]));
+        \Log::info($code);
+        \Log::info($this->modelOrder->getOrderByCode($code)->id);
+        foreach ($request->carts as $cart) {
+            $this->modelBookOrder->add(array([
+                "book_id" => $cart['book_id'],
+                "book_title" => $cart['book_title'],
+                "order_id" => $this->modelOrder->getOrderByCode($code)->id,
+                "total_book" => $cart['total_book'],
+                "price" => $cart['price'],
+                "image" => $cart['image']
+            ]));
         }
+        $this->modelUser->updatePhoneNumber($request->user_id, $request->address['phone_number']);
+        $this->response_array = ([
+            'http_response_code' => http_response_code(),
+            'error' => [
+                'code' => 0,
+                'message' => "Success"
+            ],
+            'data' => null
+        ]);
+        return json_encode($this->response_array);
     }
+
+
 }
