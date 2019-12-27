@@ -14,4 +14,14 @@ class Order extends Model
     {
         return DB::table('orders')->get();
     }
+
+    public function add($data)
+    {
+        return DB::table('orders')->insert($data);
+    }
+
+    public function getLastOrder()
+    {
+        return DB::table('orders')->orderBy('created_At', 'desc')->first();
+    }
 }
