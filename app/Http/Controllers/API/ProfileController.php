@@ -43,38 +43,38 @@ class ProfileController extends Controller {
         } else {
             $request->avatar = Request::url().'/images/users/'.'profile.png';
         }
-        if ($this->modelUser->getByEmail($request->email)) {
-            if ($this->modelUser->updateItem($this->getInfoMUser($request, $image_path, true)) > 0) {
-                $response_array = ([
-                    'error' => [
-                        'code' => 0,
-                        'message' => "Cập nhật thông tin người chơi thành công!"
-                    ],
-                    'data' => [
-                        'user' => DB::table('users')->where('email', '=', $request->mUserMail)->first(),
-                    ]
-                ]);
-                echo json_encode($response_array);
-            } else {
-                $response_array = ([
-                    'error' => [
-                        'code' => 408,
-                        'message' => "Cập nhật thông tin người chơi thất bại!"
-                    ],
-                    'data' => null
-                ]);
-                echo json_encode($response_array);
-            }
-        } else {
-            $response_array = ([
-                'error' => [
-                    'code' => 223,
-                    'message' => "Người chơi không tồn tại trong hệ thống!"
-                ],
-                'data' => null
-            ]);
-            echo json_encode($response_array);
-        }
+//        if ($this->modelUser->getByEmail($request->email)) {
+//            if ($this->modelUser->updateItem($this->getInfoMUser($request, $image_path, true)) > 0) {
+//                $response_array = ([
+//                    'error' => [
+//                        'code' => 0,
+//                        'message' => "Cập nhật thông tin người chơi thành công!"
+//                    ],
+//                    'data' => [
+//                        'user' => DB::table('users')->where('email', '=', $request->mUserMail)->first(),
+//                    ]
+//                ]);
+//                echo json_encode($response_array);
+//            } else {
+//                $response_array = ([
+//                    'error' => [
+//                        'code' => 408,
+//                        'message' => "Cập nhật thông tin người chơi thất bại!"
+//                    ],
+//                    'data' => null
+//                ]);
+//                echo json_encode($response_array);
+//            }
+//        } else {
+//            $response_array = ([
+//                'error' => [
+//                    'code' => 223,
+//                    'message' => "Người chơi không tồn tại trong hệ thống!"
+//                ],
+//                'data' => null
+//            ]);
+//            echo json_encode($response_array);
+//        }
     }
 
     public function manageorders() {

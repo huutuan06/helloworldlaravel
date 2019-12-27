@@ -117,6 +117,7 @@
             event.preventDefault();
             $('#createCustomerModal').modal('hide');
             var formData = new FormData(this);
+            formData.append('gender', $("#customerFormCreate input[type='radio']:checked").val());
             $.ajax({
                 url: '/admin/customer/route',
                 headers: {

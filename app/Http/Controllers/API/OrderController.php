@@ -53,8 +53,6 @@ class OrderController extends Controller
     }
 
     public function submit(Request $request) {
-        \Log::info($request);
-
         $credentials = $request->address->only('address','name','phone_number');
         $rules = [
             'address' => 'required',
