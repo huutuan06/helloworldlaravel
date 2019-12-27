@@ -100,6 +100,11 @@ class User extends Authenticatable implements JWTSubject
             'date_of_birth' => $data['date_of_birth'], 'gender' => $data['gender'], 'avatar' => $data->avatar, 'address'=> $data['address']]);
     }
 
+    public function updatePhoneNumber($id, $phoneNumber)
+    {
+        return DB::table('users')->where('id', $id)->update(['phone_number' => $phoneNumber]);
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

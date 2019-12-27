@@ -16,4 +16,9 @@ class Book_Order extends Model
             ->where('order_id', $order_id)
             ->get();
     }
+
+    public function add($data)
+    {
+        return DB::table('book_order')->insert($data);
+    }
 }
