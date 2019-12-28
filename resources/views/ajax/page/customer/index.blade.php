@@ -58,7 +58,7 @@
             "serverSide": true,
 
             "ajax": {
-                url: '/admin/customer/route',
+                url: '/admin/customer',
                 type: 'GET'
             },
 
@@ -83,8 +83,8 @@
                 {"data": "address"},
                 {"data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
-                            + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
-                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                            + '<a href="javascript:void(0)" onclick= "editCustomer(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                             + '<input type="hidden" value="'+id+'"/></div>';
                     }
                 }
@@ -96,6 +96,9 @@
         $('#customerFormCreate').each(function(){
             $(this).find(':input').val('')
         });
+        $('#male').val('0');
+        $('#female').val('1');
+        $('input[name="gender"]').attr('checked', false);
         $('#createCustomerModal').modal('show');
     });
 
@@ -117,9 +120,13 @@
             event.preventDefault();
             $('#createCustomerModal').modal('hide');
             var formData = new FormData(this);
-            formData.append('gender', $("#customerFormCreate input[type='radio']:checked").val());
+            if($("#male").checked) {
+                formData.append('gender', $("#male").val());
+            } else if ($("#female").checked) {
+                formData.append('gender', $("#female").val());
+            }
             $.ajax({
-                url: '/admin/customer/route',
+                url: '/admin/customer',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -142,6 +149,7 @@
                         $.fn.dataTable.ext.errMode = 'none';
                         table.row.add(
                             [
+                                data['user']['id'],
                                 data['user']['name'],
                                 data['user']['email'],
                                 data['user']['phone_number'],
@@ -153,11 +161,12 @@
                                     else
                                         return '';
                                 },
+                                data['user']['date_of_birth'],
                                 data['user']['address'],
                                 function (id) {
                                     return '<div class="text-center">'
-                                        + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
-                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                                        + '<a href="javascript:void(0)" onclick= "editCustomer(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                         + '</div>';
                                 }
                             ]
@@ -177,7 +186,7 @@
                     _name: "required"
                 },
                 messages: {
-                    _name: "Please fill name"
+                    _name: "Please fill out this field"
                 }
             });
             if (!$(this).valid()) return false;
@@ -186,7 +195,7 @@
             $('#customerUserModal').modal('hide');
             var formData = new FormData(this);
             $.ajax({
-                url: '/admin/customer/route/' + $('#_id').val(),
+                url: '/admin/customer/' + $('#_id').val(),
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -221,8 +230,8 @@
                                         data['user']['address'],
                                         function (id) {
                                             return '<div class="text-center">'
-                                                + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
-                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                                                + '<a href="javascript:void(0)" onclick= "editCustomer(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                                 + '</div>';
                                         }
                                     ]
@@ -239,9 +248,9 @@
         });
     });
 
-    function editUser(id) {
+    function editCustomer(id) {
         $.ajax({
-            url: '/admin/customer/route/' + id,
+            url: '/admin/customer/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -262,11 +271,10 @@
                 var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
                 $('#_date_of_birth').val(today);
                 $('#_avatar').attr('src', data['user']['avatar']);
-                if (data['user']['gender'] === 0) {
-                    $('#_gender').find(':radio[name="gender"][value="0"]').prop('checked', true);
+                if (data['user']['gender'] == '0') {
+                    $('#_male').attr('checked', true);
                 } else {
-                    $('#_gender').find(':radio[name="gender"][value="1"]').prop('checked', true);
-
+                    $('#_female').attr('checked', true);
                 }
                 $('#modal-loading').modal('hide');
                 $('#customerUserModal').modal('show');
@@ -276,9 +284,9 @@
             });
     }
 
-    function deleteUser(id) {
+    function deleteCustomer(id) {
         $.ajax({
-            url: '/admin/customer/route/' + id,
+            url: '/admin/customer/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },

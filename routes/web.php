@@ -25,8 +25,6 @@ Route::get('/', function () {
 
 Route::get('/books/{slug}.html', 'HomeController@pages')->name('home.pages');
 
-Auth::routes();
-
 Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/admin/book', 'Dashboard\BookController');
@@ -50,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/admin/user', 'Dashboard\UserController');
 
-    Route::resource('/admin/customer/route', 'Dashboard\CustomerController');
+    Route::resource('/admin/customer', 'Dashboard\CustomerController');
 
     Route::group(['prefix' => '', 'note' => 'Routes for CMS'], function () {
         Route::post('/admin/cms/new', 'Dashboard\CMSController@cms')->name('create_cms');
