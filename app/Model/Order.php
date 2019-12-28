@@ -24,4 +24,9 @@ class Order extends Model
     {
         return DB::table('orders')->where('code', '=', $code)->first();
     }
+
+    public function cancelOrder($id)
+    {
+        return DB::table('orders')->where('id',$id)->update(['cancel'=>1]);
+    }
 }

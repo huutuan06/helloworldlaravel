@@ -86,5 +86,16 @@ class OrderController extends Controller
         return json_encode($this->response_array);
     }
 
-
+    public function cancel(Request $request) {
+        $this->modelOrder->cancelOrder($request[0]);
+        $this->response_array = ([
+            'http_response_code' => http_response_code(),
+            'error' => [
+                'code' => 0,
+                'message' => "Success"
+            ],
+            'data' => null
+        ]);
+        return json_encode($this->response_array);
+    }
 }
