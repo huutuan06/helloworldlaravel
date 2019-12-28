@@ -172,66 +172,58 @@ class CustomerController extends Controller
     }
 
     public function update(Request $request, $id) {
-        \Log::info($request);
-        if ($this->mModelUser->getById($request->id)->email == $request->email) {
-            if ($request->avatar === null) {
-                $request->avatar = $this->mModelUser->getById($request->id)->avatar;
+        $customer = $this->mModelUser->getById($id);
+        $request->_avatar = '';
+        if (isset($_FILES['_avatar']['tmp_name'])) {
+            if (!file_exists($_FILES['_avatar']['tmp_name']) || !is_uploaded_file($_FILES['_avatar']['tmp_name'])) {
+                $request->_avatar = $customer != null ? $customer->avatar : 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.png';
             } else {
-                $this->deleteImage('public', $this->mModelUser->getById($request->id)->avatar);
-                $avatar = $request->file('avatar');
-                $name = str_slug($request->input('name')) . '_' . time();
-                $folder = '/images/users/';
-                $filePath = $folder . $name . '.' . $avatar->getClientOriginalExtension();
-                $this->uploadImage($avatar, $folder, 'public', $name);
-                $request->avatar = $filePath;
+                $fileExt = $request->file('_avatar')->getClientOriginalName();
+                $fileName = pathinfo($fileExt, PATHINFO_FILENAME);
+                $info = pathinfo($_FILES['_avatar']['name']);
+                if (preg_match("/^.*picture.*$/", $info['filename']) == 0) {
+                    $ext = $info['extension'];
+                } else {
+                    $ext = 'png';
+                }
+                $key = $this->helper->clean(trim(strtolower($fileName)) . "_" . time()) . "." . $ext;
+                Storage::disk('s3')->put(Config::get('constants.options.ezbook') . '/' . $key, fopen($request->file('_avatar'), 'r+'), 'public');
+                $request->_avatar = preg_replace("/^http:/i", "https:", Storage::disk('s3')->url(Config::get('constants.options.ezbook') . '/' . $key));
             }
-            $this->mModelUser->updateById($id, $request);
+        }
+
+        if ($customer == null) {
             return json_encode(([
                 'message' => [
-                    'status' => "success",
-                    'description' => "Update the customer success!"
-                ],
-                'user' => $this->mModelUser->getById($id)
+                    'status' => "invalid",
+                    'description' => "The customer does not exist in our system"
+                ]
             ]));
         } else {
-            if ($this->mModelUser->getByEmail($request->email)) {
+            if ($this->mModelUser->updateById($id, array(
+                'id' => $request->_id,
+                'name' => $request->_name,
+                'password' => $customer->password,
+                'phone_number' => $request->_phone_number,
+                'date_of_birth' => strtotime($request->_date_of_birth),
+                'gender' => $request->_gender,
+                'avatar' => $request->_avatar,
+                'address' => $request->_address
+            )) > 0 ) {
                 return json_encode(([
                     'message' => [
-                        'status' => "invalid",
-                        'description' => "The email already exists in the system!"
-                    ]
+                        'status' => "success",
+                        'description' => "Update the customer as successfully"
+                    ],
+                    'user' => $this->mModelUser->getById($request->_id)
                 ]));
             } else {
-                $oldAvatar = $this->mModelUser->getById($request->id)->avatar;
-                if ($request->avatar === null) {
-                    $request->avatar = $this->mModelUser->getById($request->id)->avatar;
-                } else {
-                    $avatar = $request->file('avatar');
-                    $name = str_slug($request->input('name')) . '_' . time();
-                    $folder = '/images/users/';
-                    $filePath = $folder . $name . '.' . $avatar->getClientOriginalExtension();
-                    $this->uploadImage($avatar, $folder, 'public', $name);
-                    $request->avatar = $filePath;
-                }
-                if ($this->mModelUser->updateById($id, $request) > 0) {
-                    if ($request->avatar != null) {
-                        $this->deleteImage('public', $oldAvatar);
-                    }
-                    return json_encode(([
-                        'message' => [
-                            'status' => "success",
-                            'description' => "Update the customer success!"
-                        ],
-                        'user' => $this->mModelUser->getById($id)
-                    ]));
-                } else {
-                    return json_encode(([
-                        'message' => [
-                            'status' => "error",
-                            'description' => "Update the customer failure!"
-                        ]
-                    ]));
-                }
+                return json_encode(([
+                    'message' => [
+                        'status' => "error",
+                        'description' => "Update the customer as failure"
+                    ]
+                ]));
             }
         }
     }
