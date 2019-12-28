@@ -172,7 +172,7 @@ class CustomerController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $customer = $this->mModelUser->getById($request->id);
+        $customer = $this->mModelUser->getById($id);
         $request->_avatar = '';
         if (isset($_FILES['_avatar']['tmp_name'])) {
             if (!file_exists($_FILES['_avatar']['tmp_name']) || !is_uploaded_file($_FILES['_avatar']['tmp_name'])) {
@@ -192,15 +192,15 @@ class CustomerController extends Controller
             }
         }
 
-        if ($customer != null) {
+        if ($customer == null) {
             return json_encode(([
                 'message' => [
                     'status' => "invalid",
-                    'description' => "The email already exists in the system!"
+                    'description' => "The customer does not exist in our system"
                 ]
             ]));
         } else {
-            if ($this->mModelUser->updateById($id, array(
+            if ($this->mModelUser->updateById($id, array([
                 'id' => $request->_id,
                 'name' => $request->_name,
                 'password' => $customer->password,
@@ -209,7 +209,7 @@ class CustomerController extends Controller
                 'gender' => $request->_gender,
                 'avatar' => $request->_avatar,
                 'address' => $request->_address
-            )) > 0 ) {
+            ])) > 0 ) {
                 return json_encode(([
                     'message' => [
                         'status' => "success",
