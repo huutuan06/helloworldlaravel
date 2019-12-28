@@ -25,9 +25,7 @@ class CustomerController extends Controller
     use HasTimestamps;
     use UploadTrait;
 
-
-    public function __construct(User $user, Helper $helper)
-    {
+    public function __construct(User $user, Helper $helper) {
         $this->mModelUser = $user;
         $this->helper = $helper;
     }
@@ -37,8 +35,7 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
-    {
+    public function index() {
         $users = $this->mModelUser->getAllCustomers();
         $collections = collect();
         $i = 1;
@@ -66,9 +63,7 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return void
      */
-    public function store(Request $request)
-    {
-        \Log::info($request);
+    public function store(Request $request) {
         $credentials = $request->only('name', 'email', 'password');
         $rules = [
             'name' => 'required', 'string', 'max:255',
@@ -176,36 +171,41 @@ class CustomerController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         \Log::info($request);
-        $credentials = $request->only('_name','_phone_number','_address','_date_of_birth','_avatar', 'gender');
-        $rules = [
-            '_name' => 'required',
-            '_phone_number' => 'required',
-            '_address' => 'required',
-            '_date_of_birth' => 'required',
-            '_avatar' => 'required',
-            '_gender' => 'required'
-        ];
-        $customMessages = [
-            'required' => 'Please :field fill in form'
-        ];
-        $request->password = bcrypt($request->password);
-        $validator = Validator::make($credentials, $rules, $customMessages);
-        if ($validator->fails()) {
+        if ($this->mModelUser->getById($request->id)->email == $request->email) {
+            if ($request->avatar === null) {
+                $request->avatar = $this->mModelUser->getById($request->id)->avatar;
+            } else {
+                $this->deleteImage('public', $this->mModelUser->getById($request->id)->avatar);
+                $avatar = $request->file('avatar');
+                $name = str_slug($request->input('name')) . '_' . time();
+                $folder = '/images/users/';
+                $filePath = $folder . $name . '.' . $avatar->getClientOriginalExtension();
+                $this->uploadImage($avatar, $folder, 'public', $name);
+                $request->avatar = $filePath;
+            }
+            $this->mModelUser->updateById($id, $request);
             return json_encode(([
                 'message' => [
-                    'status' => "invalid",
-                    'description' => $validator->errors()->first()
-                ]
+                    'status' => "success",
+                    'description' => "Update the customer success!"
+                ],
+                'user' => $this->mModelUser->getById($id)
             ]));
         } else {
-            if ($this->mModelUser->getById($request->id)->email == $request->email) {
+            if ($this->mModelUser->getByEmail($request->email)) {
+                return json_encode(([
+                    'message' => [
+                        'status' => "invalid",
+                        'description' => "The email already exists in the system!"
+                    ]
+                ]));
+            } else {
+                $oldAvatar = $this->mModelUser->getById($request->id)->avatar;
                 if ($request->avatar === null) {
                     $request->avatar = $this->mModelUser->getById($request->id)->avatar;
                 } else {
-                    $this->deleteImage('public', $this->mModelUser->getById($request->id)->avatar);
                     $avatar = $request->file('avatar');
                     $name = str_slug($request->input('name')) . '_' . time();
                     $folder = '/images/users/';
@@ -213,53 +213,24 @@ class CustomerController extends Controller
                     $this->uploadImage($avatar, $folder, 'public', $name);
                     $request->avatar = $filePath;
                 }
-                $this->mModelUser->updateById($id, $request);
-                return json_encode(([
-                    'message' => [
-                        'status' => "success",
-                        'description' => "Update the customer success!"
-                    ],
-                    'user' => $this->mModelUser->getById($id)
-                ]));
-            } else {
-                if ($this->mModelUser->getByEmail($request->email)) {
+                if ($this->mModelUser->updateById($id, $request) > 0) {
+                    if ($request->avatar != null) {
+                        $this->deleteImage('public', $oldAvatar);
+                    }
                     return json_encode(([
                         'message' => [
-                            'status' => "invalid",
-                            'description' => "The email already exists in the system!"
-                        ]
+                            'status' => "success",
+                            'description' => "Update the customer success!"
+                        ],
+                        'user' => $this->mModelUser->getById($id)
                     ]));
                 } else {
-                    $oldAvatar = $this->mModelUser->getById($request->id)->avatar;
-                    if ($request->avatar === null) {
-                        $request->avatar = $this->mModelUser->getById($request->id)->avatar;
-                    } else {
-                        $avatar = $request->file('avatar');
-                        $name = str_slug($request->input('name')) . '_' . time();
-                        $folder = '/images/users/';
-                        $filePath = $folder . $name . '.' . $avatar->getClientOriginalExtension();
-                        $this->uploadImage($avatar, $folder, 'public', $name);
-                        $request->avatar = $filePath;
-                    }
-                    if ($this->mModelUser->updateById($id, $request) > 0) {
-                        if ($request->avatar != null) {
-                            $this->deleteImage('public', $oldAvatar);
-                        }
-                        return json_encode(([
-                            'message' => [
-                                'status' => "success",
-                                'description' => "Update the customer success!"
-                            ],
-                            'user' => $this->mModelUser->getById($id)
-                        ]));
-                    } else {
-                        return json_encode(([
-                            'message' => [
-                                'status' => "error",
-                                'description' => "Update the customer failure!"
-                            ]
-                        ]));
-                    }
+                    return json_encode(([
+                        'message' => [
+                            'status' => "error",
+                            'description' => "Update the customer failure!"
+                        ]
+                    ]));
                 }
             }
         }

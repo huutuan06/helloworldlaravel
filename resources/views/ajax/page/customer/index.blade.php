@@ -83,7 +83,7 @@
                 {"data": "address"},
                 {"data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
-                            + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                            + '<a href="javascript:void(0)" onclick= "editCustomer(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
                             + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                             + '<input type="hidden" value="'+id+'"/></div>';
                     }
@@ -165,7 +165,7 @@
                                 data['user']['address'],
                                 function (id) {
                                     return '<div class="text-center">'
-                                        + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                        + '<a href="javascript:void(0)" onclick= "editCustomer(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
                                         + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                         + '</div>';
                                 }
@@ -186,7 +186,7 @@
                     _name: "required"
                 },
                 messages: {
-                    _name: "Please fill name"
+                    _name: "Please fill out this field"
                 }
             });
             if (!$(this).valid()) return false;
@@ -230,7 +230,7 @@
                                         data['user']['address'],
                                         function (id) {
                                             return '<div class="text-center">'
-                                                + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                                + '<a href="javascript:void(0)" onclick= "editCustomer(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
                                                 + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                                 + '</div>';
                                         }
@@ -248,7 +248,7 @@
         });
     });
 
-    function editUser(id) {
+    function editCustomer(id) {
         $.ajax({
             url: '/admin/customer/route/' + id,
             headers: {
@@ -271,7 +271,6 @@
                 var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
                 $('#_date_of_birth').val(today);
                 $('#_avatar').attr('src', data['user']['avatar']);
-                console.log(data['user']['gender']);
                 if (data['user']['gender'] == '0') {
                     $('#_male').attr('checked', true);
                 } else {
