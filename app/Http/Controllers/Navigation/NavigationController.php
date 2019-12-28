@@ -61,7 +61,7 @@ class NavigationController extends Controller
     }
 
     public function customer() {
-        $returnHTML = view('ajax.page.user.customer')->render();
+        $returnHTML = view('ajax.page.customer.index')->render();
         $response_array = ([
             'success' => true,
             'html' => $returnHTML

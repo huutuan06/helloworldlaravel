@@ -96,6 +96,9 @@
         $('#customerFormCreate').each(function(){
             $(this).find(':input').val('')
         });
+        $('#male').val('0');
+        $('#female').val('1');
+        $('input[name="gender"]').attr('checked', false);
         $('#createCustomerModal').modal('show');
     });
 
@@ -117,7 +120,11 @@
             event.preventDefault();
             $('#createCustomerModal').modal('hide');
             var formData = new FormData(this);
-            formData.append('gender', $("#customerFormCreate input[type='radio']:checked").val());
+            if($("#male").checked) {
+                formData.append('gender', $("#male").val());
+            } else if ($("#female").checked) {
+                formData.append('gender', $("#female").val());
+            }
             $.ajax({
                 url: '/admin/customer/route',
                 headers: {

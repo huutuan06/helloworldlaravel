@@ -68,6 +68,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info($request);
         $credentials = $request->only('name', 'email', 'password');
         $rules = [
             'name' => 'required', 'string', 'max:255',
@@ -83,7 +84,7 @@ class CustomerController extends Controller
         $request->avatar = '';
         if (isset($_FILES['avatar']['tmp_name'])) {
             if (!file_exists($_FILES['avatar']['tmp_name']) || !is_uploaded_file($_FILES['avatar']['tmp_name'])) {
-                $request->avatar = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.jpg';
+                $request->avatar = 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.png';
             } else {
                 $fileExt = $request->file('avatar')->getClientOriginalName();
                 $fileName = pathinfo($fileExt, PATHINFO_FILENAME);
@@ -283,7 +284,7 @@ class CustomerController extends Controller
                 ]
             ]);
         } else {
-            if ($filename != 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.jpg'){
+            if ($filename != 'https://vogobook.s3-ap-southeast-1.amazonaws.com/vogobook/avatar/data/profile.png'){
                 Storage::disk('s3')->delete(basename($filename));
             }
             return json_encode([
