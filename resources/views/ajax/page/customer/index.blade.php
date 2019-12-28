@@ -84,7 +84,7 @@
                 {"data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
                             + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
-                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                            + '<span>  </span>' + '<a href="javascript:void(0)"  onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                             + '<input type="hidden" value="'+id+'"/></div>';
                     }
                 }
@@ -149,6 +149,7 @@
                         $.fn.dataTable.ext.errMode = 'none';
                         table.row.add(
                             [
+                                data['user']['id'],
                                 data['user']['name'],
                                 data['user']['email'],
                                 data['user']['phone_number'],
@@ -160,11 +161,12 @@
                                     else
                                         return '';
                                 },
+                                data['user']['date_of_birth'],
                                 data['user']['address'],
                                 function (id) {
                                     return '<div class="text-center">'
                                         + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
-                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                                        + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                         + '</div>';
                                 }
                             ]
@@ -229,7 +231,7 @@
                                         function (id) {
                                             return '<div class="text-center">'
                                                 + '<a href="javascript:void(0)" onclick= "editUser(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
-                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteUser(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                                                + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                                 + '</div>';
                                         }
                                     ]
@@ -269,11 +271,11 @@
                 var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
                 $('#_date_of_birth').val(today);
                 $('#_avatar').attr('src', data['user']['avatar']);
-                if (data['user']['gender'] === 0) {
-                    $('#_gender').find(':radio[name="gender"][value="0"]').prop('checked', true);
+                console.log(data['user']['gender']);
+                if (data['user']['gender'] == '0') {
+                    $('#_male').attr('checked', true);
                 } else {
-                    $('#_gender').find(':radio[name="gender"][value="1"]').prop('checked', true);
-
+                    $('#_female').attr('checked', true);
                 }
                 $('#modal-loading').modal('hide');
                 $('#customerUserModal').modal('show');
@@ -283,7 +285,7 @@
             });
     }
 
-    function deleteUser(id) {
+    function deleteCustomer(id) {
         $.ajax({
             url: '/admin/customer/route/' + id,
             headers: {

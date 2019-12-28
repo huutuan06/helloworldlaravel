@@ -18,32 +18,31 @@
             </div>
             <form id="customerFormEdit">
                 <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Name:</label>
+                    <label for="_name" class="col-form-label">Name:</label>
                     <input name="_name" type="text" class="form-control" id="_name">
                     <input name="_id" type="hidden" class="form-control" id="_id">
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Phone number:</label>
+                    <label for="_phone_number" class="col-form-label">Phone number:</label>
                     <input name="_phone_number" type="number" class="form-control" id="_phone_number">
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Address:</label>
+                    <label for="_address" class="col-form-label">Address:</label>
                     <input name="_address" type="text" class="form-control" id="_address">
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Date of Birth:</label>
+                    <label for="_date_of_birth" class="col-form-label">Date of Birth:</label>
                     <input name="_date_of_birth" type="date" id="_date_of_birth">
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Avatar:</label><br>
+                    <label for="_avatar" class="col-form-label">Avatar:</label><br>
                     <img src="" id="_avatar" width="100px" height="100px">
-                    <input name="_avatar" type="file" onchange="readAvatarEdit(this);" id="editUserAvatar" style="margin-top: 10px;">
+                    <input name="_avatar" type="file" style="margin-top: 10px;">
                 </div>
-                <div class="form-group" id="_gender">
-                    <label for="recipient-name" class="col-form-label">Gender:</label>
-                    <br>
-                    <input type="radio" name="gender" value="0"> Male<br>
-                    <input type="radio" name="gender" value="1"> Female<br>
+                <div class="form-group">
+                    <label for="_male" class="col-form-label">Gender:</label>
+                    <input type="radio" id="_male" name="_gender" value="0" style="margin: 0 10px;"><span>Male</span>
+                    <input type="radio" id="_female" name="_gender" value="1" style="margin: 0 10px;"><span>Female</span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
