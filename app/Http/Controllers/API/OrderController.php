@@ -9,6 +9,8 @@ use App\Model\Category;
 use App\Model\Order;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+
 
 class OrderController extends Controller
 {
@@ -17,6 +19,7 @@ class OrderController extends Controller
     protected $modelOrder;
     protected $modelBookOrder;
     protected $modelUser;
+    use HasTimestamps;
 
     public function __construct(Category $category, Book $book, Order $order, Book_Order $book_Order, User $user)
     {
@@ -57,7 +60,9 @@ class OrderController extends Controller
         $this->modelOrder->add(array([
             'code' => $code,
             'user_id' => $request->user_id,
-            'address' => $request->address['address']
+            'address' => $request->address['address'],
+            'created_at' =>  $this->freshTimestamp(),
+            'updated_at' =>  $this->freshTimestamp()
         ]));
         foreach ($request->carts as $cart) {
             $this->modelBookOrder->add(array([
