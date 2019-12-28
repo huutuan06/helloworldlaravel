@@ -16,7 +16,6 @@
  * Auth: point using object Authenticate in Laravel.
  * Route: point using object Route and allow you to navigate all other directions
  */
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -46,11 +45,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin/vogo/category/books', 'Dashboard\BookController@showBooksByCategory')->name('category.books');
     });
 
-    Route::resource('/admin/user', 'Dashboard\UserController');
+    Route::group(['prefix' => '', 'note' => 'Routes for Category'], function () {
 
-    Route::resource('/admin/customer', 'Dashboard\CustomerController');
+        Route::resource('/admin/customer', 'Dashboard\CustomerController');
+
+        Route::post('/admin/customer/{customer}', 'Dashboard\CustomerController@update')->name('customer.update');
+    });
 
     Route::group(['prefix' => '', 'note' => 'Routes for CMS'], function () {
+
         Route::post('/admin/cms/new', 'Dashboard\CMSController@cms')->name('create_cms');
 
         Route::post('/admin/cms/placeholder', 'Dashboard\CMSController@placeholder')->name('placeholder_cms');
@@ -58,9 +61,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/admin/cms/resource', 'Dashboard\CMSController@resource_cms')->name('resource_cms');
     });
 
-    Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
+    Route::resource('/admin/user', 'Dashboard\UserController');
 
     Route::post('/admin/user/{user}', 'Dashboard\UserController@update')->name('user.update');
+
+    Route::post('logout', 'Dashboard\LogoutController@logout')->name('logout');
 
     Route::resource('/admin/order', 'Dashboard\OrderController');
 
