@@ -14,8 +14,7 @@ class CategoryController extends Controller
     protected $mModelCat;
     use HasTimestamps;
 
-    public function __construct(Category $cat)
-    {
+    public function __construct(Category $cat) {
         $this->middleware('auth');
         $this->mModelCat = $cat;
     }
@@ -40,11 +39,6 @@ class CategoryController extends Controller
             $collections->push($arr);
         }
         return Datatables::collection($collections)->make();
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
@@ -129,17 +123,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -212,9 +195,7 @@ class CategoryController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $cat = $this->mModelCat->deleteById($id);
+    public function destroy($id) {
         if ($this->mModelCat->getById($id) != null) {
             return json_encode(([
                 'message' => [

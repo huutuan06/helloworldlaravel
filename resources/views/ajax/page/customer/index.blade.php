@@ -58,7 +58,7 @@
             "serverSide": true,
 
             "ajax": {
-                url: '/admin/customer/route',
+                url: '/admin/customer',
                 type: 'GET'
             },
 
@@ -126,7 +126,7 @@
                 formData.append('gender', $("#female").val());
             }
             $.ajax({
-                url: '/admin/customer/route',
+                url: '/admin/customer',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -195,7 +195,7 @@
             $('#customerUserModal').modal('hide');
             var formData = new FormData(this);
             $.ajax({
-                url: '/admin/customer/route/' + $('#_id').val(),
+                url: '/admin/customer/' + $('#_id').val(),
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -250,7 +250,7 @@
 
     function editCustomer(id) {
         $.ajax({
-            url: '/admin/customer/route/' + id,
+            url: '/admin/customer/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -286,7 +286,7 @@
 
     function deleteCustomer(id) {
         $.ajax({
-            url: '/admin/customer/route/' + id,
+            url: '/admin/customer/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
