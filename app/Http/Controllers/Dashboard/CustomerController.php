@@ -200,21 +200,22 @@ class CustomerController extends Controller
                 ]
             ]));
         } else {
-            if ($this->mModelUser->updateById($id, array([
+            if ($this->mModelUser->updateById($id, array(
                 'id' => $request->_id,
                 'name' => $request->_name,
                 'password' => $customer->password,
                 'phone_number' => $request->_phone_number,
-                'date_of_birth' => $request->_date_of_birth,
+                'date_of_birth' => strtotime($request->_date_of_birth),
                 'gender' => $request->_gender,
                 'avatar' => $request->_avatar,
                 'address' => $request->_address
-            ])) > 0 ) {
+            )) > 0 ) {
                 return json_encode(([
                     'message' => [
                         'status' => "success",
                         'description' => "Update the customer as successfully"
-                    ]
+                    ],
+                    'user' => $this->mModelUser->getById($request->_id)
                 ]));
             } else {
                 return json_encode(([

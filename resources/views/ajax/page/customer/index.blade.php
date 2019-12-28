@@ -218,12 +218,11 @@
                         $.fn.dataTable.ext.errMode = 'none';
                         var rows = table.rows().data();
                         for (var i = 0; i < rows.length; i++) {
-                            if (rows[i].id == data['user']['id']) {
-                                table.row(this).data(
-                                    [
+                                if (rows[i].id == data['user']['id']) {
+                                table.row(this).data([
+                                        data['user']['id'],
                                         data['user']['name'],
                                         data['user']['email'],
-                                        data['user']['avatar'],
                                         data['user']['phone_number'],
                                         data['user']['gender'],
                                         data['user']['date_of_birth'],
@@ -234,8 +233,7 @@
                                                 + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteCustomer(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
                                                 + '</div>';
                                         }
-                                    ]
-                                ).draw();
+                                ]).draw();
                             }
                         }
                     } else if (data.status === 'error') {
