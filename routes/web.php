@@ -17,12 +17,15 @@
  * Route: point using object Route and allow you to navigate all other directions
  */
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('front.home');
 });
 
 Route::get('/books/{slug}.html', 'HomeController@pages')->name('home.pages');
+
+Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
 
