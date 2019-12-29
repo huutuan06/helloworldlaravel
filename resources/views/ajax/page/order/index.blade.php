@@ -21,16 +21,22 @@
                             <thead>
                             <tr>
                                 <th style="width: 5.00%">Order ID</th>
-                                <th style="width: 20.00%">Email</th>
-                                <th style="width: 30.00%">Books</th>
-                                <th style="width: 10.00%">Price</th>
-                                <th style="width: 15.00%">Date's order</th>
-                                <th style="width: 10.00%">Status</th>
+                                <th style="width: 10.00%">Code</th>
+                                <th style="width: 15.00%">Email</th>
+                                <th style="width: 30.00%">Address</th>
+                                <th style="width: 5.00%">Confirmed ordering</th>
+                                <th style="width: 5.00%">Delivery</th>
+                                <th style="width: 5.00%">Success</th>
+                                <th style="width: 5.00%">Cancel</th>
+                                <th style="width: 10.00%">Date</th>
                                 <th style="width: 10.00%">Manipulation</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -47,6 +53,7 @@
         </div>
     </div>
 </div>
+@include("modal.order.edit")
 <script>
     $(document).ready(function () {
         $('#datatableOrders').dataTable({
@@ -68,15 +75,49 @@
 
             "columns": [
                 {"data": "id"},
+                {"data": "code"},
                 {"data": "email"},
-                {"data": "books"},
-                {"data": "price"},
-                {"data": "date"},
-                {"data": "status"},
-                {
-                    "data": "manipulation", "render": function (id) {
+                {"data": "address"},
+                {"data": "confirmed_ordering", "render" : function (confirmed_ordering) {
+                    if(confirmed_ordering == 1) {
                         return '<div class="text-center">'
-                            + '<a href="javascript:void(0)" onclick = "navDetail(' + id + ')"><img src="/images/icon_detail.png"  width="18px" height="18px"></a> '
+                            + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                            + '</div>';
+                    } else {
+                        return '<div></div>';
+                    }
+                    }},
+                {"data": "delivery","render" : function (delivery) {
+                        if(delivery == 1) {
+                            return '<div class="text-center">'
+                                + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                                + '</div>';
+                        } else {
+                            return '<div></div>';
+                        }
+                    }},
+                {"data": "success","render" : function (success) {
+                        if(success == 1) {
+                            return '<div class="text-center">'
+                                + '<img src="/images/icon_tick.png"  width="18px" height="18px"> '
+                                + '</div>';
+                        } else {
+                            return '<div></div>';
+                        }
+                    }},
+                {"data": "cancel","render" : function (cancel) {
+                        if(cancel == 1) {
+                            return '<div class="text-center">'
+                                + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                                + '</div>';
+                        } else {
+                            return '<div></div>';
+                        }
+                    }},
+                {"data": "updated_at"},
+                {"data": "manipulation", "render": function (id) {
+                        return '<div class="text-center">'
+                            + '<a href="javascript:void(0)" onclick = "editOrder(' + id + ')"><img src="/images/icon_detail.png"  width="18px" height="18px"></a> '
                             + '</div>';
                     }
                 }
@@ -84,22 +125,7 @@
         });
     });
 
-    function navDetail(id) {
-        localStorage.setItem("order_id", id);
-        $.ajax({
-            url: 'admin/ajax/order/detail',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            dataType: 'json',
-            type: 'POST',
-            beforeSend: function () {
-                $('#modal-loading').modal('show');
-            }
-        })
-            .done(function (data) {
-                $('#modal-loading').modal('hide');
-                $('#page_content_ajax').replaceWith(data['html']);
-            });
+    function editOrder(id) {
+        console.log(id);
     }
 </script>

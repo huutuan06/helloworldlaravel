@@ -15,6 +15,11 @@ class Order extends Model
         return DB::table('orders')->get();
     }
 
+    public function getOrders()
+    {
+        return DB::table('orders')->orderBy('updated_at','ASC')->get();
+    }
+
     public function add($data)
     {
         return DB::table('orders')->insert($data);

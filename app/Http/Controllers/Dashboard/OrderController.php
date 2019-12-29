@@ -26,23 +26,25 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = $this->mOrderBook->get();
+        $orders = $this->mOrderBook->getOrders();
         $collections = collect();
         foreach ($orders as $order) {
             $arr = array(
                 'id' => $order->id,
+                'code' => $order->code,
                 'email' => $this->mOrderBook->getUserByOrder($order->user_id)->email,
-                'books' => $this->mOrderBook->getUserByOrder($order->user_id)->email,
-                'price' => $this->mOrderBook->getUserByOrder($order->user_id)->email,
-                'date' =>  date("d M Y", strtotime( $order->date)),
-                'status' => $order->status,
+                'address' => $order->address,
+                'confirmed_ordering' =>  $order->confirmed_ordering,
+                'delivery' => $order->delivery,
+                'success' => $order->success,
+                'cancel' => $order->cancel,
+                'updated_at' => $order->updated_at->format('Y-m-d'),
                 'manipulation' => $order->id
             );
             $collections->push($arr);
         }
         return Datatables::collection($collections)->make();
     }
-
 
     public function store(Request $request)
     {
