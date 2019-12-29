@@ -26,7 +26,7 @@ class CustomerController extends Controller
     use UploadTrait;
 
     public function __construct(User $user, Helper $helper) {
-        $this->mModelUser = $user;
+        $this->mModelCustomer = $user;
         $this->helper = $helper;
     }
 
@@ -36,7 +36,7 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function index() {
-        $users = $this->mModelUser->getAllCustomers();
+        $users = $this->mModelCustomer->getAllCustomers();
         $collections = collect();
         $i = 1;
         foreach ($users as $user) {
@@ -103,7 +103,7 @@ class CustomerController extends Controller
                 ]
             ]);
         } else {
-            if ($this->mModelUser->getByEmail($request->email)) {
+            if ($this->mModelCustomer->getByEmail($request->email)) {
                 $this->response_array = ([
                     'message' => [
                         'status' => 'invalid',
@@ -111,7 +111,7 @@ class CustomerController extends Controller
                     ]
                 ]);
             } else {
-                if ($this->mModelUser->add(array([
+                if ($this->mModelCustomer->add(array([
                         'id' => self::resetOrderInDB(),
                         'name' => $request->name,
                         'email' => $request->email,
@@ -129,7 +129,7 @@ class CustomerController extends Controller
                             'status' => 'success',
                             'description' => 'Create a new customer successfully'
                         ],
-                        'user' => $this->mModelUser->getByEmail($request->email)
+                        'user' => $this->mModelCustomer->getByEmail($request->email)
                     ]);
                 } else {
                     $this->response_array = ([
@@ -152,7 +152,7 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $user = $this->mModelUser->getById($id);
+        $user = $this->mModelCustomer->getById($id);
         if ($user == null) {
             return json_encode(([
                 'message' => [
@@ -172,7 +172,7 @@ class CustomerController extends Controller
     }
 
     public function update(Request $request, $id) {
-        $customer = $this->mModelUser->getById($id);
+        $customer = $this->mModelCustomer->getById($id);
         $request->_avatar = '';
         if (isset($_FILES['_avatar']['tmp_name'])) {
             if (!file_exists($_FILES['_avatar']['tmp_name']) || !is_uploaded_file($_FILES['_avatar']['tmp_name'])) {
@@ -200,7 +200,7 @@ class CustomerController extends Controller
                 ]
             ]));
         } else {
-            if ($this->mModelUser->updateById($id, array(
+            if ($this->mModelCustomer->updateById($id, array(
                 'id' => $request->_id,
                 'name' => $request->_name,
                 'password' => $customer->password,
@@ -216,7 +216,7 @@ class CustomerController extends Controller
                         'status' => "success",
                         'description' => "Update the customer as successfully"
                     ],
-                    'user' => $this->mModelUser->getById($request->_id)
+                    'user' => $this->mModelCustomer->getById($request->_id)
                 ]));
             } else {
                 return json_encode(([
@@ -237,10 +237,10 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $user = $this->mModelUser->getById($id);
+        $user = $this->mModelCustomer->getById($id);
         $filename = $user->avatar;
-        $this->mModelUser->deleteById($id);
-        if ($this->mModelUser->getById($id) != null) {
+        $this->mModelCustomer->deleteById($id);
+        if ($this->mModelCustomer->getById($id) != null) {
             return json_encode([
                 'message' => [
                     'status' => 'error',
@@ -268,7 +268,7 @@ class CustomerController extends Controller
     public function resetOrderInDB() {
         $i = 1;
         while (true){
-            if ($this->mModelUser->getById($i) == null) break;
+            if ($this->mModelCustomer->getById($i) == null) break;
             $i++;
         }
         return $i;

@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 Route::get('/books/{slug}.html', 'HomeController@pages')->name('home.pages');
 
-Auth::routes();;
+Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
 

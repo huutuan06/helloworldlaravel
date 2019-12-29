@@ -27,14 +27,14 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function index() {
-        $users = $this->mModelUser->get();
+        $users = $this->mModelUser->getAllStaff();
         $collections = collect();
         foreach ($users as $user) {
             $arr = array(
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'date_of_birth' => date("d M Y", strtotime( $user->date_of_birth)),
+                'date_of_birth' => $user->date_of_birth == null ? null : date("M d, Y", $user->date_of_birth),
                 'avatar' => $user->avatar,
                 'phone_number' => $user->phone_number,
                 'address' => $user->address,

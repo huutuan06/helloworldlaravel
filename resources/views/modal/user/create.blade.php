@@ -35,12 +35,6 @@
                         <input name="password" type="password" class="form-control" id="userPassword">
                     </div>
                 </div>
-{{--                <div class="modal-body">--}}
-{{--                    <div class="form-group">--}}
-{{--                        <label for="recipient-name" class="col-form-label">Confirm Password:</label>--}}
-{{--                        <input name="confirm_password" type="password" class="form-control" id="editUserConfirmPassword">--}}
-{{--                    </div>--}}
-{{--                </div>--}}
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Phone number:</label>
