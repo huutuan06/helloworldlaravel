@@ -74,7 +74,7 @@ class User extends Authenticatable implements JWTSubject
      * @return mixed
      */
     public function getAllCustomers() {
-        return DB::table('users')->where('type', null)->get();
+        return DB::table('users')->where('type', 3)->get();
     }
 
     /**

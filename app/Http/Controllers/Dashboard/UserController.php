@@ -26,8 +26,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
-    {
+    public function index() {
         $users = $this->mModelUser->get();
         $collections = collect();
         foreach ($users as $user) {
@@ -45,16 +44,6 @@ class UserController extends Controller
             $collections->push($arr);
         }
         return Datatables::collection($collections)->make();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -160,17 +149,6 @@ class UserController extends Controller
                 'user' => $user
             ]));
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
