@@ -208,7 +208,8 @@ class CustomerController extends Controller
                 'date_of_birth' => strtotime($request->_date_of_birth),
                 'gender' => $request->_gender,
                 'avatar' => $request->_avatar,
-                'address' => $request->_address
+                'address' => $request->_address,
+                'remember_token' => $request->remember_token
             )) > 0 ) {
                 return json_encode(([
                     'message' => [
