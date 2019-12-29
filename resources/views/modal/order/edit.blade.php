@@ -11,39 +11,31 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <span class="modal-title" id="exampleModalLabel">Update Customer</span>
+                <span class="modal-title" id="exampleModalLabel">Edit</span>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="customerFormEdit">
+            <form id="orderFormEdit">
                 <div class="form-group">
-                    <label for="_name" class="col-form-label">Name:</label>
-                    <input name="_name" type="text" class="form-control" id="_name">
-                    <input name="_id" type="hidden" class="form-control" id="_id">
+                    <label for="order_code" class="col-form-label">Order Code: </label>
+                    <input name="order_code" type="text" class="form-control" id="order_code" disabled="">
+                    <input name="order_code" type="hidden" class="form-control" id="order_code">
                 </div>
                 <div class="form-group">
-                    <label for="_phone_number" class="col-form-label">Phone number:</label>
-                    <input name="_phone_number" type="number" class="form-control" id="_phone_number">
+                    <label for="book_order" class="col-form-label">List of Ordered Book:</label>
+
                 </div>
                 <div class="form-group">
-                    <label for="_address" class="col-form-label">Address:</label>
-                    <input name="_address" type="text" class="form-control" id="_address">
+                    <label for="book_order" class="col-form-label">Status:</label>
                 </div>
-                <div class="form-group">
-                    <label for="_date_of_birth" class="col-form-label">Date of Birth:</label>
-                    <input name="_date_of_birth" type="date" id="_date_of_birth">
-                </div>
-                <div class="form-group">
-                    <label for="_avatar" class="col-form-label">Avatar:</label><br>
-                    <img src="" id="_avatar" width="100px" height="100px">
-                    <input name="_avatar" type="file" style="margin-top: 10px;">
-                </div>
-                <div class="form-group">
-                    <label for="_male" class="col-form-label">Gender:</label>
-                    <input type="radio" id="_male" name="_gender" value="0" style="margin: 0 10px;"><span>Male</span>
-                    <input type="radio" id="_female" name="_gender" value="1" style="margin: 0 10px;"><span>Female</span>
-                </div>
+                <select class="form-group" style="padding: 5px 10px;" id="order_status">
+                    <option id="confirm" selected=''>Confirm</option>
+                    <option id="delivery" selected=''>Delivery</option>
+                    <option id="success" selected=''>Success</option>
+                    <option id="reject" selected=''>Reject</option>
+                </select>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Update</button>

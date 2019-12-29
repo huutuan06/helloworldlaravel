@@ -20,6 +20,10 @@ class Order extends Model
         return DB::table('orders')->orderBy('updated_at','ASC')->get();
     }
 
+    public function getOrderById($id) {
+        return DB::table('orders')->where('id', $id)->first();
+    }
+
     public function add($data)
     {
         return DB::table('orders')->insert($data);

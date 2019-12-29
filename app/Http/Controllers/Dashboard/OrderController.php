@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+Use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 
 
@@ -38,7 +39,7 @@ class OrderController extends Controller
                 'delivery' => $order->delivery,
                 'success' => $order->success,
                 'cancel' => $order->cancel,
-                'updated_at' => $order->updated_at->format('Y-m-d'),
+                'updated_at' => Carbon::parse($order->updated_at),
                 'manipulation' => $order->id
             );
             $collections->push($arr);
@@ -54,9 +55,24 @@ class OrderController extends Controller
 
     public function show($id)
     {
-
+        $order = $this->mOrderBook->getOrderById($id);
+        if ($order == null) {
+            return json_encode(([
+                'message' => [
+                    'status' => "error",
+                    'description' => "The order didn't exist in our system!"
+                ]
+            ]));
+        } else {
+            return json_encode(([
+                'message' => [
+                    'status' => "success",
+                    'description' => ""
+                ],
+                'order' => $order
+            ]));
+        }
     }
-
 
     public function update(Request $request, $id)
     {

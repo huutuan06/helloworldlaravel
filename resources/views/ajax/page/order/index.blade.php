@@ -126,6 +126,37 @@
     });
 
     function editOrder(id) {
-        console.log(id);
+        $.ajax({
+            url: '/admin/order/' + id,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'json',
+            type: "GET",
+            beforeSend: function () {
+                $('#modal-loading').modal('show');
+            }
+        })
+            .done(function (data) {
+                console.log(data);
+                $('#modal-loading').modal('hide');
+                $('#orderModal').modal('show');
+                $('#order_code').val(data['order']['code']);
+                console.log(data['order']['confirmed_ordering']);
+
+                if (data['order']['confirmed_ordering'] == 1)
+                    $('#confirm').attr('selected','selected');
+                 else if (data['order']['delivery'] == 1)
+                    $('#delivery').attr('selected', 'selected');
+                else if (data['order']['success'] == 1)
+                    $('#success').attr('selected', 'selected');
+                else if (data['order']['cancel'] == 1)
+                    $('#reject').attr('selected', 'selected');
+                else
+                    $('#order_status').val('Waiting for confirm');
+            })
+            .fail(function (error) {
+                console.log(error);
+            });
     }
 </script>
