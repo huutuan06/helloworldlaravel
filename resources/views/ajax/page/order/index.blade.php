@@ -21,14 +21,18 @@
                             <thead>
                             <tr>
                                 <th style="width: 5.00%">Order ID</th>
-                                <th style="width: 25.00%">Email</th>
-                                <th style="width: 40.00%">Date's order</th>
-                                <th style="width: 20.00%">Status</th>
-                                <th style="width: 10.00%; text-align: center">Detail</th>
+                                <th style="width: 20.00%">Email</th>
+                                <th style="width: 30.00%">Books</th>
+                                <th style="width: 10.00%">Price</th>
+                                <th style="width: 15.00%">Date's order</th>
+                                <th style="width: 10.00%">Status</th>
+                                <th style="width: 10.00%">Manipulation</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -65,10 +69,12 @@
             "columns": [
                 {"data": "id"},
                 {"data": "email"},
+                {"data": "books"},
+                {"data": "price"},
                 {"data": "date"},
                 {"data": "status"},
                 {
-                    "data": "detail", "render": function (id) {
+                    "data": "manipulation", "render": function (id) {
                         return '<div class="text-center">'
                             + '<a href="javascript:void(0)" onclick = "navDetail(' + id + ')"><img src="/images/icon_detail.png"  width="18px" height="18px"></a> '
                             + '</div>';

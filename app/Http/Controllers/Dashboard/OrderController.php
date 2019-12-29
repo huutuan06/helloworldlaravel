@@ -32,9 +32,11 @@ class OrderController extends Controller
             $arr = array(
                 'id' => $order->id,
                 'email' => $this->mOrderBook->getUserByOrder($order->user_id)->email,
+                'books' => $this->mOrderBook->getUserByOrder($order->user_id)->email,
+                'price' => $this->mOrderBook->getUserByOrder($order->user_id)->email,
                 'date' =>  date("d M Y", strtotime( $order->date)),
                 'status' => $order->status,
-                'detail' => $order->id
+                'manipulation' => $order->id
             );
             $collections->push($arr);
         }

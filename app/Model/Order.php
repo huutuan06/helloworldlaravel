@@ -29,4 +29,9 @@ class Order extends Model
     {
         return DB::table('orders')->where('id',$id)->update(['cancel'=>1]);
     }
+
+    public function getUserByOrder($id)
+    {
+        return DB::table('users')->where('id',$id)->first();
+    }
 }
