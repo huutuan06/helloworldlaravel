@@ -21,14 +21,24 @@
                             <thead>
                             <tr>
                                 <th style="width: 5.00%">Order ID</th>
-                                <th style="width: 25.00%">Email</th>
-                                <th style="width: 40.00%">Date's order</th>
-                                <th style="width: 20.00%">Status</th>
-                                <th style="width: 10.00%; text-align: center">Detail</th>
+                                <th style="width: 10.00%">Code</th>
+                                <th style="width: 15.00%">Email</th>
+                                <th style="width: 30.00%">Address</th>
+                                <th style="width: 5.00%">Confirmed ordering</th>
+                                <th style="width: 5.00%">Delivery</th>
+                                <th style="width: 5.00%">Success</th>
+                                <th style="width: 5.00%">Cancel</th>
+                                <th style="width: 10.00%">Date</th>
+                                <th style="width: 10.00%">Manipulation</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -43,6 +53,7 @@
         </div>
     </div>
 </div>
+@include("modal.order.edit")
 <script>
     $(document).ready(function () {
         $('#datatableOrders').dataTable({
@@ -64,13 +75,49 @@
 
             "columns": [
                 {"data": "id"},
+                {"data": "code"},
                 {"data": "email"},
-                {"data": "date"},
-                {"data": "status"},
-                {
-                    "data": "detail", "render": function (id) {
+                {"data": "address"},
+                {"data": "confirmed_ordering", "render" : function (confirmed_ordering) {
+                    if(confirmed_ordering == 1) {
                         return '<div class="text-center">'
-                            + '<a href="javascript:void(0)" onclick = "navDetail(' + id + ')"><img src="/images/icon_detail.png"  width="18px" height="18px"></a> '
+                            + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                            + '</div>';
+                    } else {
+                        return '<div></div>';
+                    }
+                    }},
+                {"data": "delivery","render" : function (delivery) {
+                        if(delivery == 1) {
+                            return '<div class="text-center">'
+                                + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                                + '</div>';
+                        } else {
+                            return '<div></div>';
+                        }
+                    }},
+                {"data": "success","render" : function (success) {
+                        if(success == 1) {
+                            return '<div class="text-center">'
+                                + '<img src="/images/icon_tick.png"  width="18px" height="18px"> '
+                                + '</div>';
+                        } else {
+                            return '<div></div>';
+                        }
+                    }},
+                {"data": "cancel","render" : function (cancel) {
+                        if(cancel == 1) {
+                            return '<div class="text-center">'
+                                + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                                + '</div>';
+                        } else {
+                            return '<div></div>';
+                        }
+                    }},
+                {"data": "updated_at"},
+                {"data": "manipulation", "render": function (id) {
+                        return '<div class="text-center">'
+                            + '<a href="javascript:void(0)" onclick = "editOrder(' + id + ')"><img src="/images/icon_detail.png"  width="18px" height="18px"></a> '
                             + '</div>';
                     }
                 }
@@ -78,22 +125,134 @@
         });
     });
 
-    function navDetail(id) {
-        localStorage.setItem("order_id", id);
+    function editOrder(id) {
         $.ajax({
-            url: 'admin/ajax/order/detail',
+            url: '/admin/order/' + id,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             dataType: 'json',
-            type: 'POST',
+            type: "GET",
             beforeSend: function () {
                 $('#modal-loading').modal('show');
             }
         })
             .done(function (data) {
+                console.log(data);
                 $('#modal-loading').modal('hide');
-                $('#page_content_ajax').replaceWith(data['html']);
+                $('#orderModal').modal('show');
+                $('#order_code').val(data['order']['code']);
+                $('#datatableBookOrders').dataTable({
+                    "pageLength": 15,
+                    "lengthMenu": [[15, 30, 45, -1], [15, 30, 45, 'All']],
+                    'paging': true,
+                    'lengthChange': true,
+                    'searching': true,
+                    'ordering': true,
+                    'info': true,
+                    'autoWidth': false,
+                    "processing": true,
+                    "serverSide": true,
+                    "bDestroy": true,
+
+                    "ajax": {
+                        url: '/admin/book_order/' + id,
+                        type: 'GET'
+                    },
+
+                    "columns": [
+                        {"data": "id"},
+                        {"data": "book_title"},
+                        {"data": "total_book"},
+                        {"data": "price"},
+                        {"data": "image", "render": function (image) {
+                                return '<img src="' + image + '" alt="image"/>';
+                            }
+                        }
+                    ]
+                });
+                $('#order_status option').each(function () {
+                    if ($(this).css('display') != 'none') {
+                        if ($(this).val() == "confirm" && data['order']['confirmed_ordering'] == 1) {
+                            $(this).prop("selected", true);
+                            return false;
+                        }
+                        if ($(this).val() == "delivery" && data['order']['delivery'] == 1) {
+                            $(this).prop("selected", true);
+                            return false;
+                        }
+                        if ($(this).val() == "success" && data['order']['success'] == 1) {
+                            $(this).prop("selected", true);
+                            return false;
+                        }
+                        if ($(this).val() == "cancel" && data['order']['cancel'] == 1) {
+                            $(this).prop("selected", true);
+                            return false;
+                        }
+                    }
+                });
+            })
+            .fail(function (error) {
+                console.log(error);
             });
     }
+
+    $('#orderFormEdit').on('submit', function (event) {
+        event.preventDefault();
+        $('#orderModal').modal('hide');
+        var formData = new FormData(this);
+        $.ajax({
+            url: '/admin/order',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            method: 'POST',
+            dataType: 'json',
+            data: formData,
+            processData: false,
+            contentType: false
+        })
+            .done(function (data) {
+                if (data['message']['status'] === 'invalid') {
+                    swal("", data['message']['description'], "error");
+                }
+                if (data['message']['status'] === 'existed') {
+                    swal("", data['message']['description'], "error");
+                }
+                if (data['message']['status'] === 'success') {
+                    swal("", data['message']['description'], "success");
+                    var table = $('#datatableBook').DataTable();
+                    $.fn.dataTable.ext.errMode = 'none';
+                    var rows = table.rows().data();
+                    for (var i = 0; i < rows.length; i++) {
+                        if (rows[i].id == data['book']['id']) {
+                            table.row(this).data(
+                                [
+                                    data['book']['title'],
+                                    data['book']['image'],
+                                    data['book']['description'],
+                                    data['book']['total_pages'],
+                                    data['book']['price'],
+                                    data['book']['amount'],
+                                    data['book']['author'],
+                                    function (id) {
+                                        return '<div class="text-center">'
+                                            + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br><br> '
+                                            + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
+                                            + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                                            + '</div>';
+                                    }
+                                ]
+                            ).draw();
+                        }
+                    }
+                } else if (data.status === 'error') {
+                    swal("", data['message']['description'], "error");
+                }
+            })
+            .fail(function (error) {
+                console.log(error);
+            });
+    });
+
 </script>

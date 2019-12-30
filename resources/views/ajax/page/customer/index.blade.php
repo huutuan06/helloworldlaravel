@@ -256,6 +256,7 @@
             type: "GET",
             beforeSend: function () {
                 $('#modal-loading').modal('show');
+                $('input[name="gender"]').attr('checked', false);
             }
         })
             .done(function (data) {

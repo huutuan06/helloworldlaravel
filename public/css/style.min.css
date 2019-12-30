@@ -41,3 +41,7 @@
 .modal-footer {
     border-bottom: 0;
 }
+
+.modal-lg {
+    max-width: 80%;
+}

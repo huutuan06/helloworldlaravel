@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('/admin/order', 'Dashboard\OrderController');
 
+    Route::resource('/admin/book_order', 'Dashboard\BookOrderController');
+
     Route::get('/admin/vogo/order/detail/{detail}', 'Dashboard\OrderController@getOrderDetail')-> name('order.detail');
 
     Route::group(['prefix' => '', 'note' => 'MANAGERS'], function () {

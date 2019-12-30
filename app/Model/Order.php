@@ -15,6 +15,15 @@ class Order extends Model
         return DB::table('orders')->get();
     }
 
+    public function getOrders()
+    {
+        return DB::table('orders')->orderBy('updated_at','ASC')->get();
+    }
+
+    public function getOrderById($id) {
+        return DB::table('orders')->where('id', $id)->first();
+    }
+
     public function add($data)
     {
         return DB::table('orders')->insert($data);
@@ -28,5 +37,10 @@ class Order extends Model
     public function cancelOrder($id)
     {
         return DB::table('orders')->where('id',$id)->update(['cancel'=>1]);
+    }
+
+    public function getUserByOrder($id)
+    {
+        return DB::table('users')->where('id',$id)->first();
     }
 }

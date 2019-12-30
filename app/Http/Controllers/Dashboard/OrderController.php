@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+Use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 
 
@@ -26,43 +27,47 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = $this->mOrderBook->get();
+        $orders = $this->mOrderBook->getOrders();
         $collections = collect();
         foreach ($orders as $order) {
             $arr = array(
                 'id' => $order->id,
+                'code' => $order->code,
                 'email' => $this->mOrderBook->getUserByOrder($order->user_id)->email,
-                'date' =>  date("d M Y", strtotime( $order->date)),
-                'status' => $order->status,
-                'detail' => $order->id
+                'address' => $order->address,
+                'confirmed_ordering' =>  $order->confirmed_ordering,
+                'delivery' => $order->delivery,
+                'success' => $order->success,
+                'cancel' => $order->cancel,
+                'updated_at' => Carbon::parse($order->updated_at),
+                'manipulation' => $order->id
             );
             $collections->push($arr);
         }
         return Datatables::collection($collections)->make();
     }
 
-
-    public function store(Request $request)
-    {
-
-    }
-
-
     public function show($id)
     {
-
+        $order = $this->mOrderBook->getOrderById($id);
+        if ($order == null) {
+            return json_encode(([
+                'message' => [
+                    'status' => "error",
+                    'description' => "The order didn't exist in our system!"
+                ]
+            ]));
+        } else {
+            return json_encode(([
+                'message' => [
+                    'status' => "success",
+                    'description' => ""
+                ],
+                'order' => $order
+            ]));
+        }
     }
 
-
-    public function update(Request $request, $id)
-    {
-
-    }
-
-    public function destroy($id)
-    {
-
-    }
 
     public function getOrderDetail(Request $request)
     {
