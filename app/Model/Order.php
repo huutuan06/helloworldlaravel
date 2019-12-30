@@ -46,7 +46,6 @@ class Order extends Model
 
     public function updateById($id, $data)
     {
-        \Log::info($data);
         return DB::table('orders')->where('id', $id)->update([
             'id' => $data[0]['id'],
             'code' => $data[0]['code'],

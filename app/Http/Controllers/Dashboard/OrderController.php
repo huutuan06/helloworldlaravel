@@ -35,7 +35,7 @@ class OrderController extends Controller
                 'delivery' => $order->delivery,
                 'success' => $order->success,
                 'cancel' => $order->cancel,
-                'updated_at' => Carbon::parse($order->updated_at),
+                'updated_at' => $order->updated_at,
                 'manipulation' => $order->id
             );
             $collections->push($arr);
@@ -97,16 +97,16 @@ class OrderController extends Controller
 
     public function store(Request $request) {
         $confirmed_ordering = $cancel = $success = $delivery = 0;
-        if ($request->order_status = "confirm") {
+        if ($request->order_status == "confirm") {
             $confirmed_ordering = 1;
             $cancel = $success = $delivery = 0;
-        } else if ($request->order_status = "delivery") {
+        } else if ($request->order_status == "delivery") {
             $cancel = $success = $confirmed_ordering = 0;
             $delivery = 1;
-        } else if ($request->order_status = "success") {
+        } else if ($request->order_status == "success") {
             $cancel = $delivery = $confirmed_ordering = 0;
             $success = 1;
-        } else if ($request->order_status = "reject") {
+        } else if ($request->order_status == "reject") {
             $success = $delivery = $confirmed_ordering = 0;
             $cancel = 1;
         }

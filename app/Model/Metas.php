@@ -58,4 +58,31 @@ class Metas extends Authenticatable
     public function getItemByBookID($bookID) {
         return DB::table('metas')->where('bookID', $bookID)->first();
     }
+
+    public function updateById($id, $data)
+    {
+        \Log::info($data);
+        return DB::table('orders')->where('id', $id)->update([
+            'id' => $data[0]['id'],
+            'title' => $data[0]['title'],
+            'referrer' => $data[0]['referrer'],
+            'description' => $data[0]['description'],
+            'keywords' => $data[0]['keywords'],
+            'author' => $data[0]['author'],
+            'theme_color' => $data[0]['theme_color'],
+            'og_title' => $data[0]['og_title'],
+            'og_image' => $data[0]['og_image'],
+            'og_url' => $data[0]['og_url'],
+            'og_site_name' => $data[0]['og_site_name'],
+            'og_description' => $data[0]['og_description'],
+            'fb_app_id' => $data[0]['fb_app_id'],
+            'twitter_card' => $data[0]['twitter_card'],
+            'twitter_title' => $data[0]['twitter_title'],
+            'twitter_description' => $data[0]['twitter_description'],
+            'twitter_url' => $data[0]['twitter_url'],
+            'twitter_image' => $data[0]['twitter_image'],
+            'parsely_link' => $data[0]['parsely_link'],
+            'bookID' => $data[0]['bookID']
+        ]);
+    }
 }

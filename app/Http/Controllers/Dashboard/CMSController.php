@@ -93,28 +93,29 @@ class CMSController extends Controller
                      ]));
                  }
                  if ($this->mModelMeta->getItemByBookID($request->bookID) != null) {
-                    $this->mModelMeta->update([
-                        'id' => $this->mModelMeta->getItemByBookID($request->bookID)->id,
-                        'title' => $request->title,
-                        'referrer' => $request->referrer,
-                        'description' => $request->description,
-                        'keywords' => $request->keywords,
-                        'author' => $request->author,
-                        'theme_color' => $request->theme_color,
-                        'og_title' => $request->og_title,
-                        'og_image' => $request->og_image,
-                        'og_url' => $request->og_url,
-                        'og_site_name' => $request->og_site_name,
-                        'og_description' => $request->og_description,
-                        'fb_app_id' => $request->fb_app_id,
-                        'twitter_card' => $request->twitter_card,
-                        'twitter_title' => $request->twitter_title,
-                        'twitter_description' => $request->twitter_description,
-                        'twitter_url' => $request->twitter_url,
-                        'twitter_image' => $request->twitter_image,
-                        'parsely_link' => $request->parsely_link,
+                    $meta = $this->mModelMeta->getItemByBookID($request->bookID);
+                    $this->mModelMeta->updateById($meta->id, array([
+                        'id' => $meta->id,
+                        'title' => $request->title == null ? $meta->title : $request->title,
+                        'referrer' => $request->referrer != null ? $request->referrer : $item->referrer,
+                        'description' => $request->description != null ? $request->description : $item->description,
+                        'keywords' => $request->keywords != null ? $request->keywords : $item->keywords,
+                        'author' => $request->author != null ? $request->author : $item->author,
+                        'theme_color' => $request->theme_color != null ? $request->theme_color : $item->theme_color,
+                        'og_title' => $request->og_title != null ? $request->og_title : $item->og_title,
+                        'og_image' => $request->og_image != null ? $request->og_image : $item->or_image,
+                        'og_url' => $request->og_url != null ? $request->og_url : $item->og_url,
+                        'og_site_name' => $request->og_site_name != null ? $request->og_site_name : $item->og_site_name,
+                        'og_description' => $request->og_description != null ? $request->og_description : $item->og_description,
+                        'fb_app_id' => $request->fb_app_id != null ? $request->fb_app_id : $item->fb_app_id,
+                        'twitter_card' => $request->twitter_card != null ? $request->twitter_card : $item->twitter_card,
+                        'twitter_title' => $request->twitter_title != null ? $request->twitter_title : $item->twitter_title,
+                        'twitter_description' => $request->twitter_description != null ? $request->twitter_description : $item->twitter_description,
+                        'twitter_url' => $request->twitter_url != null ? $request->twitter_url : $item->twitter_url,
+                        'twitter_image' => $request->twitter_image != null ? $request->twitter_image : $item->twitter_image,
+                        'parsely_link' => $request->parsely_link != null ? $request->parsely_link : $item->parsely_link,
                         'bookID' => $request->bookID
-                    ]);
+                    ]));
                  } else {
                      $this->mModelMeta->add([
                          'id' => 0,
