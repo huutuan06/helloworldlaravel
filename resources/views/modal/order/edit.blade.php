@@ -19,8 +19,7 @@
             <form id="orderFormEdit">
                 <div class="form-group">
                     <label for="order_code" class="col-form-label">Order Code: </label>
-                    <input name="order_code" type="text" class="form-control" id="order_code" disabled="">
-                    <input name="order_code" type="hidden" class="form-control" id="order_code">
+                    <input name="order_code" type="text" class="form-control" id="order_code">
                 </div>
                 <div class="form-group">
                     <label for="book_order" class="col-form-label">List of Ordered Book:</label>
@@ -47,12 +46,13 @@
                         </table>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label for="book_order" class="col-form-label">Status:</label>
                 </div>
-                <select class="form-group" style="padding: 5px 10px;" id="order_status">
+                <select class="form-group" style="padding: 5px 10px;" id="order_status" name="order_status">
                     <option id="confirm" value="confirm" selected=''>Confirm</option>
-                    <option id="delivery" value="" selected=''>Delivery</option>
+                    <option id="delivery" value="delivery" selected=''>Delivery</option>
                     <option id="success" value="success" selected=''>Success</option>
                     <option id="reject" value="reject" selected=''>Reject</option>
                 </select>

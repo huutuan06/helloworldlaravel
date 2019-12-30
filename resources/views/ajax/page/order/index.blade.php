@@ -185,7 +185,7 @@
                             $(this).prop("selected", true);
                             return false;
                         }
-                        if ($(this).val() == "cancel" && data['order']['cancel'] == 1) {
+                        if ($(this).val() == "reject" && data['order']['cancel'] == 1) {
                             $(this).prop("selected", true);
                             return false;
                         }
@@ -213,6 +213,7 @@
             contentType: false
         })
             .done(function (data) {
+                console.log(data);
                 if (data['message']['status'] === 'invalid') {
                     swal("", data['message']['description'], "error");
                 }
@@ -221,25 +222,57 @@
                 }
                 if (data['message']['status'] === 'success') {
                     swal("", data['message']['description'], "success");
-                    var table = $('#datatableBook').DataTable();
+                    var table = $('#datatableOrders').DataTable();
                     $.fn.dataTable.ext.errMode = 'none';
                     var rows = table.rows().data();
                     for (var i = 0; i < rows.length; i++) {
-                        if (rows[i].id == data['book']['id']) {
+                        if (rows[i].id == data['order']['id']) {
                             table.row(this).data(
                                 [
-                                    data['book']['title'],
-                                    data['book']['image'],
-                                    data['book']['description'],
-                                    data['book']['total_pages'],
-                                    data['book']['price'],
-                                    data['book']['amount'],
-                                    data['book']['author'],
+                                    data['order']['id'],
+                                    data['order']['code'],
+                                    data['order']['email'],
+                                    data['order']['address'],
+                                    function (confirmed_ordering) {
+                                        if(confirmed_ordering == 1) {
+                                            return '<div class="text-center">'
+                                                + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                                                + '</div>';
+                                        } else {
+                                            return '<div></div>';
+                                        }
+                                    },
+                                    function (delivery) {
+                                        if(delivery == 1) {
+                                            return '<div class="text-center">'
+                                                + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                                                + '</div>';
+                                        } else {
+                                            return '<div></div>';
+                                        }
+                                    },
+                                    function (success) {
+                                        if(success == 1) {
+                                            return '<div class="text-center">'
+                                                + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                                                + '</div>';
+                                        } else {
+                                            return '<div></div>';
+                                        }
+                                    },
+                                    function (cancle) {
+                                        if(cancle == 1) {
+                                            return '<div class="text-center">'
+                                                + '<img src="/images/icon_tick.png"  width="18px" height="18px">'
+                                                + '</div>';
+                                        } else {
+                                            return '<div></div>';
+                                        }
+                                    },
+                                    data['order']['updated_at'],
                                     function (id) {
                                         return '<div class="text-center">'
-                                            + '<button onclick = "navReview(' + id + ')" type="button">CMS</button> <br><br> '
-                                            + '<a href="javascript:void(0)" onclick= "editBook(' + id + ')"><img src="/images/icon_edit.png"  width="18px" height="18px"></a>'
-                                            + '<span>  </span>' + '<a href="javascript:void(0)" onclick="deleteBook(' + id + ')"><img src="/images/icon_delete.png"  width="18px" height="18px"></a>'
+                                            + '<a href="javascript:void(0)" onclick = "editOrder(' + id + ')"><img src="/images/icon_detail.png"  width="18px" height="18px"></a> '
                                             + '</div>';
                                     }
                                 ]

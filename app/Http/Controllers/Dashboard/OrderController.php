@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Model\Order;
-use App\Traits\UploadTrait;
-use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Support\Facades\Validator;
-Use Carbon\Carbon;
+use App\Model\Order;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 
 class OrderController extends Controller
 {
     protected $mOrderBook;
     use HasTimestamps;
-    use UploadTrait;
 
     public function __construct(Order $order)
     {
@@ -97,5 +93,54 @@ class OrderController extends Controller
                'description' => 'Get detail order failure!'
            ]
         ]);
+    }
+
+    public function store(Request $request) {
+        $confirmed_ordering = $cancel = $success = $delivery = 0;
+        if ($request->order_status = "confirm") {
+            $confirmed_ordering = 1;
+            $cancel = $success = $delivery = 0;
+        } else if ($request->order_status = "delivery") {
+            $cancel = $success = $confirmed_ordering = 0;
+            $delivery = 1;
+        } else if ($request->order_status = "success") {
+            $cancel = $delivery = $confirmed_ordering = 0;
+            $success = 1;
+        } else if ($request->order_status = "reject") {
+            $success = $delivery = $confirmed_ordering = 0;
+            $cancel = 1;
+        }
+        if ($this->mOrderBook->getOrderByCode($request->order_code) != null) {
+            $item = $this->mOrderBook->getOrderByCode($request->order_code);
+            $this->mOrderBook->updateById($item->id, array([
+                'id' => $item->id,
+                'code' => $item->code,
+                'user_id' => $item->user_id,
+                'address' => $item->address,
+                'payment' => $item->payment,
+                'confirmed_ordering' => $confirmed_ordering,
+                'unsuccessful_payment' => $item->unsuccessful_payment,
+                'delivery' => $delivery,
+                'success' => $success,
+                'cancel' => $cancel,
+                'created_at' => $this->freshTimestamp(),
+                'updated_at' => $this->freshTimestamp(),
+            ]));
+
+            return json_encode(([
+                'message' => [
+                    'status' => "success",
+                    'description' => "Update the order as successfully"
+                ],
+                'order' => $this->mOrderBook->getOrderByCode($request->order_code)
+            ]));
+        } else {
+            return json_encode(([
+                'message' => [
+                    'status' => "error",
+                    'description' => "Update the order as failure"
+                ]
+            ]));
+        }
     }
 }
