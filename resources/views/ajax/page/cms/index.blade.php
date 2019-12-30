@@ -140,7 +140,7 @@
         formData.append('referrer', $('#referrer').val());
         formData.append('description', $('#description').val());
         formData.append('keywords', $('#keywords').val());
-        formData.append('author', $('#_meta_author').val());
+        formData.append('author', $('#author').val());
         formData.append('theme_color', $('#theme_color').val());
         formData.append('og_title', $('#og_title').val());
         formData.append('og_image', $('#og_image').val());

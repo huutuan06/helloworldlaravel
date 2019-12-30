@@ -61,8 +61,7 @@ class Metas extends Authenticatable
 
     public function updateById($id, $data)
     {
-        \Log::info($data);
-        return DB::table('orders')->where('id', $id)->update([
+        return DB::table('metas')->where('id', $id)->update([
             'id' => $data[0]['id'],
             'title' => $data[0]['title'],
             'referrer' => $data[0]['referrer'],
